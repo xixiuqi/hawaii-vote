@@ -20,9 +20,9 @@ jobs:
 
       - name: Fetch votes
         run: |
-          API=$(sed -n 's/.*apiUrl: *"\([^"]*\)".*/\1/p' site/config.js)
+          API=$(sed -n 's/.*apiUrl: *"\([^"]*\)".*/\1/p' docs/config.js)
           if [ -z "$API" ]; then
-            echo "apiUrl is empty in site/config.js — nothing to fetch."
+            echo "apiUrl is empty in docs/config.js — nothing to fetch."
             exit 0
           fi
           curl -fsSL "$API" -o /tmp/raw.json
