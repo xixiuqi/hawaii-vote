@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>夏威夷选点投票</title>
+<meta name="description" content="12/5–12/13 茂宜 + 大岛行程选点投票">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:inherit}
+/* Layout: one narrow ballot column; numbered rows grouped by island; fixed tally bar at the bottom. */
+:root{
+  --paper:#F1F4F2; --card:#FFFFFF; --ink:#15232A; --muted:#5B6A6F; --line:#D8E0DE;
+  --sea:#0A6B72; --sea-soft:#D5EBE9; --lava:#BF4626; --lava-soft:#F5DCD2;
+  --stone:#8C989B; --stone-soft:#E7ECEB; --gold:#C2850F;
+  --display:"Bricolage Grotesque", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+  --body:"PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E1619; --card:#162125; --ink:#E4ECEB; --muted:#93A4A7; --line:#283A3F;
+  --sea:#52B9BD; --sea-soft:#163638; --lava:#EE7D59; --lava-soft:#3A2119;
+  --stone:#7D8D90; --stone-soft:#1F2C30; --gold:#E4AF48; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1619; --card:#162125; --ink:#E4ECEB; --muted:#93A4A7; --line:#283A3F;
+  --sea:#52B9BD; --sea-soft:#163638; --lava:#EE7D59; --lava-soft:#3A2119;
+  --stone:#7D8D90; --stone-soft:#1F2C30; --gold:#E4AF48; color-scheme:dark}
+
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:20px 120px}
+h1,h2,h3{margin:0;text-wrap:balance}
+header{display:grid;gap:6px;padding-block:8px 18px}
+.eyebrow{font-family:var(--display);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--sea)}
+h1{font-family:var(--display);font-weight:800;font-size:30px;line-height:1.15;letter-spacing:-.01em}
+.dates{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-size:14px}
+.dates b{font-family:var(--display);font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+
+.tabs{display:flex;gap:4px;padding:4px;background:var(--stone-soft);border-radius:10px;margin-bottom:16px}
+.tabs button{flex:1;border:0;background:transparent;color:var(--muted);font:600 15px var(--body);padding:9px 0;border-radius:7px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.tabs .count{font-family:var(--display);font-variant-numeric:tabular-nums;margin-left:4px;color:var(--sea)}
+
+.mode{font-size:13.5px;color:var(--muted);padding:10px 12px;border:1px dashed var(--line);border-radius:10px;margin-bottom:16px}
+.mode strong{color:var(--ink)}
+
+.who{display:grid;gap:6px;margin-bottom:12px}
+label.lbl{font-size:13px;font-weight:600;color:var(--muted)}
+input[type=text],textarea{width:100%;box-sizing:border-box;font:16px var(--body);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+textarea{min-height:76px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin:4px 0 22px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+.island{display:grid;gap:0;margin-bottom:26px}
+.island-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-bottom:8px;border-bottom:2px solid var(--ink);margin-bottom:2px}
+.island-h h2{font-family:var(--display);font-weight:800;font-size:22px}
+.island-h span{font-family:var(--display);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.place{display:grid;grid-template-columns:40px 1fr;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.place .num{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.1;color:var(--muted);font-variant-numeric:tabular-nums}
+.place.has .num{color:var(--ink)}
+.place.lv3 .num{color:var(--lava)}
+.place .body{min-width:0;display:grid;gap:8px}
+.place h3{font-size:16px;font-weight:650;line-height:1.35}
+.detail{margin:0;font-size:13.5px;color:var(--muted)}
+.flag{display:inline-block;font-size:11.5px;font-weight:600;padding:1px 7px;border-radius:99px;margin-right:6px;vertical-align:1px}
+.flag.del{background:var(--stone-soft);color:var(--muted)}
+.flag.warn{background:var(--lava-soft);color:var(--lava)}
+.flag.free{background:var(--sea-soft);color:var(--sea)}
+.place.deleted h3{color:var(--muted)}
+
+.ctrl{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--card)}
+.seg button{border:0;background:transparent;color:var(--ink);font:600 13.5px var(--body);padding:7px 11px;cursor:pointer;border-left:1px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"][data-w="3"]{background:var(--lava);color:#fff}
+.seg button[aria-pressed="true"][data-w="2"]{background:var(--sea);color:#fff}
+.seg button[aria-pressed="true"][data-w="1"]{background:var(--stone);color:#fff}
+.seg button[aria-pressed="true"][data-w="0"]{background:var(--stone-soft);color:var(--muted);text-decoration:line-through}
+.stars{display:flex;gap:1px}
+.stars button{border:0;background:transparent;font-size:21px;line-height:1;padding:3px 2px;color:var(--line);cursor:pointer}
+.stars button.on{color:var(--gold)}
+
+.notebox{display:grid;gap:6px;margin-top:6px}
+
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));z-index:5}
+.bar-in{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.prog{flex:1;min-width:0;display:grid;gap:2px}
+.prog b{font-family:var(--display);font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.prog small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn{border:0;border-radius:10px;background:var(--ink);color:var(--paper);font:700 14.5px var(--body);padding:11px 16px;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+
+.copyout{display:grid;gap:8px;margin:0 0 18px;padding:12px;border:1px solid var(--sea);border-radius:10px;background:var(--sea-soft)}
+.copyout p{margin:0;font-size:13.5px}
+.copyout textarea{min-height:150px;font-size:13.5px}
+
+/* results */
+.empty{padding:28px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+.voters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chip{font-size:13px;padding:3px 10px;border-radius:99px;background:var(--card);border:1px solid var(--line)}
+.r-row{display:grid;grid-template-columns:40px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.r-row .num{font-family:var(--display);font-weight:800;font-size:20px;color:var(--muted);font-variant-numeric:tabular-nums}
+.r-row.top .num{color:var(--lava)}
+.r-body{min-width:0;display:grid;gap:6px}
+.r-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.r-head h3{font-size:15px;font-weight:650}
+.r-score{font-family:var(--display);font-weight:700;font-size:14px;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--gold)}
+.r-score.none{color:var(--muted);font-weight:500}
+.stack{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--stone-soft)}
+.stack i{display:block;height:100%}
+.stack .s3{background:var(--lava)} .stack .s2{background:var(--sea)} .stack .s1{background:var(--stone)}
+.stack .s0{background:repeating-linear-gradient(45deg,var(--line) 0 3px,transparent 3px 6px)}
+.r-meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.r-meta .must{color:var(--lava);font-weight:600}
+.links{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px}
+.links a{color:var(--sea);text-decoration:none;border-bottom:1px solid var(--sea-soft)}
+.links a:hover{border-bottom-color:var(--sea)}
+.cbtn{border:1px solid var(--line);background:transparent;color:var(--muted);font:600 13px var(--body);padding:6px 10px;border-radius:8px;cursor:pointer}
+.cbtn.has{color:var(--sea);border-color:var(--sea)}
+textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
+.cms{list-style:none;margin:2px 0 0;padding:0;display:grid;gap:4px}
+.cms li{font-size:13.5px;padding:6px 10px;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow-wrap:anywhere}
+.cms li b{margin-right:6px;color:var(--ink)}
+.dec{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.dec b{display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:99px;margin-right:6px}
+.dec.keep b,.plan-row.keep .tag{background:var(--sea);color:#fff}
+.dec.maybe b,.plan-row.maybe .tag{background:var(--stone-soft);color:var(--ink)}
+.dec.drop b,.plan-row.drop .tag{background:var(--lava-soft);color:var(--lava)}
+.plan{display:grid;gap:10px;padding:14px;margin-bottom:20px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.plan-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.plan-h h2{font-family:var(--display);font-weight:800;font-size:18px}
+.plan-h span{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.plan p{margin:0;font-size:14px}
+.empty-plan p{color:var(--muted)}
+.plan-row{display:grid;grid-template-columns:auto 1fr;gap:8px;font-size:13.5px;align-items:start}
+.plan-row .tag{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.plan-days{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px}
+.plan-days b{margin-right:6px}
+.plan-ask{padding:8px 10px;border-radius:8px;background:var(--sea-soft)}
+.plan-foot{color:var(--muted);font-size:12.5px!important}
+.claim{display:grid;gap:8px;padding:12px;margin-bottom:14px;border:1px solid var(--sea);border-radius:10px;background:var(--sea-soft)}
+.claim p{margin:0;font-size:13.5px}
+.claim .btn{justify-self:start}
+.sortnote{font-size:13px;color:var(--muted);margin:-6px 0 14px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Maui · Hawaiʻi Island · 2026</div>
+    <h1>夏威夷选点投票</h1>
+    <div class="dates"><span>茂宜 <b>12/5–12/8</b></span><span>大岛 <b>12/8–12/13</b></span><span><b>5</b> 人</span></div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button id="tab-vote" role="tab" aria-selected="true" aria-controls="vote">我来投</button>
+    <button id="tab-res" role="tab" aria-selected="false" aria-controls="results">看结果<span class="count" id="voterCount"></span></button>
+  </div>
+
+  <section id="vote" role="tabpanel" aria-labelledby="tab-vote">
+    <div class="mode" id="mode">正在连接…选的内容会先存在你这台设备上。</div>
+    <div class="claim" id="claim" hidden></div>
+    <div class="who">
+      <label class="lbl" for="name">你的名字</label>
+      <input type="text" id="name" placeholder="比如：小王" maxlength="20" autocomplete="nickname">
+    </div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--lava)"></i>必去</span>
+      <span><i class="dot" style="background:var(--sea)"></i>想去</span>
+      <span><i class="dot" style="background:var(--stone)"></i>随意</span>
+      <span><i class="dot" style="background:var(--line)"></i>不去</span>
+      <span><span style="color:var(--gold)">★</span>感兴趣程度，满分 5 星</span><span>每个地方都能点「留言」</span>
+    </div>
+    <div id="copyout" class="copyout" hidden>
+      <p id="copymsg">已复制，直接粘贴到群里。</p>
+      <textarea id="copytext" readonly aria-label="报号内容"></textarea>
+    </div>
+    <div id="list"></div>
+    <div class="notebox">
+      <label class="lbl" for="note">还有什么想说的（可不填）</label>
+      <textarea id="note" maxlength="500" placeholder="比如：Molokini 和 Sea Scooter 二选一就行；不想太早起"></textarea>
+    </div>
+  </section>
+
+  <section id="results" role="tabpanel" aria-labelledby="tab-res" hidden>
+    <div id="resBody"></div>
+  </section>
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="prog"><b id="progN">已选 0 / 25</b><small id="status">选完点右边按钮，发到群里</small></div>
+    <button class="btn" id="copyBtn" type="button">复制报号</button>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+const PLACES=[
+ {n:1,i:'maui',name:'Haleakalā 山顶云海',d:'很好，必看',L:[["NPS 日出预约说明", "https://www.nps.gov/hale/planyourvisit/sunrise.htm"], ["Recreation.gov 预约", "https://www.recreation.gov/camping/poi/253731"]]},
+ {n:2,i:'maui',name:'Haleakalā 观景台 + Sliding Sands 火山口徒步',free:true,L:[["NPS 火山口徒步", "https://www.nps.gov/thingstodo/moderate-hike-into-into-haleakala-crater.htm"]]},
+ {n:3,i:'maui',name:'冲浪课 Maui Waveriders（Kalama Park）',d:'很好；半私人 $109.95/人、私人 $157.07/人，2 小时',L:[["课程介绍", "https://thehawaiivacationguide.com/activities/surf-lessons-with-maui-wave-riders-kihei/"]]},
+ {n:4,i:'maui',name:'Sea Scooter 浮潜（Wailea，跟海龟同游）',d:'$149/人',L:[["行程页", "https://www.greetwell.com/us/f206/wailea-beach-sea-scooter-snorkeling-guided-tour"]]},
+ {n:5,i:'maui',name:'Kam III 日出海龟',free:true,L:[["Kam III 介绍", "https://www.themauiexpert.com/kamaole-beach-park-iii-kihei-maui"]]},
+ {n:6,i:'maui',name:'Hoʻokipa 岸上看海龟 + Baldwin Beach',L:[["Go Hawaii 介绍", "https://www.gohawaii.com/islands/maui/things-to-do/beaches/hookipa-beach-park-maui"]]},
+ {n:7,i:'maui',name:'瀑布速降 Rappel Maui',d:'$240.84/人，3 小时',L:[["行程页", "https://www.to-hawaii.com/activities/maui/rappel-maui-waterfalls-and-rainforest-cliffs"]]},
+ {n:8,i:'maui',name:'Waiʻānapanapa 黑沙滩',d:'$5/人 + $10 停车，需提前预约',L:[["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/maui/waianapanapa-state-park"], ["预约 FAQ", "https://gostateparks.hawaii.gov/waianapanapa/faq"]]},
+ {n:9,i:'maui',name:'Road to Hana 自驾 + Hana 小镇',d:'很一般',L:[["沿途攻略", "https://thehawaiivacationguide.com/road-to-hana-guide/"]]},
+ {n:10,i:'maui',name:'ʻĪao Valley',d:'需预约',L:[["官方预约", "https://gostateparks.hawaii.gov/iao-valley/about"]]},
+ {n:11,i:'maui',name:'Kam III 日落',L:[["Kam III 介绍", "https://www.themauiexpert.com/kamaole-beach-park-iii-kihei-maui"]]},
+ {n:12,i:'maui',name:'Old Lahaina Luau',d:'12/5–8 只能排 waitlist 或换别的',flag:'warn',flagT:'已售罄',L:[["体验介绍", "https://www.hawaiiactivities.com/travelguide/old-lahaina-luau-what-to-expect/"]]},
+ {n:13,i:'maui',name:'Molokini 浮潜船',d:'约 $110–$180/人',L:[["示例：Kihei 2 小时船", "https://redlinerafting.com/tours/molokini-snorkeling-tours-two-hour-trip/"]]},
+ {n:14,i:'maui',name:'Bike Maui 山顶骑行',d:'$238.59/人（备选 Sunriders $129–139，也没选）',flag:'del',flagT:'已删',L:[["行程页", "https://www.hawaiiactivities.com/en/hawaii/maui/a/156490"]]},
+ {n:15,i:'maui',name:'观鲸',d:'12 月初非旺季，看到的概率一般',L:[["Pacific Whale Foundation", "https://pacificwhale.org/whale-watch-maui/"]]},
+ {n:16,i:'big',name:'火山国家公园',d:'Crater Rim、Kīlauea Iki、Thurston 熔岩管、Chain of Craters，门票 $30/车',L:[["NPS 行前须知", "https://www.nps.gov/havo/planyourvisit/index.htm"]]},
+ {n:17,i:'big',name:'Kula Kai 熔岩洞',d:'$95/人，电话订（备选 Kazumura Cave $60 现金 / $65 刷卡）',L:[["Hawaii Magazine 介绍", "https://www.hawaiimagazine.com/you-can-traverse-through-lava-tubes-on-this-guide-tour/"]]},
+ {n:18,i:'big',name:'Akaka Falls',L:[["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/hawaii/akaka-falls-state-park/"]]},
+ {n:19,i:'big',name:'Hawaii 热带植物园',L:[["植物园介绍", "https://www.hawaii-guide.com/big-island/sights/hawaii_tropical_botanical_garden"]]},
+ {n:20,i:'big',name:'Hilo 小镇',L:[["Go Hawaii：Hilo 市区", "https://www.gohawaii.com/islands/hawaii-big-island/regions/hilo/downtown-hilo"]]},
+ {n:21,i:'big',name:'Greenwell Farms 咖啡园',L:[["农场参观", "https://www.greenwellfarms.com/kona-farm-tours-a/259.htm"]]},
+ {n:22,i:'big',name:'Puʻuhonua o Hōnaunau + Two Step 浮潜',L:[["NPS 介绍", "https://www.nps.gov/places/puuhonuaohonaunau.htm"]]},
+ {n:23,i:'big',name:'Captain Cook 浮潜',d:'好，珊瑚棒；去法 trail / kayak / boat tour 待定',L:[["Go Hawaii：Kealakekua Bay", "https://www.gohawaii.com/islands/hawaii-big-island/regions/kona/kealakekua-bay"]]},
+ {n:24,i:'big',name:'Mauna Kea 观星',d:'游客中心（无需四驱）或四驱观星团，注意高反',L:[["游客中心观星", "https://hilo.hawaii.edu/maunakea/visitor-information/stargazing"]]},
+ {n:25,i:'big',name:'Iruka 魔鬼鱼夜潜',d:'约 $125/人',flag:'del',flagT:'已删',L:[["Iruka 行程评价", "https://hawaiiactivities.com/en/hawaii/big_island/a/167715/reviews"]]}
+];
+const ISLANDS=[{k:'maui',t:'茂宜 Maui',d:'12/5 – 12/8'},{k:'big',t:'大岛 Hawaiʻi',d:'12/8 – 12/13'}];
+const LV={3:'必去',2:'想去',1:'随意',0:'不去'};
+const LS='hawaii-vote-draft-v1';
+
+let st={name:'',votes:{},note:'',t:0};
+try{const d=JSON.parse(localStorage.getItem(LS)||'null');if(d&&typeof d==='object')st=Object.assign(st,d);}catch(e){}
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- ballot ---------- */
+function rowHTML(p){
+  const flags=(p.flag?`<span class="flag ${p.flag}">${p.flagT}</span>`:'')+(p.free?'<span class="flag free">免费</span>':'');
+  const det=(flags||p.d)?`<p class="detail">${flags}${p.d?esc(p.d):''}</p>`:'';
+  const links=(p.L||[]).map(([t,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a>`).join('');
+  const seg=[3,2,1,0].map(w=>`<button type="button" data-w="${w}" aria-pressed="false">${LV[w]}</button>`).join('');
+  const stars=[1,2,3,4,5].map(s=>`<button type="button" data-s="${s}" aria-label="${s} 星" aria-pressed="false">★</button>`).join('');
+  return `<article class="place${p.flag==='del'?' deleted':''}" data-n="${p.n}" id="p${p.n}">
+    <div class="num">${p.n}</div>
+    <div class="body"><h3>${esc(p.name)}</h3>${det}${links?`<div class="links">${links}</div>`:''}
+      <div class="ctrl"><div class="seg" role="group" aria-label="想去程度">${seg}</div>
+      <div class="stars" role="group" aria-label="感兴趣程度，满分 5 星">${stars}</div>
+      <button type="button" class="cbtn" data-c="1" aria-expanded="false">留言</button></div>
+      <textarea class="cmt" id="c${p.n}" data-n="${p.n}" maxlength="300" rows="2" placeholder="对 ${p.n} 号的想法，比如：想去但别太早起" hidden></textarea></div></article>`;
+}
+function buildList(){
+  $('list').innerHTML=ISLANDS.map(is=>{
+    const ps=PLACES.filter(p=>p.i===is.k);
+    return `<section class="island"><div class="island-h"><h2>${is.t}</h2><span>${is.d} · ${ps[0].n}–${ps[ps.length-1].n} 号</span></div>${ps.map(rowHTML).join('')}</section>`;
+  }).join('');
+}
+function paintRow(n){
+  const el=$('p'+n), v=st.votes[n]||{};
+  el.classList.toggle('has',v.w!=null);
+  el.classList.toggle('lv3',v.w===3);
+  el.querySelectorAll('[data-w]').forEach(b=>b.setAttribute('aria-pressed',String(v.w===+b.dataset.w)));
+  el.querySelectorAll('[data-s]').forEach(b=>{const on=(v.s||0)>=+b.dataset.s;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(v.s===+b.dataset.s));});
+  const ta=el.querySelector('.cmt'),cb=el.querySelector('.cbtn');
+  if(document.activeElement!==ta)ta.value=v.c||'';
+  if(v.c){ta.hidden=false;}
+  cb.classList.toggle('has',!!v.c);cb.setAttribute('aria-expanded',String(!ta.hidden));
+  cb.textContent=ta.hidden?(v.c?'留言 ✓':'留言'):'收起';
+}
+function setVote(n,patch){
+  const v=Object.assign({w:null,s:0,c:''},st.votes[n]||{},patch);
+  if(v.w==null&&!v.s&&!(v.c||'').trim())delete st.votes[n];else st.votes[n]={w:v.w,s:v.s||0,c:v.c||''};
+}
+function paintAll(){PLACES.forEach(p=>paintRow(p.n));$('name').value=st.name||'';$('note').value=st.note||'';updateBar();}
+
+$('list').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const n=+b.closest('.place').dataset.n;
+  const v=st.votes[n]||{};
+  if(b.dataset.c){const ta=$('c'+n);ta.hidden=!ta.hidden;if(!ta.hidden)ta.focus();paintRow(n);return;}
+  if(b.dataset.w!=null){const w=+b.dataset.w;setVote(n,{w:(v.w===w)?null:w});}
+  if(b.dataset.s!=null){const s=+b.dataset.s;setVote(n,{s:(v.s===s)?0:s});}
+  paintRow(n);changed();
+});
+$('list').addEventListener('input',e=>{
+  const ta=e.target.closest('.cmt');if(!ta)return;
+  const n=+ta.dataset.n;setVote(n,{c:ta.value});
+  const cb=ta.closest('.place').querySelector('.cbtn');cb.classList.toggle('has',!!ta.value.trim());
+  changed();
+});
+$('name').addEventListener('input',()=>{st.name=$('name').value;changed();});
+$('note').addEventListener('input',()=>{st.note=$('note').value;changed();});
+
+function picked(){return Object.values(st.votes).filter(v=>v.w!=null).length;}
+function updateBar(){$('progN').textContent=`已选 ${picked()} / ${PLACES.length}`;}
+
+/* ---------- copy 报号 ---------- */
+function reportText(){
+  const nm=(st.name||'').trim()||'（没写名字）';
+  const lines=[`【夏威夷投票】${nm}`];
+  const fmt=p=>{const v=st.votes[p.n];return `${p.n} ${p.name}${v.s?' ★'+v.s:''}${(v.c||'').trim()?'（'+v.c.trim()+'）':''}`;};
+  [3,2,1,0].forEach(w=>{
+    const ps=PLACES.filter(p=>st.votes[p.n]&&st.votes[p.n].w===w);
+    if(ps.length)lines.push(`${LV[w]}：${ps.map(fmt).join('；')}`);
+  });
+  const only=PLACES.filter(p=>st.votes[p.n]&&st.votes[p.n].w==null&&(st.votes[p.n].s||(st.votes[p.n].c||'').trim()));
+  if(only.length)lines.push(`只打分/留言：${only.map(fmt).join('；')}`);
+  if(lines.length===1)lines.push('（还没选）');
+  if((st.note||'').trim())lines.push(`备注：${st.note.trim()}`);
+  return lines.join('\n');
+}
+$('copyBtn').addEventListener('click',async()=>{
+  if(!(st.name||'').trim()){$('name').focus();setStatus('先在上面填个名字');window.scrollTo({top:0,behavior:'smooth'});return;}
+  const t=reportText();
+  $('copytext').value=t;$('copyout').hidden=false;
+  try{await navigator.clipboard.writeText(t);$('copymsg').textContent='已复制，直接粘贴到群里。';}
+  catch(e){$('copymsg').textContent='没法自动复制，长按下面的文字全选后复制。';$('copytext').focus();$('copytext').select();}
+  showTab('vote');$('copyout').scrollIntoView({behavior:'smooth',block:'center'});
+});
+
+/* ---------- shared store: Google Sheet via Apps Script web app ---------- */
+const API=((window.VOTE_CONFIG&&window.VOTE_CONFIG.apiUrl)||'').trim();
+const ID_KEY='hawaii-vote-id';
+let uid=null;
+try{uid=localStorage.getItem(ID_KEY);}catch(e){}
+if(!uid){
+  uid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('v'+Date.now().toString(36)+Math.random().toString(36).slice(2,12));
+  try{localStorage.setItem(ID_KEY,uid);}catch(e){}
+}
+let all=[],loaded=false,loadErr=false,restored=false,plan=null;
+let timer=null,saving=false,again=false;
+
+function setStatus(s){$('status').textContent=s;}
+function persistLocal(){try{localStorage.setItem(LS,JSON.stringify(st));}catch(e){}}
+function changed(){st.t=Date.now();persistLocal();updateBar();if($('copyout').hidden===false)$('copytext').value=reportText();schedule();}
+
+async function apiGet(){
+  const r=await fetch(API+(API.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const j=await r.json();
+  if(!j||!j.ok)throw new Error((j&&j.error)||'bad response');
+  return Array.isArray(j.votes)?j.votes:[];
+}
+async function apiPost(body){
+  // text/plain avoids a CORS preflight, which Apps Script cannot answer
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+  const j=await r.json();
+  if(!j||!j.ok)throw new Error((j&&j.error)||'save failed');
+  return j;
+}
+
+function schedule(){
+  if(!API)return;
+  if(!(st.name||'').trim()){setStatus('填上名字后自动保存');return;}
+  setStatus('有改动，马上保存…');clearTimeout(timer);timer=setTimeout(save,1200);
+  checkClaim();
+}
+async function save(){
+  if(saving){again=true;return;}
+  saving=true;setStatus('保存中…');
+  try{
+    await apiPost({action:'vote',id:uid,name:st.name.trim().slice(0,20),votes:st.votes,note:(st.note||'').slice(0,500)});
+    setStatus('已保存，结果页能看到');
+    refresh();
+  }catch(e){
+    setStatus('保存没成功，检查网络后再改一下会重试；也可以「复制报号」');
+  }
+  saving=false;if(again){again=false;save();}
+}
+
+async function refresh(){
+  if(!API)return;
+  try{
+    all=await apiGet();loaded=true;loadErr=false;
+    if(!restored){
+      restored=true;
+      const mine=all.find(v=>v.id===uid);
+      if(mine&&(mine.updatedAt||0)>(st.t||0)){
+        st.name=mine.name||st.name;st.votes=JSON.parse(JSON.stringify(mine.votes||{}));st.note=mine.note||'';st.t=mine.updatedAt;
+        persistLocal();paintAll();
+      }
+    }
+    checkClaim();
+  }catch(e){loadErr=true;}
+  renderResults();
+}
+async function loadPlan(){
+  try{
+    const r=await fetch('plan.json?t='+Date.now(),{cache:'no-store'});
+    if(r.ok){const j=await r.json();plan=(j&&j.round)?j:null;}
+  }catch(e){}
+  renderResults();
+}
+
+/* Same name already voted from another device: offer to continue that ballot. */
+function checkClaim(){
+  const box=$('claim');
+  const nm=(st.name||'').trim().toLowerCase();
+  const mine=all.find(v=>v.id===uid);
+  const other=nm&&!mine?all.find(v=>v.id!==uid&&(v.name||'').trim().toLowerCase()===nm):null;
+  if(!other){box.hidden=true;return;}
+  box.hidden=false;box.innerHTML='';
+  const p=document.createElement('p');
+  p.textContent=`「${other.name}」之前投过（可能是在别的手机或电脑上）。是你的话，载入那份接着改，不会多出一个人。`;
+  const b=document.createElement('button');b.type='button';b.className='btn';b.textContent='载入我之前的投票';
+  b.addEventListener('click',()=>{
+    uid=other.id;try{localStorage.setItem(ID_KEY,uid);}catch(e){}
+    st.name=other.name||st.name;st.votes=JSON.parse(JSON.stringify(other.votes||{}));st.note=other.note||'';st.t=other.updatedAt||Date.now();
+    persistLocal();paintAll();box.hidden=true;setStatus('已载入，之后的改动会保存到这一份');
+  });
+  box.append(p,b);
+}
+
+function setMode(){
+  const m=$('mode');
+  if(API){m.innerHTML='<strong>选的会自动保存</strong>，所有人能在「看结果」里看到汇总和留言。也可以点「复制报号」发群里。';}
+  else{m.innerHTML='投票表还没接上。<strong>选完点右下角「复制报号」</strong>，粘贴到群里就行。';}
+}
+function init(){
+  setMode();loadPlan();
+  if(!API){renderResults();return;}
+  refresh();
+  setInterval(()=>{if(document.visibilityState==='visible')refresh();},30000);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){refresh();loadPlan();}});
+}
+
+/* ---------- daily trade-off plan (written by Claude each evening) ---------- */
+const DEC={keep:'保留',maybe:'待定',drop:'砍掉'};
+function planDecisions(){
+  const o={};
+  if(plan&&Array.isArray(plan.items))plan.items.forEach(it=>{
+    const n=+it.n,k=DEC[it.decision]?it.decision:'maybe';
+    if(n>=1&&n<=PLACES.length)o[n]={k,t:DEC[k],why:typeof it.why==='string'?it.why:''};
+  });
+  return o;
+}
+function planHTML(){
+  if(!plan)return `<div class="plan empty-plan"><div class="plan-h"><h2>每日取舍</h2></div><p>每天傍晚 6 点前后，Claude 会收集大家的选择和留言，按可行性、花费、好玩程度和时间安排做取舍，并写明理由，显示在这里。</p></div>`;
+  const when=plan.updatedAt?new Date(plan.updatedAt).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+  const D=planDecisions();
+  const group=k=>Object.keys(D).filter(n=>D[n].k===k).sort((a,b)=>a-b);
+  const line=k=>{const ns=group(k);return ns.length?`<div class="plan-row ${k}"><span class="tag">${DEC[k]}</span><span>${ns.map(n=>`${n} ${esc(PLACES[n-1].name)}`).join('；')}</span></div>`:'';};
+  const days=Array.isArray(plan.days)?plan.days.filter(d=>d&&d.label).map(d=>`<li><b>${esc(d.label)}</b>${esc(d.text||'')}</li>`).join(''):'';
+  return `<div class="plan"><div class="plan-h"><h2>每日取舍${plan.round?` · 第 ${esc(plan.round)} 轮`:''}</h2><span>${esc(when)}</span></div>
+    ${plan.summary?`<p class="plan-sum">${esc(plan.summary)}</p>`:''}
+    ${line('keep')}${line('maybe')}${line('drop')}
+    ${days?`<ul class="plan-days">${days}</ul>`:''}
+    ${plan.ask?`<p class="plan-ask"><b>需要大家回答：</b>${esc(plan.ask)}</p>`:''}
+    <p class="plan-foot">每个地方被保留或砍掉的理由，写在下面对应的条目里。</p></div>`;
+}
+
+/* ---------- results ---------- */
+function renderResults(){
+  const box=$('resBody');
+  const voters=all.filter(v=>v.votes&&Object.keys(v.votes).length);
+  $('voterCount').textContent=voters.length?String(voters.length):'';
+  const D=planDecisions();
+  const planBox=planHTML();
+  if(!API){box.innerHTML=planBox+'<div class="empty">投票表还没接上，看不到汇总。<br>大家先用「复制报号」把结果发到群里。</div>';return;}
+  if(!loaded){box.innerHTML=planBox+'<div class="empty">'+(loadErr?'汇总读取失败，稍后会自动重试。':'正在读取大家的投票…')+'</div>';return;}
+  if(!voters.length){box.innerHTML=planBox+'<div class="empty">还没有人保存。<br>有人在「我来投」里选完后，这里会按岛实时排出名次，留言也会列在每个地方下面。</div>';return;}
+  const nameOf=v=>(v.name||'').trim()||'未署名';
+  const N=voters.length;
+  const stats=PLACES.map(p=>{
+    const c={3:[],2:[],1:[],0:[]};let ss=0,sn=0;const cm=[];
+    voters.forEach(v=>{const x=v.votes[p.n];if(!x)return;if(x.w!=null&&c[x.w])c[x.w].push(nameOf(v));if(x.s){ss+=x.s;sn++;}if(typeof x.c==='string'&&x.c.trim())cm.push([nameOf(v),x.c.trim()]);});
+    return Object.assign({},p,{c,avg:sn?ss/sn:0,sn,cm});
+  });
+  const rank=(a,b)=>(b.c[3].length-a.c[3].length)||(b.c[2].length-a.c[2].length)||(b.avg-a.avg)||(a.c[0].length-b.c[0].length)||(a.n-b.n);
+  let html=planBox+`<div class="voters">${voters.map(v=>`<span class="chip">${esc(nameOf(v))} · 选了 ${Object.values(v.votes).filter(x=>x.w!=null).length}</span>`).join('')}</div>
+  <p class="sortnote">排序：必去人数 → 想去人数 → 平均星数。条形图里红=必去，绿=想去，灰=随意，斜线=不去。</p>`;
+  ISLANDS.forEach(is=>{
+    const rows=stats.filter(s=>s.i===is.k).sort(rank);
+    html+=`<section class="island"><div class="island-h"><h2>${is.t}</h2><span>${is.d}</span></div>`;
+    rows.forEach((s,idx)=>{
+      const seg=[3,2,1,0].map(w=>s.c[w].length?`<i class="s${w}" style="width:${s.c[w].length/N*100}%"></i>`:'').join('');
+      const meta=[3,2,1,0].map(w=>`${LV[w]} ${s.c[w].length}`).join(' · ');
+      const must=(s.c[3].length?`<div class="r-meta">必去：<span class="must">${s.c[3].map(esc).join('、')}</span></div>`:'')
+        +(D[s.n]?`<div class="dec ${D[s.n].k}"><b>${D[s.n].t}</b>${D[s.n].why?esc(D[s.n].why):''}</div>`:'')
+        +(s.cm.length?`<ul class="cms">${s.cm.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join('')}</ul>`:'');
+      const sc=s.sn?`<span class="r-score">★ ${s.avg.toFixed(1)} <small style="color:var(--muted);font-weight:500">(${s.sn})</small></span>`:'<span class="r-score none">未打分</span>';
+      html+=`<div class="r-row${idx<3&&s.c[3].length?' top':''}"><div class="num">${s.n}</div><div class="r-body">
+        <div class="r-head"><h3>${esc(s.name)}${s.flag?` <span class="flag ${s.flag}">${s.flagT}</span>`:''}</h3>${sc}</div>
+        <div class="stack" role="img" aria-label="${meta}">${seg}</div><div class="r-meta">${meta}</div>${must}</div></div>`;
+    });
+    html+='</section>';
+  });
+  box.innerHTML=html;
+}
+
+/* ---------- tabs ---------- */
+function showTab(k){
+  const v=k==='vote';
+  $('vote').hidden=!v;$('results').hidden=v;
+  $('tab-vote').setAttribute('aria-selected',String(v));$('tab-res').setAttribute('aria-selected',String(!v));
+}
+$('tab-vote').addEventListener('click',()=>showTab('vote'));
+$('tab-res').addEventListener('click',()=>{showTab('res');renderResults();});
+
+buildList();paintAll();renderResults();setMode();
+init();
+</script>
+</body>
+</html>
