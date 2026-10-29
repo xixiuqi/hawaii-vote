@@ -93,7 +93,7 @@ window.TRIP = {
       links: [["Kazumura Cave（维基百科）", "https://en.wikipedia.org/wiki/Kazumura_Cave"], ["showcaves 介绍", "https://showcaves.com/english/usa/caves/Kazumura.html"]],
       maps: "Kazumura Cave tours Kurtistown" },
     punaluu: { name: "Punaluʻu 黑沙滩", island: "big", type: "sight", ll: [19.13611, -155.50444], wiki: "Punaluʻu Beach",
-      desc: "大岛有名的黑沙滩，常有绿海龟上岸休息，在岸上看，保持距离、别碰。不用预约，12/11 从 Kona 绕南边回 Hilo 顺路。",
+      desc: "大岛有名的黑沙滩，常有绿海龟上岸休息，在岸上看，保持距离、别碰。不用预约，12/9 从火山公园往南 45 分钟，看完回 Hilo 顺路去熔岩洞。",
       price: "免费", links: [["Go Hawaii 介绍", "https://www.gohawaii.com/es/islands/hawaii-big-island/regions/kau/punaluu-black-sand-beach"]],
       maps: "Punaluu Black Sand Beach" },
     akaka: { name: "ʻAkaka Falls", island: "big", type: "sight", ll: [19.85472, -155.15356], wiki: "ʻAkaka Falls State Park",
@@ -108,9 +108,9 @@ window.TRIP = {
     moon: { name: "Moon and Turtle", island: "big", type: "food", ll: [19.72542, -155.08715],
       desc: "Hilo 市区的餐厅，在备选清单里。电话 808-961-0599。", maps: "Moon and Turtle Hilo" },
     greenwell: { name: "Greenwell Farms 咖啡园", island: "big", type: "sight", ll: [19.51124, -155.92200], wiki: "Kona coffee",
-      desc: "Kona 咖啡园，大岛咖啡园保留在 12/11。", links: [["农场参观", "https://www.greenwellfarms.com/kona-farm-tours-a/259.htm"]], maps: "Greenwell Farms Kealakekua" },
+      desc: "Kona 咖啡园，12/13 去机场路上看。", links: [["农场参观", "https://www.greenwellfarms.com/kona-farm-tours-a/259.htm"]], maps: "Greenwell Farms Kealakekua" },
     puho: { name: "Puʻuhonua o Hōnaunau + Two Step", island: "big", type: "sight", ll: [19.42194, -155.91028], wiki: "Puʻuhonua o Hōnaunau National Historical Park",
-      desc: "国家历史公园，旁边就是 Two Step 浮潜点。12/11 11:00 AM–2:00 PM。", links: [["NPS 介绍", "https://www.nps.gov/places/puuhonuaohonaunau.htm"]],
+      desc: "国家历史公园，旁边就是 Two Step 浮潜点。12/13 去机场路上走一圈；想浮潜的 12/12 下午可选。", links: [["NPS 介绍", "https://www.nps.gov/places/puuhonuaohonaunau.htm"]],
       maps: "Puuhonua o Honaunau National Historical Park" },
     manta: { name: "Iruka 魔鬼鱼夜潜", en: "Honokōhau Harbor", island: "big", type: "sight", ll: [19.67139, -156.02639], wiki: "Manta ray night dive",
       desc: "可选，跟冲浪一样：想下水的去浮潜，不想下水的可以买 ride-along 上船看，或者在 Kona 等。Honokōhau 港集合，10–1 月 5:30 PM 签到，全程 2–2.5 小时，3 岁以上可参加；没看到魔鬼鱼可以免费再约一次。",
@@ -182,19 +182,18 @@ window.TRIP = {
       warn: ["Kona 机场到 Hilo 开车约 2.5 小时，后半程天黑。坐了飞机又开夜路，换人开、别赶。"],
       flight: { from: "ogg", to: "koaap", label: "AS1250 · 3:47–4:23 PM" } },
 
-    { id: "d5", date: "12/9", dow: "周三", island: "big", title: "火山国家公园 + 熔岩洞", sub: "开车从 6 小时减到 2 小时，留出给火山的弹性",
+    { id: "d5", date: "12/9", dow: "周三", island: "big", title: "火山国家公园 + 黑沙滩 + 熔岩洞", sub: "火山公园往南 45 分钟就是 Punaluʻu 黑沙滩，顺路看完再回 Hilo",
       items: [
         { t: "7:30 AM", s: "hilo_stay", x: "出发" },
-        { t: "8:30 AM", s: "kvc", x: "Volcanoes NP：Crater Rim（门口 $30/车）" },
+        { t: "8:15 AM", s: "kvc", x: "Volcanoes NP：Crater Rim（门口 $30/车）" },
         { t: "", s: "kiki", x: "Kīlauea Iki" },
-        { t: "", s: "thurston", x: "Thurston 熔岩管" },
-        { t: "", s: "holei", x: "可选：Chain of Craters 公路下到海边，往返约 2 小时", opt: true },
-        { t: "约 2:00 PM", s: "kazumura", x: "Kazumura 熔岩洞（在回 Hilo 的路上，电话约时间）" },
-        { t: "约 5:00 PM", s: "hilo_stay", x: "回 Hilo" }
+        { t: "约 11:45 AM", s: "thurston", x: "Thurston 熔岩管，然后往南" },
+        { t: "12:30–1:30 PM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa），在海边吃午饭" },
+        { t: "约 2:45 PM", s: "kazumura", x: "Kazumura 熔岩洞（在回 Hilo 的路上，电话约时间）" },
+        { t: "约 5:15 PM", s: "hilo_stay", x: "回 Hilo" }
       ],
-      tips: ["火山喷发：Kīlauea 现在是一段一段地喷，每次喷泉一般不到 12 小时，两次之间通常隔两周以上（浦妮也提醒过）。12 月初看 USGS HVO 的下一次预报窗口；如果落在 12/9–12/11，就把火山这天挪到窗口里，和 12/10 或 12/11 对调（12/12 订了魔鬼鱼，不动）。住 Hilo 到公园只要 45 分钟，喷的时候可以临时赶过去。", "只想看看火山口、不执着于看喷发，就按原计划走，不用改。", "熔岩洞改成 Kazumura：原来的 Kula Kai 在 Ocean View，从公园过去再回 Hilo 要多开约 4 小时。Kula Kai 留作备选。"],
-      route: [["hilo_stay", "kvc", "kiki", "thurston", "kazumura", "hilo_stay"]],
-      optRoute: [["thurston", "holei"]] },
+      tips: ["火山喷发：Kīlauea 现在是一段一段地喷，每次喷泉一般不到 12 小时，两次之间通常隔两周以上（浦妮也提醒过）。12 月初看 USGS HVO 的下一次预报窗口；如果落在 12/9–12/12，12/11 自由日直接去火山公园看；也可以把火山这天和 12/10 对调。住 Hilo 到公园只要 45 分钟，喷的时候可以临时赶过去。", "只想看看火山口、不执着于看喷发，就按原计划走，不用改。", "Chain of Craters 公路下到海边往返约 2 小时，这天排不下了；想去的话放到 12/11 自由日，住 Hilo 到公园只要 45 分钟。", "熔岩洞改成 Kazumura：原来的 Kula Kai 在 Ocean View，从公园过去再回 Hilo 要多开约 4 小时。Kula Kai 留作备选。"],
+      route: [["hilo_stay", "kvc", "kiki", "thurston", "punaluu", "kazumura", "hilo_stay"]] },
 
     { id: "d6", date: "12/10", dow: "周四", island: "big", title: "Hilo + Mauna Kea 日落星空", sub: "白天轻松逛 Hilo，傍晚上 Mauna Kea 游客中心",
       items: [
@@ -207,41 +206,45 @@ window.TRIP = {
         { t: "约 5:45 PM", s: "mkvis", x: "游客中心看日落，天黑后看星星、银河（浦妮推荐：不用上山顶，游客中心就挺好）" },
         { t: "约 9:00 PM", s: "hilo_stay", x: "回 Hilo" }
       ],
-      tips: ["游客中心海拔约 2,800 米（9,200 英尺），普通租车走普通路就能开到；租车合同不允许开过游客中心往山顶走。只到游客中心，不上山顶：山顶要四驱、必须是老司机。到了先歇 30 分钟，头疼恶心就早点下山；多喝水。", "晴天晚上约 6–10 点有免费公众观星，天气不好会临时取消，当天早上和傍晚各看一次状态。天黑后只有 0–5 °C，带厚外套。", "和茂宜 Haleakalā 不重复：那边看日落云海，这边看星空。", "火山喷发的话，这天可以和 12/9 对调，Mauna Kea 跟着这天走。"],
+      tips: ["游客中心海拔约 2,800 米（9,200 英尺），普通租车走普通路就能开到；租车合同不允许开过游客中心往山顶走。只到游客中心，不上山顶：山顶要四驱、必须是老司机。到了先歇 30 分钟，头疼恶心就早点下山；多喝水。", "晴天晚上约 6–10 点有免费公众观星，天气不好会临时取消，当天早上和傍晚各看一次状态。天黑后只有 0–5 °C，带厚外套。", "和茂宜 Haleakalā 不重复：那边看日落云海，这边看星空。", "火山喷发的话，优先用 12/11 自由日去看。"],
       route: [["hilo_stay", "akaka", "htbg", "suisan", "hilotown", "hilo_stay"], ["hilo_stay", "mkvis", "hilo_stay"]] },
 
-    { id: "d7", date: "12/11", dow: "周五", island: "big", title: "Kona 一日 + 黑沙滩", sub: "绕岛南边回 Hilo，傍晚就到，不开夜路",
+    { id: "d7", date: "12/11", dow: "周五", island: "big", title: "自由日", sub: "不出远门，补觉；火山有动静就这天去",
       items: [
-        { t: "7:30 AM", s: "hilo_stay", x: "出发，走 Saddle Road 去 Kona" },
-        { t: "约 9:45 AM", s: "greenwell", x: "Greenwell Farms 咖啡园，免费导览，最后一场约 2 点，所以放上午" },
-        { t: "10:45 AM–1:30 PM", s: "puho", x: "Puʻuhonua o Hōnaunau + Two Step 浮潜，然后午餐" },
-        { t: "", s: "cook", x: "可选：Captain Cook 浮潜（夏威夷后花园同事：好，珊瑚棒）；trail / kayak / boat tour 待定", opt: true },
-        { t: "约 3:00 PM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa）" },
-        { t: "约 5:15 PM", s: "hilo_stay", x: "经火山公园那条路回 Hilo" }
+        { t: "上午", s: "hilo_stay", x: "补觉，慢慢吃早饭" },
+        { t: "下午", s: "hilotown", x: "Hilo 小镇、海边随便逛" },
+        { t: "", s: "holei", x: "可选：Chain of Craters 公路下到海边（Hilo 到火山公园 45 分钟，往返加约 2 小时）", opt: true }
       ],
-      tips: ["想去 Captain Cook 的话，Puʻuhonua 那段就要缩短，或者干脆把 Two Step 换成 Captain Cook。"],
-      route: [["hilo_stay", "greenwell", "puho", "punaluu", "hilo_stay"]] },
+      tips: ["火山喷发：如果喷发窗口落在这几天，这天直接去火山公园看，不用和别的天对调。", "前后两天都要开远路（12/10 晚上上 Mauna Kea，12/12 去 Kona），这天专门留出来歇。"],
+      route: [["hilo_stay", "hilotown", "hilo_stay"]],
+      optRoute: [["hilo_stay", "kvc", "holei"]] },
 
     { id: "d8", date: "12/12", dow: "周六", island: "big", title: "补觉 + 魔鬼鱼夜潜", sub: "上午不排，下午去 Kona，傍晚看魔鬼鱼",
       items: [
-        { t: "上午", s: "hilotown", x: "无固定安排：补觉，Hilo 轻松逛，早点吃午饭" },
+        { t: "上午", s: "hilotown", x: "无固定安排：补觉，早点吃午饭" },
         { t: "约 1:30 PM", s: "hilo_stay", x: "走 Saddle Road 去 Kona（约 2 小时）" },
+        { t: "", s: "puho", x: "可选：想多下一次水的人 10:30 左右出发，下午去 Two Step 或 Captain Cook 浮潜", opt: true },
         { t: "约 3:30 PM", s: "manta", x: "Kona 镇上逛逛，4:30 左右早点吃晚饭" },
         { t: "5:30–8:00 PM", s: "manta", x: "可选：Iruka 魔鬼鱼夜潜，Honokōhau 港签到（浦妮：很好，不要删）。跟冲浪一样，想去的下水，不想下水的上船看（ride-along）或在 Kona 等", opt: true },
         { t: "约 10:00 PM", s: "hilo_stay", x: "走 Saddle Road 回 Hilo" }
       ],
-      tips: ["魔鬼鱼要提前订，订的时候说清楚几个人下水、几个人 ride-along。开船前两个工作日下午 3 点后取消要付全款：12/12 周六的团，截止是 12/10 周四 3 PM。", "没人想去魔鬼鱼的话，这天就是全天休息。", "12/13 上午本来就是慢上午，晚回来一点没关系。"],
+      tips: ["魔鬼鱼要提前订，订的时候说清楚几个人下水、几个人 ride-along。开船前两个工作日下午 3 点后取消要付全款：12/12 周六的团，截止是 12/10 周四 3 PM。", "没人想去魔鬼鱼的话，这天就是全天休息。", "Captain Cook 浮潜（夏威夷后花园同事：好，珊瑚棒）去法 trail / kayak / boat tour 待定，kayak 和 boat tour 要预约。"],
       warn: ["晚上 8 点从 Kona 开回 Hilo 约 2 小时，Saddle Road 全程天黑、山上有雾。下水的人会累，让没下水的人开车。"],
-      route: [["hilo_stay", "manta", "hilo_stay"]] },
+      route: [["hilo_stay", "manta", "hilo_stay"]],
+      optRoute: [["hilo_stay", "puho", "manta"]] },
 
-    { id: "d9", date: "12/13", dow: "周日", island: "big", title: "返程",
+    { id: "d9", date: "12/13", dow: "周日", island: "big", title: "咖啡园 + Puʻuhonua，返程", sub: "反正要开去 Kona 机场，顺路看 Kona 这两个地方",
       items: [
-        { t: "上午", s: "hilo_stay", x: "慢上午，吃完午餐再出发" },
-        { t: "3:30–4:00 PM", fixed: true, s: "koaap", x: "到机场还车（不要卡 4:30 的预约时间）" },
+        { t: "7:45 AM", s: "hilo_stay", x: "退房出发，走 Saddle Road 去 Kona" },
+        { t: "约 10:00 AM", s: "greenwell", x: "Greenwell Farms 咖啡园，免费导览" },
+        { t: "11:00 AM–12:30 PM", s: "puho", x: "Puʻuhonua o Hōnaunau 国家历史公园，走一圈（返程日不下水）" },
+        { t: "约 1:00 PM", s: "puho", x: "附近或 Kona 吃午饭" },
+        { t: "3:15–3:30 PM", fixed: true, s: "koaap", x: "到机场还车（不要卡 4:30 的预约时间）" },
         { t: "4:47 PM", fixed: true, s: "koaap", x: "AS404 起飞，11:59 PM 到 SFO" }
       ],
-      route: [["hilo_stay", "koaap"]],
-      warn: ["Hilo 到 Kona 机场开车约 2 小时 35 分，3:30 到机场要 1:00 PM 前出发，午饭最好早点吃，或者到 Kona 再吃。"],
+      tips: ["行李整天在车里：放后备箱、盖好，别把包放在座位上，停车时车里别留贵重东西。", "时间紧了就先砍 Puʻuhonua，咖啡园离机场约 40 分钟。"],
+      route: [["hilo_stay", "greenwell", "puho", "koaap"]],
+      warn: ["Puʻuhonua 到 Kona 机场约 1 小时，最晚 2:15 从 Puʻuhonua 出发。"],
       flight: { from: "koaap", to: "SFO", label: "AS404 · 4:47–11:59 PM" } }
   ],
 
@@ -256,7 +259,9 @@ window.TRIP = {
       { x: "删掉 12/8 清晨的 Kam III 日出海龟：同一个上午已经有 Sea Scooter 跟海龟游泳。", day: "d4" },
       { x: "12/8 从 Kona 机场直接走 Saddle Road 去 Hilo，不绕 Waimea，少开约 35 分钟。", day: "d4" },
       { x: "12/9 熔岩洞从 Kula Kai 换成 Kazumura，Chain of Craters 改成可选：当天开车从约 6 小时 20 分降到约 2 小时，给火山喷发留弹性。", day: "d5" },
-      { x: "12/11 绕岛南边，顺路看 Punaluʻu 黑沙滩和海龟，代替茂宜的黑沙滩。", day: "d7" },
+      { x: "Punaluʻu 黑沙滩和海龟挪到 12/9，从火山公园往南 45 分钟，代替茂宜的黑沙滩。", day: "d5" },
+      { x: "咖啡园和 Puʻuhonua 挪到 12/13 去机场的路上：反正要开到 Kona，不用为它们专门来回一趟。", day: "d9" },
+      { x: "12/11 改成自由日，不出远门。原来这天开车约 5 小时 27 分，第二天又要为魔鬼鱼去一趟 Kona，同一条路连着两天来回。", day: "d7" },
       { x: "傍晚去 Mauna Kea 游客中心看日落和星空，不上山顶：不用四驱，高反风险小，和 Haleakalā 的云海不重复。", day: "d6" },
       { x: "12/6 下山提醒：山路弯多，开慢点，跟着车队走。", day: "d2" }
     ]
