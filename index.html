@@ -153,6 +153,48 @@ textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
 .claim{display:grid;gap:8px;padding:12px;margin-bottom:14px;border:1px solid var(--sea);border-radius:10px;background:var(--sea-soft)}
 .claim p{margin:0;font-size:13.5px}
 .claim .btn{justify-self:start}
+.btn.sm{font-size:13px;padding:7px 12px;border-radius:8px}
+.btn.danger{background:var(--lava);color:#fff}
+.btn.ghost.danger{background:transparent;color:var(--lava);border-color:var(--lava-soft)}
+.linkbtn{border:0;background:none;padding:0;font:600 12.5px var(--body);color:var(--sea);cursor:pointer}
+.mine{display:grid;gap:8px;padding:12px;margin-bottom:14px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.mine-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;align-items:baseline}
+.mine-h b{font-size:14.5px}
+.mine-h span{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.mine p{margin:0;font-size:13px;color:var(--muted)}
+.mine-act{display:flex;flex-wrap:wrap;gap:8px}
+.confirm{display:grid;gap:8px;padding:10px;border-radius:10px;background:var(--sea-soft)}
+.confirm.danger{background:var(--lava-soft)}
+.confirm p{color:var(--ink)!important}
+.risk{display:grid;gap:3px;padding:8px 10px;border-radius:9px;background:var(--lava-soft);color:var(--ink);font-size:13px;overflow-wrap:anywhere}
+.risk b{color:var(--lava);font-size:12.5px}
+.risk .more{color:var(--muted);font-size:12px}
+.cbtn.warn{color:var(--lava);border-color:var(--lava)}
+.mychg{font-size:12.5px;color:var(--gold)}
+.thread{display:grid;gap:8px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+.cmlist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.cmlist li{padding:7px 10px;border-radius:8px;background:var(--card);border:1px solid var(--line);font-size:13.5px;overflow-wrap:anywhere}
+.cmlist li.r{border-color:var(--lava);background:var(--lava-soft)}
+.cmlist li.none{color:var(--muted);background:transparent;border-style:dashed}
+.cmlist p{margin:2px 0 0}
+.cm-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-size:12.5px}
+.cm-h b{font-size:13px}
+.cm-t{color:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums;margin-left:6px}
+.cm-h .linkbtn{margin-left:auto;color:var(--lava)}
+.rtag{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:99px;background:var(--lava);color:#fff}
+.composer{display:grid;gap:6px}
+.cmp-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px}
+.rchk{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--lava);font-weight:600;cursor:pointer}
+.rchk input{width:16px;height:16px;accent-color:var(--lava)}
+.feed{display:grid;gap:8px;padding:12px 14px;margin-bottom:18px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.feed h3{font-family:var(--display);font-weight:800;font-size:16px}
+.feed ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.feed li{display:grid;grid-template-columns:76px 1fr;gap:8px;font-size:13px;overflow-wrap:anywhere}
+.feed li.risk{background:var(--lava-soft);border-radius:8px;padding:4px 6px;margin:0 -6px}
+.feed .ft{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;padding-top:1px}
+.feed .linkbtn{justify-self:start}
+.editbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;margin-bottom:12px;border-radius:10px;background:var(--sea-soft);font-size:13.5px}
+.r-meta.chg{color:var(--gold)}
 .sortnote{font-size:13px;color:var(--muted);margin:-6px 0 14px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
@@ -174,6 +216,7 @@ textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
   <section id="vote" role="tabpanel" aria-labelledby="tab-vote">
     <div class="mode" id="mode">正在连接…选的内容会先存在你这台设备上。</div>
     <div class="claim" id="claim" hidden></div>
+    <div class="mine" id="mine" hidden></div>
     <div class="who">
       <label class="lbl" for="name">你的名字</label>
       <input type="text" id="name" placeholder="比如：小王" maxlength="20" autocomplete="nickname">
@@ -183,7 +226,7 @@ textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
       <span><i class="dot" style="background:var(--sea)"></i>想去</span>
       <span><i class="dot" style="background:var(--stone)"></i>随意</span>
       <span><i class="dot" style="background:var(--line)"></i>不去</span>
-      <span><span style="color:var(--gold)">★</span>感兴趣程度，满分 5 星</span><span>每个地方都能点「留言」</span>
+      <span><span style="color:var(--gold)">★</span>感兴趣程度，满分 5 星</span><span>每个地方都能点「留言」，危险或新消息可以标成 ⚠ 安全提醒</span>
     </div>
     <div id="copyout" class="copyout" hidden>
       <p id="copymsg">已复制，直接粘贴到群里。</p>
@@ -239,13 +282,33 @@ const PLACES=[
 ];
 const ISLANDS=[{k:'maui',t:'茂宜 Maui',d:'12/5 – 12/8'},{k:'big',t:'大岛 Hawaiʻi',d:'12/8 – 12/13'}];
 const LV={3:'必去',2:'想去',1:'随意',0:'不去'};
-const LS='hawaii-vote-draft-v1';
-
-let st={name:'',votes:{},note:'',t:0};
-try{const d=JSON.parse(localStorage.getItem(LS)||'null');if(d&&typeof d==='object')st=Object.assign(st,d);}catch(e){}
-
+const LS='hawaii-vote-draft-v2';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rid=()=>(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('v'+Date.now().toString(36)+Math.random().toString(36).slice(2,12));
+const newId=()=>rid().replace(/[^A-Za-z0-9-]/g,'').slice(0,20);
+const fmtT=t=>{if(!t)return '';const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};
+const wTxt=w=>w!=null&&LV[w]?LV[w]:'未选';
+function chgTxt(h){
+  const a=h.from||{},b=h.to||{},parts=[];
+  if(a.w!==b.w)parts.push(`从「${wTxt(a.w)}」改成「${wTxt(b.w)}」`);
+  if((a.s||0)!==(b.s||0))parts.push(`星数 ${a.s||0} → ${b.s||0}`);
+  return parts.join('，')||'改了选择';
+}
+const nameOf=v=>(v.name||'').trim()||'未署名';
+const pname=n=>PLACES[n-1]?PLACES[n-1].name:'';
+
+let st={name:'',votes:{},note:'',comments:[],t:0};
+try{
+  let d=JSON.parse(localStorage.getItem(LS)||'null');
+  if(!d){
+    const o=JSON.parse(localStorage.getItem('hawaii-vote-draft-v1')||'null');
+    if(o){d={name:o.name||'',note:o.note||'',votes:{},comments:[],t:o.t||0};
+      Object.keys(o.votes||{}).forEach(k=>{const v=o.votes[k]||{};if(v.w!=null||v.s)d.votes[k]={w:v.w,s:v.s||0};if((v.c||'').trim())d.comments.push({id:newId(),n:+k,x:v.c.trim(),risk:false,t:o.t||Date.now()});});}
+  }
+  if(d&&typeof d==='object')st=Object.assign(st,d);
+}catch(e){}
+if(!Array.isArray(st.comments))st.comments=[];
 
 /* ---------- ballot ---------- */
 function rowHTML(p){
@@ -257,10 +320,18 @@ function rowHTML(p){
   return `<article class="place${p.flag==='del'?' deleted':''}" data-n="${p.n}" id="p${p.n}">
     <div class="num">${p.n}</div>
     <div class="body"><h3>${esc(p.name)}</h3>${det}${links?`<div class="links">${links}</div>`:''}
+      <div id="rk${p.n}"></div>
       <div class="ctrl"><div class="seg" role="group" aria-label="想去程度">${seg}</div>
       <div class="stars" role="group" aria-label="感兴趣程度，满分 5 星">${stars}</div>
-      <button type="button" class="cbtn" data-c="1" aria-expanded="false">留言</button></div>
-      <textarea class="cmt" id="c${p.n}" data-n="${p.n}" maxlength="300" rows="2" placeholder="对 ${p.n} 号的想法，比如：想去但别太早起" hidden></textarea></div></article>`;
+      <button type="button" class="cbtn" id="cb${p.n}" data-c="1" aria-expanded="false" aria-controls="th${p.n}">留言</button></div>
+      <div class="mychg" id="mc${p.n}" hidden></div>
+      <div class="thread" id="th${p.n}" hidden>
+        <ul class="cmlist" id="cl${p.n}"></ul>
+        <div class="composer">
+          <textarea class="cmt" id="c${p.n}" data-n="${p.n}" maxlength="300" rows="2" aria-label="给 ${p.n} 号留言" placeholder="对 ${p.n} 号的想法或新消息，比如：听说最近封路了"></textarea>
+          <div class="cmp-row"><label class="rchk"><input type="checkbox" id="r${p.n}"> ⚠ 标成安全提醒</label><button type="button" class="btn sm" data-post="${p.n}">发表</button></div>
+        </div>
+      </div></div></article>`;
 }
 function buildList(){
   $('list').innerHTML=ISLANDS.map(is=>{
@@ -268,38 +339,59 @@ function buildList(){
     return `<section class="island"><div class="island-h"><h2>${is.t}</h2><span>${is.d} · ${ps[0].n}–${ps[ps.length-1].n} 号</span></div>${ps.map(rowHTML).join('')}</section>`;
   }).join('');
 }
+function commentsFor(n){
+  const out=[];
+  all.forEach(v=>{if(v.id===uid)return;(v.comments||[]).forEach(c=>{if(c.n===n)out.push(Object.assign({},c,{who:nameOf(v),mine:false}));});});
+  st.comments.forEach(c=>{if(c.n===n)out.push(Object.assign({},c,{who:(st.name||'').trim()||'我',mine:true}));});
+  return out.sort((a,b)=>(a.t||0)-(b.t||0));
+}
+function paintThread(n){
+  const cs=commentsFor(n),risks=cs.filter(c=>c.risk);
+  $('rk'+n).innerHTML=risks.length?`<div class="risk"><b>⚠ 安全提醒</b>${risks.slice(-2).map(c=>`<span>${esc(c.who)}：${esc(c.x)}</span>`).join('')}${risks.length>2?`<span class="more">还有 ${risks.length-2} 条，点「留言」看全部</span>`:''}</div>`:'';
+  $('cl'+n).innerHTML=cs.length?cs.map(c=>`<li class="${c.risk?'r':''}${c.mine?' mine':''}"><div class="cm-h"><b>${esc(c.who)}</b>${c.risk?'<span class="rtag">⚠ 安全提醒</span>':''}<span class="cm-t">${c.t?fmtT(c.t):''}</span>${c.mine?`<button type="button" class="linkbtn" data-del="${esc(c.id)}">删除</button>`:''}</div><p>${esc(c.x)}</p></li>`).join(''):'<li class="none">还没有留言。</li>';
+  const th=$('th'+n),cb=$('cb'+n),open=!th.hidden;
+  cb.textContent=open?'收起留言':(cs.length?`留言 ${cs.length}`:'留言');
+  cb.classList.toggle('has',cs.length>0);cb.classList.toggle('warn',risks.length>0);cb.setAttribute('aria-expanded',String(open));
+  const mine=all.find(x=>x.id===uid);
+  const h=mine&&(mine.history||[]).filter(x=>x.n===n).slice(-1)[0];
+  const mc=$('mc'+n);
+  if(h){mc.hidden=false;mc.textContent=`你 ${fmtT(h.t)} ${chgTxt(h)}`;}else mc.hidden=true;
+}
 function paintRow(n){
-  const el=$('p'+n), v=st.votes[n]||{};
+  const el=$('p'+n),v=st.votes[n]||{};
   el.classList.toggle('has',v.w!=null);
   el.classList.toggle('lv3',v.w===3);
   el.querySelectorAll('[data-w]').forEach(b=>b.setAttribute('aria-pressed',String(v.w===+b.dataset.w)));
   el.querySelectorAll('[data-s]').forEach(b=>{const on=(v.s||0)>=+b.dataset.s;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(v.s===+b.dataset.s));});
-  const ta=el.querySelector('.cmt'),cb=el.querySelector('.cbtn');
-  if(document.activeElement!==ta)ta.value=v.c||'';
-  if(v.c){ta.hidden=false;}
-  cb.classList.toggle('has',!!v.c);cb.setAttribute('aria-expanded',String(!ta.hidden));
-  cb.textContent=ta.hidden?(v.c?'留言 ✓':'留言'):'收起';
+  paintThread(n);
 }
 function setVote(n,patch){
-  const v=Object.assign({w:null,s:0,c:''},st.votes[n]||{},patch);
-  if(v.w==null&&!v.s&&!(v.c||'').trim())delete st.votes[n];else st.votes[n]={w:v.w,s:v.s||0,c:v.c||''};
+  const v=Object.assign({w:null,s:0},st.votes[n]||{},patch);
+  if(v.w==null&&!v.s)delete st.votes[n];else st.votes[n]={w:v.w,s:v.s||0};
 }
-function paintAll(){PLACES.forEach(p=>paintRow(p.n));$('name').value=st.name||'';$('note').value=st.note||'';updateBar();}
+function paintAll(){PLACES.forEach(p=>paintRow(p.n));$('name').value=st.name||'';$('note').value=st.note||'';updateBar();renderMine();}
 
+function postComment(n){
+  const ta=$('c'+n),x=ta.value.trim();
+  if(!x){ta.focus();return;}
+  if(!(st.name||'').trim()){setStatus('先在上面填个名字再留言');$('name').focus();window.scrollTo({top:0,behavior:'smooth'});return;}
+  st.comments.push({id:newId(),n,x:x.slice(0,300),risk:$('r'+n).checked,t:Date.now()});
+  ta.value='';$('r'+n).checked=false;paintThread(n);changed(true);
+}
 $('list').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
   const n=+b.closest('.place').dataset.n;
   const v=st.votes[n]||{};
-  if(b.dataset.c){const ta=$('c'+n);ta.hidden=!ta.hidden;if(!ta.hidden)ta.focus();paintRow(n);return;}
+  if(b.dataset.c){const th=$('th'+n);th.hidden=!th.hidden;paintThread(n);if(!th.hidden)$('c'+n).focus();return;}
+  if(b.dataset.post){postComment(n);return;}
+  if(b.dataset.del){st.comments=st.comments.filter(c=>c.id!==b.dataset.del);paintThread(n);changed(true);return;}
   if(b.dataset.w!=null){const w=+b.dataset.w;setVote(n,{w:(v.w===w)?null:w});}
   if(b.dataset.s!=null){const s=+b.dataset.s;setVote(n,{s:(v.s===s)?0:s});}
   paintRow(n);changed();
 });
-$('list').addEventListener('input',e=>{
+$('list').addEventListener('keydown',e=>{
   const ta=e.target.closest('.cmt');if(!ta)return;
-  const n=+ta.dataset.n;setVote(n,{c:ta.value});
-  const cb=ta.closest('.place').querySelector('.cbtn');cb.classList.toggle('has',!!ta.value.trim());
-  changed();
+  if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();postComment(+ta.dataset.n);}
 });
 $('name').addEventListener('input',()=>{st.name=$('name').value;changed();});
 $('note').addEventListener('input',()=>{st.note=$('note').value;changed();});
@@ -307,18 +399,68 @@ $('note').addEventListener('input',()=>{st.note=$('note').value;changed();});
 function picked(){return Object.values(st.votes).filter(v=>v.w!=null).length;}
 function updateBar(){$('progN').textContent=`已选 ${picked()} / ${PLACES.length}`;}
 
+/* ---------- my ballot: edit / reset / delete ---------- */
+let pendingAct=null;
+function renderMine(){
+  const box=$('mine');if(!box)return;
+  const mine=all.find(v=>v.id===uid);
+  if(!API||(!mine&&!picked()&&!st.comments.length)){box.hidden=true;return;}
+  box.hidden=false;
+  const nChg=mine?(mine.history||[]).length:0;
+  let html=`<div class="mine-h"><b>${mine?`你 ${fmtT(mine.updatedAt)} 保存过`:'还没保存到投票表'}</b><span>选了 ${picked()} 个 · 留言 ${st.comments.length} 条${nChg?` · 改过 ${nChg} 次`:''}</span></div>
+    <p>想改直接点下面的选项，改完自动保存，大家在「看结果」里能看到你改了什么。听说哪里危险或有新消息，就在那个地方点「留言」，勾上「⚠ 标成安全提醒」。</p>`;
+  if(pendingAct==='reset'){
+    html+=`<div class="confirm"><p>清空你在 25 个地方的选择和星数，留言保留。大家会看到「${esc((st.name||'').trim()||'你')} 清空了之前的选择，重新投」。</p><div class="mine-act"><button type="button" class="btn sm" data-confirm="reset">确定清空</button><button type="button" class="btn ghost sm" data-cancel="1">取消</button></div></div>`;
+  }else if(pendingAct==='delete'){
+    html+=`<div class="confirm danger"><p>删除你的整份投票，包括选择、星数、留言和改动记录，删了找不回来。</p><div class="mine-act"><button type="button" class="btn sm danger" data-confirm="delete">确定删除</button><button type="button" class="btn ghost sm" data-cancel="1">取消</button></div></div>`;
+  }else{
+    html+=`<div class="mine-act"><button type="button" class="btn ghost sm" data-act="reset">清空重投</button><button type="button" class="btn ghost sm danger" data-act="delete">删除我的投票</button></div>`;
+  }
+  box.innerHTML=html;
+}
+$('mine').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.act){pendingAct=b.dataset.act;renderMine();return;}
+  if(b.dataset.cancel){pendingAct=null;renderMine();return;}
+  if(b.dataset.confirm==='reset')doReset();
+  if(b.dataset.confirm==='delete')doDelete();
+});
+async function doReset(){
+  pendingAct=null;clearTimeout(timer);
+  st.votes={};st.t=Date.now();persistLocal();paintAll();
+  if(API&&all.find(v=>v.id===uid)){
+    setStatus('正在清空…');
+    try{await apiPost({action:'reset',id:uid});setStatus('已清空，可以重新投了');}catch(e){setStatus('清空没成功，检查网络后再试');}
+  }else setStatus('已清空，可以重新投了');
+  await refresh();
+  $('list').scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function doDelete(){
+  pendingAct=null;clearTimeout(timer);
+  const oldId=uid;
+  st.votes={};st.comments=[];st.note='';st.t=Date.now();
+  uid=rid();try{localStorage.setItem(ID_KEY,uid);}catch(e){}
+  persistLocal();paintAll();
+  if(API){
+    setStatus('正在删除…');
+    try{await apiPost({action:'delete',id:oldId});setStatus('已删除。想重新投，直接点选项就行');}catch(e){setStatus('删除没成功，检查网络后再试');}
+  }
+  await refresh();
+}
+
 /* ---------- copy 报号 ---------- */
 function reportText(){
   const nm=(st.name||'').trim()||'（没写名字）';
   const lines=[`【夏威夷投票】${nm}`];
-  const fmt=p=>{const v=st.votes[p.n];return `${p.n} ${p.name}${v.s?' ★'+v.s:''}${(v.c||'').trim()?'（'+v.c.trim()+'）':''}`;};
+  const fmt=p=>{const v=st.votes[p.n];return `${p.n} ${p.name}${v.s?' ★'+v.s:''}`;};
   [3,2,1,0].forEach(w=>{
     const ps=PLACES.filter(p=>st.votes[p.n]&&st.votes[p.n].w===w);
     if(ps.length)lines.push(`${LV[w]}：${ps.map(fmt).join('；')}`);
   });
-  const only=PLACES.filter(p=>st.votes[p.n]&&st.votes[p.n].w==null&&(st.votes[p.n].s||(st.votes[p.n].c||'').trim()));
-  if(only.length)lines.push(`只打分/留言：${only.map(fmt).join('；')}`);
+  const only=PLACES.filter(p=>st.votes[p.n]&&st.votes[p.n].w==null&&st.votes[p.n].s);
+  if(only.length)lines.push(`只打分：${only.map(fmt).join('；')}`);
   if(lines.length===1)lines.push('（还没选）');
+  st.comments.slice().sort((a,b)=>a.n-b.n||(a.t||0)-(b.t||0)).forEach(c=>lines.push(`${c.risk?'⚠ ':''}${c.n} 号${c.risk?' 安全提醒':' 留言'}：${c.x}`));
   if((st.note||'').trim())lines.push(`备注：${st.note.trim()}`);
   return lines.join('\n');
 }
@@ -336,16 +478,13 @@ const API=((window.VOTE_CONFIG&&window.VOTE_CONFIG.apiUrl)||'').trim();
 const ID_KEY='hawaii-vote-id';
 let uid=null;
 try{uid=localStorage.getItem(ID_KEY);}catch(e){}
-if(!uid){
-  uid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('v'+Date.now().toString(36)+Math.random().toString(36).slice(2,12));
-  try{localStorage.setItem(ID_KEY,uid);}catch(e){}
-}
-let all=[],loaded=false,loadErr=false,restored=false,plan=null;
+if(!uid){uid=rid();try{localStorage.setItem(ID_KEY,uid);}catch(e){}}
+let all=[],loaded=false,loadErr=false,restored=false,plan=null,feedAll=false;
 let timer=null,saving=false,again=false;
 
 function setStatus(s){$('status').textContent=s;}
 function persistLocal(){try{localStorage.setItem(LS,JSON.stringify(st));}catch(e){}}
-function changed(){st.t=Date.now();persistLocal();updateBar();if($('copyout').hidden===false)$('copytext').value=reportText();schedule();}
+function changed(now){st.t=Date.now();persistLocal();updateBar();renderMine();if($('copyout').hidden===false)$('copytext').value=reportText();schedule(now);}
 
 async function apiGet(){
   const r=await fetch(API+(API.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'});
@@ -362,17 +501,18 @@ async function apiPost(body){
   return j;
 }
 
-function schedule(){
+function schedule(now){
   if(!API)return;
   if(!(st.name||'').trim()){setStatus('填上名字后自动保存');return;}
-  setStatus('有改动，马上保存…');clearTimeout(timer);timer=setTimeout(save,1200);
+  setStatus('有改动，马上保存…');clearTimeout(timer);timer=setTimeout(save,now?0:1200);
   checkClaim();
 }
 async function save(){
   if(saving){again=true;return;}
   saving=true;setStatus('保存中…');
   try{
-    await apiPost({action:'vote',id:uid,name:st.name.trim().slice(0,20),votes:st.votes,note:(st.note||'').slice(0,500)});
+    await apiPost({action:'vote',id:uid,name:st.name.trim().slice(0,20),votes:st.votes,note:(st.note||'').slice(0,500),
+      comments:st.comments.map(c=>({id:c.id,n:c.n,x:c.x,risk:!!c.risk}))});
     setStatus('已保存，结果页能看到');
     refresh();
   }catch(e){
@@ -380,22 +520,27 @@ async function save(){
   }
   saving=false;if(again){again=false;save();}
 }
-
+function fromServer(v){
+  const votes={};Object.keys(v.votes||{}).forEach(k=>{const x=v.votes[k];if(x&&(x.w!=null||x.s))votes[k]={w:x.w,s:x.s||0};});
+  return {votes,comments:(v.comments||[]).map(c=>({id:c.id,n:c.n,x:c.x,risk:!!c.risk,t:c.t}))};
+}
 async function refresh(){
   if(!API)return;
   try{
     all=await apiGet();loaded=true;loadErr=false;
+    const mine=all.find(v=>v.id===uid);
     if(!restored){
       restored=true;
-      const mine=all.find(v=>v.id===uid);
       if(mine&&(mine.updatedAt||0)>(st.t||0)){
-        st.name=mine.name||st.name;st.votes=JSON.parse(JSON.stringify(mine.votes||{}));st.note=mine.note||'';st.t=mine.updatedAt;
-        persistLocal();paintAll();
+        const f=fromServer(mine);
+        st.name=mine.name||st.name;st.votes=f.votes;st.comments=f.comments;st.note=mine.note||'';st.t=mine.updatedAt;
+        persistLocal();
       }
     }
+    if(mine){const byId={};(mine.comments||[]).forEach(c=>byId[c.id]=c);st.comments.forEach(c=>{if(byId[c.id])c.t=byId[c.id].t;});}
     checkClaim();
   }catch(e){loadErr=true;}
-  renderResults();
+  paintAll();renderResults();
 }
 async function loadPlan(){
   try{
@@ -418,7 +563,8 @@ function checkClaim(){
   const b=document.createElement('button');b.type='button';b.className='btn';b.textContent='载入我之前的投票';
   b.addEventListener('click',()=>{
     uid=other.id;try{localStorage.setItem(ID_KEY,uid);}catch(e){}
-    st.name=other.name||st.name;st.votes=JSON.parse(JSON.stringify(other.votes||{}));st.note=other.note||'';st.t=other.updatedAt||Date.now();
+    const f=fromServer(other);
+    st.name=other.name||st.name;st.votes=f.votes;st.comments=f.comments;st.note=other.note||'';st.t=other.updatedAt||Date.now();
     persistLocal();paintAll();box.hidden=true;setStatus('已载入，之后的改动会保存到这一份');
   });
   box.append(p,b);
@@ -426,14 +572,14 @@ function checkClaim(){
 
 function setMode(){
   const m=$('mode');
-  if(API){m.innerHTML='<strong>选的会自动保存</strong>，所有人能在「看结果」里看到汇总和留言。也可以点「复制报号」发群里。';}
+  if(API){m.innerHTML='<strong>选的会自动保存，随时可以改</strong>。所有人能在「看结果」里看到汇总、留言和谁改了什么。也可以点「复制报号」发群里。';}
   else{m.innerHTML='投票表还没接上。<strong>选完点右下角「复制报号」</strong>，粘贴到群里就行。';}
 }
 function init(){
   setMode();loadPlan();
   if(!API){renderResults();return;}
   refresh();
-  setInterval(()=>{if(document.visibilityState==='visible')refresh();},30000);
+  setInterval(()=>{if(document.visibilityState==='visible'&&!saving)refresh();},30000);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){refresh();loadPlan();}});
 }
 
@@ -448,7 +594,7 @@ function planDecisions(){
   return o;
 }
 function planHTML(){
-  if(!plan)return `<div class="plan empty-plan"><div class="plan-h"><h2>每日取舍</h2></div><p>每天傍晚 6 点前后，Claude 会收集大家的选择和留言，按可行性、花费、好玩程度和时间安排做取舍，并写明理由，显示在这里。</p></div>`;
+  if(!plan)return `<div class="plan empty-plan"><div class="plan-h"><h2>每日取舍</h2></div><p>每天傍晚 6 点前后，Claude 会收集大家的选择、留言和改动，按可行性、花费、好玩程度和时间安排做取舍，并写明理由，显示在这里。</p></div>`;
   const when=plan.updatedAt?new Date(plan.updatedAt).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
   const D=planDecisions();
   const group=k=>Object.keys(D).filter(n=>D[n].k===k).sort((a,b)=>a-b);
@@ -463,6 +609,18 @@ function planHTML(){
 }
 
 /* ---------- results ---------- */
+function feedHTML(){
+  const ev=[];
+  all.forEach(v=>{const who=esc(nameOf(v));
+    (v.history||[]).forEach(h=>ev.push({t:h.t,cls:'chg',html:`<b>${who}</b> 把 ${h.n} 号 ${esc(pname(h.n))} ${esc(chgTxt(h))}`}));
+    (v.comments||[]).forEach(c=>ev.push({t:c.t,cls:c.risk?'risk':'',html:`<b>${who}</b> ${c.risk?'<span class="rtag">⚠ 安全提醒</span>':'留言'} ${c.n?`${c.n} 号 ${esc(pname(c.n))}`:''}：${esc(c.x)}`}));
+    if(v.resetAt)ev.push({t:v.resetAt,cls:'chg',html:`<b>${who}</b> 清空了之前的选择，重新投`});
+  });
+  if(!ev.length)return '';
+  ev.sort((a,b)=>(b.t||0)-(a.t||0));
+  const shown=feedAll?ev:ev.slice(0,8);
+  return `<div class="feed"><h3>最新动态</h3><ul>${shown.map(e=>`<li class="${e.cls}"><span class="ft">${fmtT(e.t)}</span><span class="fx">${e.html}</span></li>`).join('')}</ul>${ev.length>8?`<button type="button" class="linkbtn" id="feedMore">${feedAll?'收起':`显示全部 ${ev.length} 条`}</button>`:''}</div>`;
+}
 function renderResults(){
   const box=$('resBody');
   const voters=all.filter(v=>v.votes&&Object.keys(v.votes).length);
@@ -471,16 +629,23 @@ function renderResults(){
   const planBox=planHTML();
   if(!API){box.innerHTML=planBox+'<div class="empty">投票表还没接上，看不到汇总。<br>大家先用「复制报号」把结果发到群里。</div>';return;}
   if(!loaded){box.innerHTML=planBox+'<div class="empty">'+(loadErr?'汇总读取失败，稍后会自动重试。':'正在读取大家的投票…')+'</div>';return;}
-  if(!voters.length){box.innerHTML=planBox+'<div class="empty">还没有人保存。<br>有人在「我来投」里选完后，这里会按岛实时排出名次，留言也会列在每个地方下面。</div>';return;}
-  const nameOf=v=>(v.name||'').trim()||'未署名';
+  const mine=all.find(v=>v.id===uid);
+  const editBtn=mine?`<div class="editbar"><span>你 ${fmtT(mine.updatedAt)} 保存过</span><button type="button" class="btn ghost sm" id="editMine">改我的选择</button></div>`:'';
+  const feed=feedHTML();
+  if(!voters.length){box.innerHTML=planBox+editBtn+feed+'<div class="empty">还没有人保存。<br>有人在「我来投」里选完后，这里会按岛实时排出名次，留言也会列在每个地方下面。</div>';return;}
   const N=voters.length;
   const stats=PLACES.map(p=>{
-    const c={3:[],2:[],1:[],0:[]};let ss=0,sn=0;const cm=[];
-    voters.forEach(v=>{const x=v.votes[p.n];if(!x)return;if(x.w!=null&&c[x.w])c[x.w].push(nameOf(v));if(x.s){ss+=x.s;sn++;}if(typeof x.c==='string'&&x.c.trim())cm.push([nameOf(v),x.c.trim()]);});
-    return Object.assign({},p,{c,avg:sn?ss/sn:0,sn,cm});
+    const c={3:[],2:[],1:[],0:[]};let ss=0,sn=0;const cm=[],chg=[];
+    voters.forEach(v=>{const x=v.votes[p.n];if(!x)return;if(x.w!=null&&c[x.w])c[x.w].push(nameOf(v));if(x.s){ss+=x.s;sn++;}});
+    all.forEach(v=>{
+      (v.comments||[]).forEach(cc=>{if(cc.n===p.n)cm.push({who:nameOf(v),x:cc.x,risk:!!cc.risk,t:cc.t});});
+      (v.history||[]).forEach(h=>{if(h.n===p.n)chg.push({who:nameOf(v),h});});
+    });
+    cm.sort((a,b)=>(a.t||0)-(b.t||0));chg.sort((a,b)=>b.h.t-a.h.t);
+    return Object.assign({},p,{c,avg:sn?ss/sn:0,sn,cm,chg});
   });
   const rank=(a,b)=>(b.c[3].length-a.c[3].length)||(b.c[2].length-a.c[2].length)||(b.avg-a.avg)||(a.c[0].length-b.c[0].length)||(a.n-b.n);
-  let html=planBox+`<div class="voters">${voters.map(v=>`<span class="chip">${esc(nameOf(v))} · 选了 ${Object.values(v.votes).filter(x=>x.w!=null).length}</span>`).join('')}</div>
+  let html=planBox+editBtn+feed+`<div class="voters">${voters.map(v=>{const k=(v.history||[]).length;return `<span class="chip">${esc(nameOf(v))} · 选了 ${Object.values(v.votes).filter(x=>x.w!=null).length}${k?` · 改过 ${k} 次`:''}</span>`;}).join('')}</div>
   <p class="sortnote">排序：必去人数 → 想去人数 → 平均星数。条形图里红=必去，绿=想去，灰=随意，斜线=不去。</p>`;
   ISLANDS.forEach(is=>{
     const rows=stats.filter(s=>s.i===is.k).sort(rank);
@@ -488,18 +653,25 @@ function renderResults(){
     rows.forEach((s,idx)=>{
       const seg=[3,2,1,0].map(w=>s.c[w].length?`<i class="s${w}" style="width:${s.c[w].length/N*100}%"></i>`:'').join('');
       const meta=[3,2,1,0].map(w=>`${LV[w]} ${s.c[w].length}`).join(' · ');
-      const must=(s.c[3].length?`<div class="r-meta">必去：<span class="must">${s.c[3].map(esc).join('、')}</span></div>`:'')
+      const risks=s.cm.filter(x=>x.risk);
+      const extra=(risks.length?`<div class="risk"><b>⚠ 安全提醒 ${risks.length} 条</b>${risks.map(x=>`<span>${esc(x.who)}：${esc(x.x)}</span>`).join('')}</div>`:'')
+        +(s.c[3].length?`<div class="r-meta">必去：<span class="must">${s.c[3].map(esc).join('、')}</span></div>`:'')
+        +(s.chg.length?`<div class="r-meta chg">改动：${s.chg.slice(0,3).map(x=>`${esc(x.who)} ${esc(chgTxt(x.h))}（${fmtT(x.h.t)}）`).join('；')}${s.chg.length>3?` 等 ${s.chg.length} 次`:''}</div>`:'')
         +(D[s.n]?`<div class="dec ${D[s.n].k}"><b>${D[s.n].t}</b>${D[s.n].why?esc(D[s.n].why):''}</div>`:'')
-        +(s.cm.length?`<ul class="cms">${s.cm.map(([a,b])=>`<li><b>${esc(a)}</b>${esc(b)}</li>`).join('')}</ul>`:'');
+        +(s.cm.filter(x=>!x.risk).length?`<ul class="cms">${s.cm.filter(x=>!x.risk).map(x=>`<li><b>${esc(x.who)}</b>${esc(x.x)}<span class="cm-t">${fmtT(x.t)}</span></li>`).join('')}</ul>`:'');
       const sc=s.sn?`<span class="r-score">★ ${s.avg.toFixed(1)} <small style="color:var(--muted);font-weight:500">(${s.sn})</small></span>`:'<span class="r-score none">未打分</span>';
       html+=`<div class="r-row${idx<3&&s.c[3].length?' top':''}"><div class="num">${s.n}</div><div class="r-body">
         <div class="r-head"><h3>${esc(s.name)}${s.flag?` <span class="flag ${s.flag}">${s.flagT}</span>`:''}</h3>${sc}</div>
-        <div class="stack" role="img" aria-label="${meta}">${seg}</div><div class="r-meta">${meta}</div>${must}</div></div>`;
+        <div class="stack" role="img" aria-label="${meta}">${seg}</div><div class="r-meta">${meta}</div>${extra}</div></div>`;
     });
     html+='</section>';
   });
   box.innerHTML=html;
 }
+$('resBody').addEventListener('click',e=>{
+  if(e.target.closest('#feedMore')){feedAll=!feedAll;renderResults();return;}
+  if(e.target.closest('#editMine')){showTab('vote');$('mine').scrollIntoView({behavior:'smooth',block:'center'});}
+});
 
 /* ---------- tabs ---------- */
 function showTab(k){
