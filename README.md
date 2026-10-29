@@ -1,73 +1,37 @@
 # 夏威夷选点投票
 
-12/5–12/13 茂宜 + 大岛行程的选点投票页面。6 个人用同一个公开网址打开，不用登录，就能对 25 个地方选想去程度、打 1–5 星、单独留言。结果页实时汇总，每天傍晚由 Claude 做一轮取舍，写明理由。
+12/5–12/13 茂宜 + 大岛行程的选点投票页面。6 个人打开同一个网址，不用登录，就能对 25 个地方选想去程度、打 1–5 星、单独留言。结果页实时汇总，每天傍晚由 Claude 做一轮取舍，写明理由。
 
-## 结构
+网址：https://xixiuqi.github.io/hawaii-vote/
+
+## 文件
 
 ```
-docs/                     # GitHub Pages 发布的就是这个文件夹
-  index.html              # 投票页 + 结果页
-  config.js               # 填 Apps Script 网址
-  plan.json               # 每日取舍结果（Claude 每天更新）
-apps-script/Code.gs       # Google 表格后端：存投票、留言
-data/votes.json           # 每小时同步一次的投票快照（有变化才提交）
-plans/                    # 每轮取舍的存档
-DAILY_ROUND.md            # 每日取舍任务的说明
-.github/workflows/snapshot-votes.yml   # 每小时把投票拷进 data/votes.json
-setup/snapshot-votes.yml  # 同一个文件的备份，用于在网页上手动创建
+index.html        投票页 + 结果页（GitHub Pages 直接发布仓库根目录）
+config.js         Apps Script 网址
+plan.json         每日取舍结果（Claude 每天更新）
+apps-script.gs    Google 表格后端的代码备份
+DAILY_ROUND.md    每日取舍任务的说明
+.github/workflows/snapshot-votes.yml   每小时把投票同步进 data/votes.json
 ```
 
-## 上线步骤
+## 数据存在哪
 
-### 1. 建投票表（Google Sheets + Apps Script，约 5 分钟）
-
-1. 新建一个 Google 表格，名字随意，比如「夏威夷投票」。
-2. 菜单 **扩展程序 → Apps Script**，删掉默认代码，把 `apps-script/Code.gs` 整段粘进去，点保存。
-3. 右上角 **部署 → 新建部署**，点齿轮选 **Web 应用**：
-   - 执行身份：**我**
-   - 谁可以访问：**任何人**
-4. 按提示授权。看到"Google 尚未验证此应用"时，点 **高级 → 转至…（不安全）**，这是你自己的脚本。
-5. 复制 **Web 应用网址**（以 `/exec` 结尾），粘到 `docs/config.js` 里 `apiUrl: ""` 的引号中间，保存。
-
-### 2. 建 GitHub 仓库并上传（约 3 分钟）
-
-1. 登录 github.com，右上角 **+ → New repository**。
-   - Repository name：`hawaii-vote`
-   - 选 **Public**（免费账号的 Pages 需要公开仓库）
-   - 其他都不勾，点 **Create repository**。
-2. 在新仓库页面点 **uploading an existing file**。
-3. 打开电脑上的 `hawaii-vote` 文件夹，**全选里面的所有东西**（docs、apps-script、data、plans、setup、README.md 等），拖进网页的上传框。
-4. 页面最下面点 **Commit changes**。
-5. 加上每小时同步投票的自动任务（如果文件夹里已经有 `.github` 就一起拖进去了，跳过这步）：
-   - 仓库首页点 **Add file → Create new file**。
-   - 文件名一栏输入 `.github/workflows/snapshot-votes.yml`（打到 `/` 时会自动变成文件夹）。
-   - 用记事本打开电脑上的 `setup/snapshot-votes.yml`，全选复制，粘进网页的编辑框。
-   - 点 **Commit changes**。
-   - 再到仓库 **Settings → Actions → General**，最下面 **Workflow permissions** 选 **Read and write permissions**，保存。不然自动任务没法提交。
-
-### 3. 打开 GitHub Pages（1 分钟）
-
-1. 仓库 **Settings → Pages**。
-2. **Source** 选 **Deploy from a branch**，Branch 选 **main**，文件夹选 **/docs**，点 **Save**。
-3. 等 1–2 分钟刷新，页面顶部会出现网址：`https://<你的用户名>.github.io/hawaii-vote/`
-
-### 4. 测一下
-
-打开网址，填名字，选两个地方，底部显示「已保存」，切到「看结果」能看到自己，就成功了。Google 表格的 `votes` 页里也会多一行。然后把网址发到群里。
+- 投票和留言实时存在 Google 表格「夏威夷投票」的 `votes` 页，每人一行。
+- 后端是 Apps Script 项目 `hawaii-vote-backend`（代码同 `apps-script.gs`），以 Web 应用部署，执行身份是你，任何人可访问。
+- `snapshot-votes.yml` 每小时第 15 分钟把表格里的投票拷进 `data/votes.json`，有变化才提交，仓库历史里能看到每一轮改动。想马上同步，在 Actions 里手动运行 `Snapshot votes`。
 
 ## 每日取舍
 
-- `snapshot-votes.yml` 每小时第 15 分钟把投票拷进 `data/votes.json`，有变化才提交，所以仓库历史里能看到每一轮改动。
-- 17:50 Claude 的定时任务按 `DAILY_ROUND.md` 读投票、做取舍，更新 `docs/plan.json` 并推送，网站自动刷新。Claude 要能推送到你的仓库：在 claude.ai 的连接器设置里连上 GitHub，并把 `hawaii-vote` 仓库授权给它。
-- 想马上同步投票，在 Actions 里手动运行 `Snapshot votes`。
+每天 17:50（太平洋时间）Claude 的定时任务按 `DAILY_ROUND.md` 读 `data/votes.json`，按可行性、花费、好玩程度和时间安排做取舍，更新 `plan.json` 和 `plans/round-N.json` 并推送，网页「看结果」顶部会显示。Claude 推送需要在 claude.ai 的连接器设置里连上 GitHub，并授权 `hawaii-vote` 仓库。
 
 ## 改内容
 
-- 地点、价格、链接：改 `docs/index.html` 里的 `PLACES` 数组，编号不要改，已经投过的票按编号对应。
-- 改了 `apps-script/Code.gs` 后，要在 Apps Script 里 **部署 → 管理部署 → 编辑 → 版本选「新版本」→ 部署**，网址不变。
+- 地点、价格、链接：改 `index.html` 里的 `PLACES` 数组。编号不要改，已经投过的票按编号对应。
+- 改了后端代码：在 Apps Script 里改好后，**部署 → 管理部署 → 编辑 → 版本选「新版本」→ 部署**，网址不变。
 
 ## 注意
 
 - 没有登录，谁拿到网址都能投票，也能看到所有人的名字和留言。只在群里发。
 - 每台设备有自己的投票身份。换手机后填同一个名字，页面会提示「载入我之前的投票」。
-- 投票表还没接上时，页面也能用：选完点「复制报号」，贴到群里。
+- 投票表连不上时，页面也能用：选完点「复制报号」，贴到群里。

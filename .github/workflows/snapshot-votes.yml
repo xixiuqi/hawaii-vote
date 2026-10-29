@@ -19,13 +19,14 @@ jobs:
 
       - name: Fetch votes
         run: |
-          API=$(sed -n 's/.*apiUrl: *"\([^"]*\)".*/\1/p' docs/config.js)
+          API=$(sed -n 's/.*apiUrl: *"\([^"]*\)".*/\1/p' config.js)
           if [ -z "$API" ]; then
-            echo "apiUrl is empty in docs/config.js — nothing to fetch."
+            echo "apiUrl is empty in config.js — nothing to fetch."
             exit 0
           fi
           curl -fsSL "$API" -o /tmp/raw.json
           jq -e '.ok == true' /tmp/raw.json > /dev/null
+          mkdir -p data
           jq '{votes: (.votes | sort_by(.id))}' /tmp/raw.json > data/votes.json
 
       - name: Commit if changed

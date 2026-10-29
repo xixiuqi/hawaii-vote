@@ -1,9 +1,9 @@
 /**
  * Hawaii trip ballot — storage backend.
  *
- * Bind this script to a Google Sheet (Extensions → Apps Script), then
+ * Standalone Apps Script project that stores votes in the Google Sheet below.
  * Deploy → New deployment → Web app, Execute as: Me, Who has access: Anyone.
- * Paste the /exec URL into site/config.js.
+ * Paste the /exec URL into config.js.
  *
  * GET  <url>            → {ok:true, votes:[{id,name,votes,note,updatedAt}]}
  * POST <url> (text/plain JSON {action:"vote", id, name, votes, note}) → {ok:true}
@@ -11,13 +11,14 @@
  * One row per voter in the "votes" sheet: id | name | updatedAt | json
  */
 
+const SPREADSHEET_ID = '1pHq3HicysrfSpvTv1IDGyyuyc6W45Zj76tkaSxowsyE'; // 夏威夷投票
 const SHEET_NAME = 'votes';
 const MAX_PLACE = 25;
 const MAX_VOTERS = 60;
 const MAX_BODY = 30000;
 
 function sheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   let sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
