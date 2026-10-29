@@ -2,17 +2,24 @@
 
 12/5–12/13 茂宜 + 大岛行程的选点投票页面。6 个人打开同一个网址，不用登录，就能对 25 个地方选想去程度、打 1–5 星、单独留言。结果页实时汇总，每天傍晚由 Claude 做一轮取舍，写明理由。
 
-网址：https://xixiuqi.github.io/hawaii-vote/
+网址：
+- 选点投票：https://xixiuqi.github.io/hawaii-vote/
+- 行程地图：https://xixiuqi.github.io/hawaii-vote/trip.html （可以直接跳到某天，比如 `trip.html#d2` 是 12/6）
 
 ## 文件
 
 ```
 index.html        投票页 + 结果页（GitHub Pages 直接发布仓库根目录）
+trip.html         行程地图：逐日路线、悬停预览、预订、预算、须知
+trip-data.js      行程数据（地点、坐标、每天安排、预订、预算）——改行程只改这个文件
+routes.json       每天的真实驾车路线，由 Build routes 自动生成
+scripts/build-routes.mjs  用 OSRM 算路线的脚本
 config.js         Apps Script 网址
 plan.json         每日取舍结果（Claude 每天更新）
 apps-script.gs    Google 表格后端的代码备份
 DAILY_ROUND.md    每日取舍任务的说明
 .github/workflows/snapshot-votes.yml   每小时把投票同步进 data/votes.json
+.github/workflows/build-routes.yml     trip-data.js 改动后重算 routes.json
 ```
 
 ## 数据存在哪
@@ -26,6 +33,8 @@ DAILY_ROUND.md    每日取舍任务的说明
 每天 17:50（太平洋时间）Claude 的定时任务按 `DAILY_ROUND.md` 读 `data/votes.json`，按可行性、花费、好玩程度和时间安排做取舍，更新 `plan.json` 和 `plans/round-N.json` 并推送，网页「看结果」顶部会显示。Claude 推送需要在 claude.ai 的连接器设置里连上 GitHub，并授权 `hawaii-vote` 仓库。
 
 ## 改内容
+
+- 行程：改 `trip-data.js`，推送后 `Build routes` 会自动重算路线和车程，网页 1–2 分钟后更新。仓库公开，不要往里写确认码、订单号。
 
 - 地点、价格、链接：改 `index.html` 里的 `PLACES` 数组。编号不要改，已经投过的票按编号对应。
 - 改了后端代码：在 Apps Script 里改好后，**部署 → 管理部署 → 编辑 → 版本选「新版本」→ 部署**，网址不变。
