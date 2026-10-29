@@ -448,6 +448,7 @@ function renderMap(fit){
   if(fit!==false)fitView();
 }
 function fitView(){
+  map.invalidateSize();
   let pts=[];
   if(state.day==='all'){pts=Object.values(S).map(s=>s.ll);}
   else{const d=DAY[state.day];pts=dayStops(d).map(id=>S[id].ll);segsFor(d).forEach(sg=>{pts=pts.concat(sg.coords);});}
@@ -597,8 +598,10 @@ new MutationObserver(()=>{setTiles();drawRoutes(state.day);}).observe(document.d
 /* ---------- boot ---------- */
 fromHash();
 renderTabs();renderChips();renderPlan();renderBook();renderBudget();renderNotes();renderMap();
-fetch('routes.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.days){ROUTES=j;renderPlan();renderMap(false);}}).catch(()=>{});
+fetch('routes.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.days){ROUTES=j;renderPlan();renderMap(!userMoved);}}).catch(()=>{});
 window.addEventListener('resize',()=>map.invalidateSize());
+let userMoved=false;map.on('dragstart zoomstart',e=>{if(e&&e.originalEvent)userMoved=true;});map.getContainer().addEventListener('wheel',()=>{userMoved=true;},{passive:true});
+window.addEventListener('load',()=>{if(!userMoved)fitView();});
 })();
 </script>
 </body>
