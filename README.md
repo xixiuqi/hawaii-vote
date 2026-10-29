@@ -10,10 +10,10 @@ docs/                     # GitHub Pages 发布的就是这个文件夹
   config.js               # 填 Apps Script 网址
   plan.json               # 每日取舍结果（Claude 每天更新）
 apps-script/Code.gs       # Google 表格后端：存投票、留言
-data/votes.json           # 每天 17:30 自动备份的投票快照
+data/votes.json           # 每小时同步一次的投票快照（有变化才提交）
 plans/                    # 每轮取舍的存档
 DAILY_ROUND.md            # 每日取舍任务的说明
-.github/workflows/snapshot-votes.yml   # 每天把投票拷进 data/votes.json
+.github/workflows/snapshot-votes.yml   # 每小时把投票拷进 data/votes.json
 ```
 
 ## 上线步骤
@@ -36,7 +36,7 @@ DAILY_ROUND.md            # 每日取舍任务的说明
    - 其他都不勾，点 **Create repository**。
 2. 在新仓库页面点 **uploading an existing file**。
 3. 打开电脑上的 `hawaii-vote` 文件夹，**全选里面的所有东西**（docs、apps-script、data、plans、.github、README.md 等），拖进网页的上传框。
-   - Windows 资源管理器默认可能不显示 `.github` 文件夹：在「查看 → 显示 → 隐藏的项目」打开即可。没传也不影响网页，只是没有每日自动备份。
+   - Windows 资源管理器默认可能不显示 `.github` 文件夹：在「查看 → 显示 → 隐藏的项目」打开即可。没传也不影响网页，只是投票不会同步进仓库。
 4. 页面最下面点 **Commit changes**。
 
 ### 3. 打开 GitHub Pages（1 分钟）
@@ -51,8 +51,8 @@ DAILY_ROUND.md            # 每日取舍任务的说明
 
 ## 每日取舍
 
-- 每天 17:30（太平洋时间）`snapshot-votes.yml` 把投票拷进 `data/votes.json`。
-- 17:50 Claude 的定时任务按 `DAILY_ROUND.md` 读投票、做取舍，更新 `docs/plan.json` 并推送，网站自动刷新。这一步需要 Claude 能推送到你的仓库：在 claude.ai 的连接器设置里连上 GitHub，并把 `hawaii-vote` 仓库授权给它。
+- `snapshot-votes.yml` 每小时第 15 分钟把投票拷进 `data/votes.json`，有变化才提交，所以仓库历史里能看到每一轮改动。
+- 17:50 Claude 的定时任务按 `DAILY_ROUND.md` 读投票、做取舍，更新 `docs/plan.json` 并推送，网站自动刷新。想马上同步投票，可以在 Actions 里手动运行 `Snapshot votes`。这一步需要 Claude 能推送到你的仓库：在 claude.ai 的连接器设置里连上 GitHub，并把 `hawaii-vote` 仓库授权给它。
 
 ## 改内容
 

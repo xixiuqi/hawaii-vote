@@ -1,6 +1,6 @@
 # Daily trade-off round
 
-Instructions for the Claude scheduled task that runs every evening (about 17:50 Pacific), after the `Snapshot votes` workflow has copied the latest votes into `data/votes.json` (17:30).
+Instructions for the Claude scheduled task that runs every evening (about 17:50 Pacific), reading `data/votes.json`, which the `Snapshot votes` workflow refreshes every hour at :15.
 
 ## Trip facts
 
