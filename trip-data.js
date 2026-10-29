@@ -93,7 +93,7 @@ window.TRIP = {
       links: [["Kazumura Cave（维基百科）", "https://en.wikipedia.org/wiki/Kazumura_Cave"], ["showcaves 介绍", "https://showcaves.com/english/usa/caves/Kazumura.html"]],
       maps: "Kazumura Cave tours Kurtistown" },
     punaluu: { name: "Punaluʻu 黑沙滩", island: "big", type: "sight", ll: [19.13611, -155.50444], wiki: "Punaluʻu Beach",
-      desc: "大岛有名的黑沙滩，常有绿海龟上岸休息，在岸上看，保持距离、别碰。不用预约，12/9 从火山公园往南 45 分钟，看完回 Hilo 顺路去熔岩洞。",
+      desc: "大岛有名的黑沙滩，常有绿海龟上岸休息，在岸上看，保持距离、别碰。不用预约，12/9 从火山公园往南约 55 分钟，看完回 Hilo 顺路去熔岩洞。",
       price: "免费", links: [["Go Hawaii 介绍", "https://www.gohawaii.com/es/islands/hawaii-big-island/regions/kau/punaluu-black-sand-beach"]],
       maps: "Punaluu Black Sand Beach" },
     akaka: { name: "ʻAkaka Falls", island: "big", type: "sight", ll: [19.85472, -155.15356], wiki: "ʻAkaka Falls State Park",
@@ -164,7 +164,7 @@ window.TRIP = {
         { s: "eden", x: "瀑布速降：8:00 AM，约 3 小时（只给不冲浪的人）" },
         { s: "kam3", x: "下午不排：Kihei / Wailea 海滩休息，傍晚想看可以再去 Kam III 看日落" }
       ],
-      tips: ["冲浪最早班（约 7:00–9:30）和速降（8:00–11:00）时间冲突，一个人早上只能二选一。", "已删：Waiʻānapanapa 黑沙滩 + Hana。从 Kihei 单程 2 小时多，还要提前预约；夏威夷后花园同事说 Road to Hana 很一般；黑沙滩和海龟改在大岛 12/11 顺路看 Punaluʻu。"],
+      tips: ["冲浪最早班（约 7:00–9:30）和速降（8:00–11:00）时间冲突，一个人早上只能二选一。", "已删：Waiʻānapanapa 黑沙滩 + Hana。从 Kihei 单程 2 小时多，还要提前预约；夏威夷后花园同事说 Road to Hana 很一般；黑沙滩和海龟改在大岛 12/9 顺路看 Punaluʻu。"],
       optRoute: [["koa", "kalama"], ["koa", "eden"]] },
 
     { id: "d4", date: "12/8", dow: "周二", island: "both", title: "茂宜 → 大岛",
@@ -182,15 +182,15 @@ window.TRIP = {
       warn: ["Kona 机场到 Hilo 开车约 2.5 小时，后半程天黑。坐了飞机又开夜路，换人开、别赶。"],
       flight: { from: "ogg", to: "koaap", label: "AS1250 · 3:47–4:23 PM" } },
 
-    { id: "d5", date: "12/9", dow: "周三", island: "big", title: "火山国家公园 + 黑沙滩 + 熔岩洞", sub: "火山公园往南 45 分钟就是 Punaluʻu 黑沙滩，顺路看完再回 Hilo",
+    { id: "d5", date: "12/9", dow: "周三", island: "big", title: "火山国家公园 + 黑沙滩 + 熔岩洞", sub: "火山公园往南约 55 分钟就是 Punaluʻu 黑沙滩，全天开车约 3 小时 25 分",
       items: [
         { t: "7:30 AM", s: "hilo_stay", x: "出发" },
         { t: "8:15 AM", s: "kvc", x: "Volcanoes NP：Crater Rim（门口 $30/车）" },
         { t: "", s: "kiki", x: "Kīlauea Iki" },
         { t: "约 11:45 AM", s: "thurston", x: "Thurston 熔岩管，然后往南" },
-        { t: "12:30–1:30 PM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa），在海边吃午饭" },
-        { t: "约 2:45 PM", s: "kazumura", x: "Kazumura 熔岩洞（在回 Hilo 的路上，电话约时间）" },
-        { t: "约 5:15 PM", s: "hilo_stay", x: "回 Hilo" }
+        { t: "12:45–1:45 PM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa），在海边吃午饭" },
+        { t: "约 3:00 PM", s: "kazumura", x: "Kazumura 熔岩洞（在回 Hilo 的路上，电话约时间）" },
+        { t: "约 5:30 PM", s: "hilo_stay", x: "回 Hilo" }
       ],
       tips: ["火山喷发：Kīlauea 现在是一段一段地喷，每次喷泉一般不到 12 小时，两次之间通常隔两周以上（浦妮也提醒过）。12 月初看 USGS HVO 的下一次预报窗口；如果落在 12/9–12/12，12/11 自由日直接去火山公园看；也可以把火山这天和 12/10 对调。住 Hilo 到公园只要 45 分钟，喷的时候可以临时赶过去。", "只想看看火山口、不执着于看喷发，就按原计划走，不用改。", "Chain of Craters 公路下到海边往返约 2 小时，这天排不下了；想去的话放到 12/11 自由日，住 Hilo 到公园只要 45 分钟。", "熔岩洞改成 Kazumura：原来的 Kula Kai 在 Ocean View，从公园过去再回 Hilo 要多开约 4 小时。Kula Kai 留作备选。"],
       route: [["hilo_stay", "kvc", "kiki", "thurston", "punaluu", "kazumura", "hilo_stay"]] },
@@ -259,7 +259,7 @@ window.TRIP = {
       { x: "删掉 12/8 清晨的 Kam III 日出海龟：同一个上午已经有 Sea Scooter 跟海龟游泳。", day: "d4" },
       { x: "12/8 从 Kona 机场直接走 Saddle Road 去 Hilo，不绕 Waimea，少开约 35 分钟。", day: "d4" },
       { x: "12/9 熔岩洞从 Kula Kai 换成 Kazumura，Chain of Craters 改成可选：当天开车从约 6 小时 20 分降到约 2 小时，给火山喷发留弹性。", day: "d5" },
-      { x: "Punaluʻu 黑沙滩和海龟挪到 12/9，从火山公园往南 45 分钟，代替茂宜的黑沙滩。", day: "d5" },
+      { x: "Punaluʻu 黑沙滩和海龟挪到 12/9，从火山公园往南约 55 分钟，代替茂宜的黑沙滩。这天开车从约 1 小时 55 分加到约 3 小时 25 分。", day: "d5" },
       { x: "咖啡园和 Puʻuhonua 挪到 12/13 去机场的路上：反正要开到 Kona，不用为它们专门来回一趟。", day: "d9" },
       { x: "12/11 改成自由日，不出远门。原来这天开车约 5 小时 27 分，第二天又要为魔鬼鱼去一趟 Kona，同一条路连着两天来回。", day: "d7" },
       { x: "傍晚去 Mauna Kea 游客中心看日落和星空，不上山顶：不用四驱，高反风险小，和 Haleakalā 的云海不重复。", day: "d6" },
