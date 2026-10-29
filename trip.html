@@ -587,7 +587,7 @@ function plButtons(){
   $('plSpeed').textContent=player.speed+'×';
 }
 function wait(ms,tok){return new Promise((res,rej)=>setTimeout(()=>tok===player.run?res():rej('stop'),ms));}
-function frame(tok){return new Promise((res,rej)=>requestAnimationFrame(t=>tok===player.run?res(t):rej('stop')));}
+function frame(tok){return new Promise((res,rej)=>{const go=t=>tok===player.run?res(t):rej('stop');if(document.hidden)setTimeout(()=>go(performance.now()),60);else requestAnimationFrame(go);});}
 
 function moverIcon(kind,color){
   return L.divIcon({className:'',iconSize:[44,44],iconAnchor:[22,22],
