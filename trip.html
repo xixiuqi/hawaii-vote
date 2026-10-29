@@ -369,6 +369,12 @@ function card(id,full){
     ${s.desc?`<p>${esc(s.desc)}</p>`:''}${links}</div></div>`;
 }
 
+function scrollUnderBar(el){
+  const bar=document.querySelector('.top').getBoundingClientRect().bottom;
+  const y=el.getBoundingClientRect().top+window.scrollY-bar;
+  window.scrollTo({top:Math.max(0,y),behavior:reduceMotionPref?'auto':'smooth'});
+}
+const reduceMotionPref=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- map ---------- */
 const map=L.map('map',{zoomControl:true,attributionControl:true,worldCopyJump:false,zoomSnap:.25}).setView([20.3,-156],8);
 map.zoomControl.setPosition('topright');
@@ -562,7 +568,7 @@ function peek(id,on){
 function highlightRow(id,on){document.querySelectorAll('#plan [data-s="'+id+'"]').forEach(r=>r.classList.toggle('hl',on));}
 function focusStop(id){
   const m=markers[id];if(!m)return;
-  if(!isDesk())$('mapwrap').scrollIntoView({behavior:'smooth',block:'start'});
+  if(!isDesk())scrollUnderBar($('mapwrap'));
   map.flyTo(m.getLatLng(),Math.max(map.getZoom(),12),{duration:.6});
   map.once('moveend',()=>m.openPopup());
 }
@@ -724,7 +730,7 @@ function cleanupPlayer(){
 }
 async function startPlayer(){
   const tok=++player.run;player.on=true;map.closePopup();plButtons();
-  if(!isDesk())$('mapwrap').scrollIntoView({behavior:'smooth',block:'start'});
+  if(!isDesk())scrollUnderBar($('mapwrap'));
   try{
     if(state.day==='all'){
       player.all=true;
@@ -778,7 +784,7 @@ function renderTabs(){
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===state.tab)));
   $('pane-plan').hidden=state.tab!=='plan';$('pane-book').hidden=state.tab!=='book';$('pane-budget').hidden=state.tab!=='budget';$('pane-notes').hidden=state.tab!=='notes';
 }
-function showTab(t){state.tab=t;renderTabs();setHash(t==='plan'?state.day:t);if(!isDesk()&&t!=='plan')$('panel').scrollIntoView({behavior:'smooth',block:'start'});}
+function showTab(t){state.tab=t;renderTabs();setHash(t==='plan'?state.day:t);if(!isDesk()&&t!=='plan')scrollUnderBar($('panel'));}
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
 function setHash(h){try{history.replaceState(null,'','#'+h);}catch(e){}}
 function fromHash(){
