@@ -221,6 +221,8 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .lnk a.go{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .lnk a:hover{border-color:var(--maui)}
 .leaflet-container{font-family:var(--body);background:var(--wash)}
+#map .leaflet-tile-pane{filter:saturate(.75) contrast(.95)}
+#map.dk .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.88) saturate(.6)}
 .leaflet-control-attribution{font-size:10px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -358,8 +360,9 @@ let tiles=null;
 function isDark(){const a=document.documentElement.getAttribute('data-theme');return a?a==='dark':dark.matches;}
 function setTiles(){
   if(tiles)map.removeLayer(tiles);
-  tiles=L.tileLayer(isDark()?'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png':'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-    {maxZoom:19,subdomains:'abcd',attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a> · 路线 OSRM'}).addTo(map);
+  tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · 路线 OSRM'}).addTo(map);
+  document.getElementById('map').classList.toggle('dk',isDark());
 }
 setTiles();
 function cssVar(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
