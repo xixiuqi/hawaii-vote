@@ -20,9 +20,12 @@ function simplify(pts, tol = 0.00012) {
     const [a, b] = stack.pop();
     let maxD = 0, idx = -1;
     const [ax, ay] = pts[a], [bx, by] = pts[b];
-    const dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy) || 1e-12;
+    const dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy);
     for (let i = a + 1; i < b; i++) {
-      const d = Math.abs(dy * (pts[i][0] - ax) - dx * (pts[i][1] - ay)) / len;
+      // Closed loops (same start and end) fall back to distance from the start point.
+      const d = len < 1e-9
+        ? Math.hypot(pts[i][0] - ax, pts[i][1] - ay)
+        : Math.abs(dy * (pts[i][0] - ax) - dx * (pts[i][1] - ay)) / len;
       if (d > maxD) { maxD = d; idx = i; }
     }
     if (maxD > tol) { keep[idx] = 1; stack.push([a, idx], [idx, b]); }

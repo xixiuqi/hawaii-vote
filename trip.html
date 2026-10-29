@@ -105,6 +105,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .dot.g{font-family:var(--body);font-weight:700;font-size:11.5px}
 .tips{display:grid;gap:6px;margin:0;padding:0;list-style:none}
 .tips li{font-size:13.5px;padding:8px 10px;border-radius:9px;background:var(--gold-soft)}
+.tips.warn{margin-bottom:8px}
+.tips.warn li{background:var(--big-soft)}
+.tips.warn b{display:block;font-size:12px;color:var(--big)}
 
 .opts{display:grid;gap:10px;margin-bottom:14px}
 .opt{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px;display:grid;gap:6px;cursor:pointer}
@@ -499,6 +502,7 @@ function renderPlan(){
     const opt=segsFor(d).filter(s=>s.opt&&s.min!=null);
     if(opt.length)html+=`<p class="small">可选路线：${opt.map(s=>`${s.stops.map(shortName).join(' → ')} 约 ${fmtMin(s.min)}`).join('；')}</p>`;
   }
+  if(d.warn&&d.warn.length)html+=`<ul class="tips warn">${d.warn.map(t=>`<li><b>路线提示</b>${esc(t)}</li>`).join('')}</ul>`;
   if(d.tips&&d.tips.length)html+=`<ul class="tips">${d.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`;
   if(segsFor(d).some(s=>s.approx))html+=`<p class="small">路线数据还在生成，暂时用直线连接。</p>`;
   box.innerHTML=html;

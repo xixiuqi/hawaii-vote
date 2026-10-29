@@ -175,6 +175,7 @@ window.TRIP = {
         { t: "约 7:00 PM", s: "hilo_stay", x: "到 Hilo Airbnb 入住" }
       ],
       route: [["koa", "kam3", "wailea", "iao", "ogg"], ["koaap", "waimea", "hilo_stay"]],
+      warn: ["按路线算，Kona 机场经 Waimea 到 Hilo 开车约 3 小时，4:45 PM 出发不吃饭也要将近 8 点到，路上会天黑。想早点到，可以不绕 Waimea，直接走 Saddle Road。"],
       flight: { from: "ogg", to: "koaap", label: "AS1250 · 3:47–4:23 PM" } },
 
     { id: "d5", date: "12/9", dow: "周三", island: "big", title: "火山国家公园 + 熔岩洞",
@@ -187,7 +188,8 @@ window.TRIP = {
         { t: "2:00–4:00 PM", s: "kulakai", x: "Kula Kai Caverns 熔岩洞探洞" },
         { t: "约 5:30 PM", s: "hilo_stay", x: "回 Hilo" }
       ],
-      route: [["hilo_stay", "kvc", "kiki", "thurston", "holei", "kulakai", "hilo_stay"]] },
+      route: [["hilo_stay", "kvc", "kiki", "thurston", "holei", "kulakai", "hilo_stay"]],
+      warn: ["按路线算，Chain of Craters 路尽头到 Kula Kai 约 2 小时 25 分，1:00 PM 离开公园赶不上 2:00 的洞穴。可以少走 Chain of Craters 下半段，或者把洞穴约到 3:30 以后；回到 Hilo 大约 7:30 PM。"] },
 
     { id: "d6", date: "12/10", dow: "周四", island: "big", title: "Hilo",
       items: [
@@ -224,6 +226,7 @@ window.TRIP = {
         { t: "4:47 PM", fixed: true, s: "koaap", x: "AS404 起飞，11:59 PM 到 SFO" }
       ],
       route: [["hilo_stay", "koaap"]],
+      warn: ["Hilo 到 Kona 机场开车约 2 小时 35 分，3:30 到机场要 1:00 PM 前出发，午饭最好早点吃，或者到 Kona 再吃。"],
       flight: { from: "koaap", to: "SFO", label: "AS404 · 4:47–11:59 PM" } }
   ],
 
