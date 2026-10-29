@@ -112,6 +112,10 @@ window.TRIP = {
     puho: { name: "Puʻuhonua o Hōnaunau + Two Step", island: "big", type: "sight", ll: [19.42194, -155.91028], wiki: "Puʻuhonua o Hōnaunau National Historical Park",
       desc: "国家历史公园，旁边就是 Two Step 浮潜点。12/11 11:00 AM–2:00 PM。", links: [["NPS 介绍", "https://www.nps.gov/places/puuhonuaohonaunau.htm"]],
       maps: "Puuhonua o Honaunau National Historical Park" },
+    manta: { name: "Iruka 魔鬼鱼夜潜", en: "Honokōhau Harbor", island: "big", type: "sight", ll: [19.67139, -156.02639], wiki: "Manta ray night dive",
+      desc: "可选，跟冲浪一样：想下水的去浮潜，不想下水的可以买 ride-along 上船看，或者在 Kona 等。Honokōhau 港集合，10–1 月 5:30 PM 签到，全程 2–2.5 小时，3 岁以上可参加；没看到魔鬼鱼可以免费再约一次。",
+      price: "约 $125/人", links: [["Iruka 行程评价", "https://hawaiiactivities.com/en/hawaii/big_island/a/167715/reviews"]],
+      maps: "Honokohau Harbor Kailua-Kona" },
     cook: { name: "Captain Cook 浮潜", en: "Kealakekua Bay", island: "big", type: "sight", ll: [19.48110, -155.93320], wiki: "Kealakekua Bay",
       desc: "本次好评：珊瑚很棒。可选；去法三选一：步道、kayak 或 boat tour，待定。纪念碑这边开车到不了。",
       links: [["Go Hawaii：Kealakekua Bay", "https://www.gohawaii.com/islands/hawaii-big-island/regions/kona/kealakekua-bay"]], maps: "Kealakekua Bay" },
@@ -203,24 +207,26 @@ window.TRIP = {
       ],
       route: [["hilo_stay", "akaka", "htbg", "suisan", "hilotown", "hilo_stay"]] },
 
-    { id: "d7", date: "12/11", dow: "周五", island: "big", title: "Kona 一日 + 黑沙滩", sub: "绕岛南边回 Hilo，只比原来多开 14 分钟",
+    { id: "d7", date: "12/11", dow: "周五", island: "big", title: "黑沙滩 + Kona + 魔鬼鱼夜潜", sub: "反着绕岛：先南边黑沙滩，傍晚留在 Kona 看魔鬼鱼，晚上走 Saddle Road 回 Hilo",
       items: [
-        { t: "7:30 AM", s: "hilo_stay", x: "出发，走 Saddle Road 去 Kona" },
-        { t: "约 9:45 AM", s: "greenwell", x: "Greenwell Farms 咖啡园，免费导览，最后一场约 2 点，所以放上午" },
-        { t: "10:45 AM–1:30 PM", s: "puho", x: "Puʻuhonua o Hōnaunau + Two Step 浮潜，然后午餐" },
-        { t: "", s: "cook", x: "可选：Captain Cook 浮潜（夏威夷后花园同事：好，珊瑚棒）；trail / kayak / boat tour 待定", opt: true },
-        { t: "约 3:00 PM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa）" },
-        { t: "约 5:15 PM", s: "hilo_stay", x: "经火山公园那条路回 Hilo" }
+        { t: "7:30 AM", s: "hilo_stay", x: "出发，经火山公园那条路往南" },
+        { t: "约 9:15 AM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa）" },
+        { t: "约 11:30 AM", s: "greenwell", x: "Greenwell Farms 咖啡园，免费导览，最后一场约 2 点" },
+        { t: "12:30–3:30 PM", s: "puho", x: "Puʻuhonua o Hōnaunau + Two Step 浮潜，然后午餐" },
+        { t: "约 4:00 PM", s: "manta", x: "Kona 早点吃晚饭，再去 Honokōhau 港" },
+        { t: "5:30–8:00 PM", s: "manta", x: "可选：Iruka 魔鬼鱼夜潜（浦妮：很好，不要删）。跟冲浪一样，想去的下水，不想下水的上船看（ride-along）或在 Kona 等", opt: true },
+        { t: "约 9:45 PM", s: "hilo_stay", x: "走 Saddle Road 回 Hilo" }
       ],
-      tips: ["比原来早约 3 小时回到 Hilo（原来是 8 点）。想去 Captain Cook 的话，Puʻuhonua 那段就要缩短，或者干脆把 Two Step 换成 Captain Cook。"],
-      route: [["hilo_stay", "greenwell", "puho", "punaluu", "hilo_stay"]] },
+      tips: ["魔鬼鱼要提前订，订的时候说清楚几个人下水、几个人 ride-along。开船前两个工作日下午 3 点后取消要付全款：12/11 周五的团，截止是 12/9 周三 3 PM。", "没人想去魔鬼鱼的话，就按原来的方向走：Kona 下午 3 点出发绕南边回 Hilo，5 点多到。", "Captain Cook 浮潜（夏威夷后花园同事：好，珊瑚棒）这天排不下了；真想去，就把 Two Step 换成 Captain Cook。"],
+      warn: ["晚上 8 点从 Kona 开回 Hilo 约 1 小时 45 分，Saddle Road 全程天黑、山上有雾。下水的人会累，让没下水的人开车。"],
+      route: [["hilo_stay", "punaluu", "greenwell", "puho", "manta", "hilo_stay"]] },
 
     { id: "d8", date: "12/12", dow: "周六", island: "big", title: "休息日 + Mauna Kea 日落星空",
       items: [
         { t: "白天", s: "hilotown", x: "无固定安排：Hilo 轻松逛，补觉" },
         { t: "约 4:15 PM", s: "hilo_stay", x: "出发上 Mauna Kea 游客中心（单程约 1 小时）" },
         { t: "约 5:45 PM", s: "mkvis", x: "游客中心看日落，天黑后看星星、银河（浦妮推荐：不用上山顶，游客中心就挺好）" },
-        { t: "约 9:00 PM", s: "hilo_stay", x: "回 Hilo（这是唯一一个晚归的晚上）" }
+        { t: "约 9:00 PM", s: "hilo_stay", x: "回 Hilo（连着第二个晚归的晚上，白天一定补觉）" }
       ],
       tips: ["游客中心海拔约 2,800 米（9,200 英尺），普通租车能开到；租车合同不允许开过游客中心往山顶走。到了先歇 30 分钟，头疼恶心就别再往上；多喝水。", "晴天晚上约 6–10 点有免费公众观星，天气不好会临时取消，当天早上和傍晚各看一次状态。天黑后只有 0–5 °C，带厚外套。", "和茂宜 Haleakalā 不重复：那边看日落云海，这边看星空。"],
       route: [["hilo_stay", "mkvis", "hilo_stay"]] },
@@ -240,12 +246,13 @@ window.TRIP = {
     version: "2026-10-29",
     by: "根据浦妮和夏威夷后花园同事的建议",
     items: [
+      { x: "加回 Iruka 魔鬼鱼夜潜，做成可选（跟冲浪一样）：12/11 傍晚 5:30 在 Kona 的 Honokōhau 港。这天改成反着绕岛，先去南边的 Punaluʻu 黑沙滩，最后留在 Kona，晚上回 Hilo 约 9:45。", day: "d7" },
       { x: "删掉 12/7 的 Waiʻānapanapa 黑沙滩和 Hana：单程 2 小时多、要预约；同事说 Road to Hana 很一般；两个岛都有黑沙滩和海龟。", day: "d3" },
       { x: "12/7 改成轻松日：上午冲浪或速降二选一，下午海滩休息倒时差。", day: "d3" },
       { x: "删掉 12/8 清晨的 Kam III 日出海龟：同一个上午已经有 Sea Scooter 跟海龟游泳。", day: "d4" },
       { x: "12/8 从 Kona 机场直接走 Saddle Road 去 Hilo，不绕 Waimea，少开约 35 分钟。", day: "d4" },
       { x: "12/9 熔岩洞从 Kula Kai 换成 Kazumura，Chain of Craters 改成可选：当天开车从约 6 小时 20 分降到约 2 小时，给火山喷发留弹性。", day: "d5" },
-      { x: "12/11 回程绕岛南边，顺路看 Punaluʻu 黑沙滩和海龟，代替茂宜的黑沙滩；只多开 14 分钟，比原来早约 3 小时回到 Hilo。", day: "d7" },
+      { x: "12/11 绕岛南边，顺路看 Punaluʻu 黑沙滩和海龟，代替茂宜的黑沙滩。", day: "d7" },
       { x: "12/12 傍晚去 Mauna Kea 游客中心看日落和星空，不上山顶：不用四驱，高反风险小，和 Haleakalā 的云海不重复。", day: "d8" },
       { x: "12/6 下山提醒：山路弯多，开慢点，跟着车队走。", day: "d2" }
     ]
@@ -294,22 +301,23 @@ window.TRIP = {
       ["住宿 + 租车（Koa $946.12 + Airbnb $870.16 + Alamo $197 + Budget $267）", "$2,280.28", "$380.05"],
       ["固定付费活动（Sea Scooter $149 + 洞穴 $95，6 人）", "$1,464.00", "$244.00"],
       ["12/7 按人另算：冲浪半私人 $109.95 / 私人 $157.07（约 3 人）；速降 $240.84（仅非冲浪者）", "—", "按参加人数"],
+      ["12/11 按人另算：Iruka 魔鬼鱼夜潜约 $125/人（下水），ride-along 更便宜", "—", "按参加人数"],
       ["公园门票（Haleakalā + Volcanoes 等）", "$310.00", "$51.67"],
       ["餐饮（估算）", "—", "约 $640"],
       ["杂费（估算）", "—", "约 $240"]
     ],
     totals: [
-      ["人均（不含机票、不含 12/7 自选）", "$1,555.72"],
-      ["人均（含机票 $522.15，不含 12/7 自选）", "$2,077.87"]
+      ["人均（不含机票、不含 12/7 和 12/11 自选）", "$1,555.72"],
+      ["人均（含机票 $522.15，不含 12/7 和 12/11 自选）", "$2,077.87"]
     ],
-    note: "活动、餐饮、杂费为估算；租车为先订后付报价，到店以实际为准。12/7 自选另算：例如参加冲浪半私人，人均 +$109.95；参加速降，人均 +$240.84。取消两个 Costco 套餐共退回 $2,991.36（茂宜 12/1 前、大岛 12/4 前全退），和新方案住宿 + 车 $2,280.28 相比省 $711.08。"
+    note: "活动、餐饮、杂费为估算；租车为先订后付报价，到店以实际为准。12/7 自选另算：例如参加冲浪半私人，人均 +$109.95；参加速降，人均 +$240.84。12/11 魔鬼鱼下水约 +$125。取消两个 Costco 套餐共退回 $2,991.36（茂宜 12/1 前、大岛 12/4 前全退），和新方案住宿 + 车 $2,280.28 相比省 $711.08。"
   },
 
   notes: [
     { hot: true, title: "12/13 还车时间", x: "还车预约是 4:30 PM，飞机 4:47 PM 起飞，只隔 17 分钟。建议 3:30–4:00 就到机场还车再办登机，早还不扣钱。" },
     { title: "12/8 Kona 取车", x: "4:23 PM 落地，取车预约 4:30 PM。预约时间只是起始时间，车会留着，下飞机走到柜台晚一点没关系。" },
     { title: "Hilo Airbnb 人数", x: "房源上写的是 1 位客人，6 人入住需要把人数改成 6，或者跟房东确认。" },
-    { title: "退改截止", x: "Koa Resort 11/5 前免费退；Hilo Airbnb 12/7 4 PM 前免费退；Costco 茂宜套餐 12/1 前、大岛套餐 12/4 前全退。" },
+    { title: "退改截止", x: "Koa Resort 11/5 前免费退；Hilo Airbnb 12/7 4 PM 前免费退；Costco 茂宜套餐 12/1 前、大岛套餐 12/4 前全退；Iruka 魔鬼鱼（如果订）12/9 周三 3 PM 后取消付全款。" },
     { title: "行程约束", x: "一天最多两个景点（可稍紧）；约早上 7 点出发、晚上 8 点休息；晚餐人均 $50 以内。" },
     { title: "租车", x: "6 人必须坐 7 座车；Mauna Kea 山顶、Waipio Valley 谷底租车禁行，且不在行程内。" },
     { title: "价格时效", x: "价格为 2026/10/27 查询结果，到店 / 结账以实际为准。" }
