@@ -156,16 +156,16 @@ window.TRIP = {
     { id: "d3", date: "12/7", dow: "周一", island: "maui", title: "轻松日：冲浪或速降", sub: "上午二选一，下午不排，倒时差",
       choose: true,
       items: [
-        { s: "kalama", x: "冲浪课：约最早的班，2 小时，约 8:00–9:30 结束。本地同事：茂宜冲浪很好" },
+        { s: "kalama", x: "冲浪课：约最早的班，2 小时，约 8:00–9:30 结束。夏威夷后花园同事：茂宜冲浪很好" },
         { s: "eden", x: "瀑布速降：8:00 AM，约 3 小时（只给不冲浪的人）" },
         { s: "kam3", x: "下午不排：Kihei / Wailea 海滩休息，傍晚想看可以再去 Kam III 看日落" }
       ],
-      tips: ["冲浪最早班（约 7:00–9:30）和速降（8:00–11:00）时间冲突，一个人早上只能二选一。", "已删：Waiʻānapanapa 黑沙滩 + Hana。从 Kihei 单程 2 小时多，还要提前预约；本地同事说 Road to Hana 很一般；黑沙滩和海龟改在大岛 12/11 顺路看 Punaluʻu。"],
+      tips: ["冲浪最早班（约 7:00–9:30）和速降（8:00–11:00）时间冲突，一个人早上只能二选一。", "已删：Waiʻānapanapa 黑沙滩 + Hana。从 Kihei 单程 2 小时多，还要提前预约；夏威夷后花园同事说 Road to Hana 很一般；黑沙滩和海龟改在大岛 12/11 顺路看 Punaluʻu。"],
       optRoute: [["koa", "kalama"], ["koa", "eden"]] },
 
     { id: "d4", date: "12/8", dow: "周二", island: "both", title: "茂宜 → 大岛",
       items: [
-        { t: "9:00–10:30 AM", s: "wailea", x: "Wailea Sea Scooter 浮潜，跟海龟同游（本地同事：茂宜浮潜和海龟好）" },
+        { t: "9:00–10:30 AM", s: "wailea", x: "Wailea Sea Scooter 浮潜，跟海龟同游（夏威夷后花园同事：茂宜浮潜和海龟好）" },
         { t: "11:00 AM–12:30 PM", s: "iao", x: "ʻĪao Valley（去机场途中）" },
         { t: "2:00 PM", fixed: true, s: "ogg", x: "Kahului 还车" },
         { t: "3:47 PM", fixed: true, s: "ogg", x: "AS1250 飞往 Kona，4:23 PM 落地" },
@@ -208,7 +208,7 @@ window.TRIP = {
         { t: "7:30 AM", s: "hilo_stay", x: "出发，走 Saddle Road 去 Kona" },
         { t: "约 9:45 AM", s: "greenwell", x: "Greenwell Farms 咖啡园，免费导览，最后一场约 2 点，所以放上午" },
         { t: "10:45 AM–1:30 PM", s: "puho", x: "Puʻuhonua o Hōnaunau + Two Step 浮潜，然后午餐" },
-        { t: "", s: "cook", x: "可选：Captain Cook 浮潜（本地同事：好，珊瑚棒）；trail / kayak / boat tour 待定", opt: true },
+        { t: "", s: "cook", x: "可选：Captain Cook 浮潜（夏威夷后花园同事：好，珊瑚棒）；trail / kayak / boat tour 待定", opt: true },
         { t: "约 3:00 PM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa）" },
         { t: "约 5:15 PM", s: "hilo_stay", x: "经火山公园那条路回 Hilo" }
       ],
@@ -238,7 +238,7 @@ window.TRIP = {
 
   changes: {
     version: "2026-10-29",
-    by: "根据浦妮和本地同事的建议",
+    by: "根据浦妮和夏威夷后花园同事的建议",
     items: [
       { x: "删掉 12/7 的 Waiʻānapanapa 黑沙滩和 Hana：单程 2 小时多、要预约；同事说 Road to Hana 很一般；两个岛都有黑沙滩和海龟。", day: "d3" },
       { x: "12/7 改成轻松日：上午冲浪或速降二选一，下午海滩休息倒时差。", day: "d3" },
