@@ -210,15 +210,15 @@ window.TRIP = {
     { id: "d7", date: "12/11", dow: "周五", island: "big", title: "黑沙滩 + Kona + 魔鬼鱼夜潜", sub: "反着绕岛：先南边黑沙滩，傍晚留在 Kona 看魔鬼鱼，晚上走 Saddle Road 回 Hilo",
       items: [
         { t: "7:30 AM", s: "hilo_stay", x: "出发，经火山公园那条路往南" },
-        { t: "约 9:15 AM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa）" },
+        { t: "约 9:00 AM", s: "punaluu", x: "Punaluʻu 黑沙滩，常有海龟上岸（代替茂宜的 Waiʻānapanapa）" },
         { t: "约 11:30 AM", s: "greenwell", x: "Greenwell Farms 咖啡园，免费导览，最后一场约 2 点" },
         { t: "12:30–3:30 PM", s: "puho", x: "Puʻuhonua o Hōnaunau + Two Step 浮潜，然后午餐" },
-        { t: "约 4:00 PM", s: "manta", x: "Kona 早点吃晚饭，再去 Honokōhau 港" },
+        { t: "约 4:30 PM", s: "manta", x: "到 Kona 早点吃晚饭，再去 Honokōhau 港" },
         { t: "5:30–8:00 PM", s: "manta", x: "可选：Iruka 魔鬼鱼夜潜（浦妮：很好，不要删）。跟冲浪一样，想去的下水，不想下水的上船看（ride-along）或在 Kona 等", opt: true },
-        { t: "约 9:45 PM", s: "hilo_stay", x: "走 Saddle Road 回 Hilo" }
+        { t: "约 10:00 PM", s: "hilo_stay", x: "走 Saddle Road 回 Hilo" }
       ],
-      tips: ["魔鬼鱼要提前订，订的时候说清楚几个人下水、几个人 ride-along。开船前两个工作日下午 3 点后取消要付全款：12/11 周五的团，截止是 12/9 周三 3 PM。", "没人想去魔鬼鱼的话，就按原来的方向走：Kona 下午 3 点出发绕南边回 Hilo，5 点多到。", "Captain Cook 浮潜（夏威夷后花园同事：好，珊瑚棒）这天排不下了；真想去，就把 Two Step 换成 Captain Cook。"],
-      warn: ["晚上 8 点从 Kona 开回 Hilo 约 1 小时 45 分，Saddle Road 全程天黑、山上有雾。下水的人会累，让没下水的人开车。"],
+      tips: ["魔鬼鱼要提前订，订的时候说清楚几个人下水、几个人 ride-along。开船前两个工作日下午 3 点后取消要付全款：12/11 周五的团，截止是 12/9 周三 3 PM。", "没人想去魔鬼鱼的话，就按原来的方向走：上午先去 Kona，下午绕南边经 Punaluʻu 回 Hilo，5 点多到。", "Captain Cook 浮潜（夏威夷后花园同事：好，珊瑚棒）这天排不下了；真想去，就把 Two Step 换成 Captain Cook。"],
+      warn: ["晚上 8 点从 Kona 开回 Hilo 约 2 小时，Saddle Road 全程天黑、山上有雾。下水的人会累，让没下水的人开车。"],
       route: [["hilo_stay", "punaluu", "greenwell", "puho", "manta", "hilo_stay"]] },
 
     { id: "d8", date: "12/12", dow: "周六", island: "big", title: "休息日 + Mauna Kea 日落星空",
@@ -246,7 +246,7 @@ window.TRIP = {
     version: "2026-10-29",
     by: "根据浦妮和夏威夷后花园同事的建议",
     items: [
-      { x: "加回 Iruka 魔鬼鱼夜潜，做成可选（跟冲浪一样）：12/11 傍晚 5:30 在 Kona 的 Honokōhau 港。这天改成反着绕岛，先去南边的 Punaluʻu 黑沙滩，最后留在 Kona，晚上回 Hilo 约 9:45。", day: "d7" },
+      { x: "加回 Iruka 魔鬼鱼夜潜，做成可选（跟冲浪一样）：12/11 傍晚 5:30 在 Kona 的 Honokōhau 港。这天改成反着绕岛，先去南边的 Punaluʻu 黑沙滩，最后留在 Kona，晚上 10 点左右回到 Hilo。这天总共开车约 6 小时 15 分，是全程开车最多的一天。", day: "d7" },
       { x: "删掉 12/7 的 Waiʻānapanapa 黑沙滩和 Hana：单程 2 小时多、要预约；同事说 Road to Hana 很一般；两个岛都有黑沙滩和海龟。", day: "d3" },
       { x: "12/7 改成轻松日：上午冲浪或速降二选一，下午海滩休息倒时差。", day: "d3" },
       { x: "删掉 12/8 清晨的 Kam III 日出海龟：同一个上午已经有 Sea Scooter 跟海龟游泳。", day: "d4" },
