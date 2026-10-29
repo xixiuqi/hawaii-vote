@@ -206,6 +206,26 @@ body.noname #name{border-color:var(--lava);box-shadow:0 0 0 3px var(--lava-soft)
 body.noname .who .lbl{color:var(--lava)}
 body.noname #status{color:var(--lava);font-weight:600}
 body.noname #copyBtn{background:var(--lava);color:#fff}
+.pstat{display:flex;gap:8px;align-items:flex-start;font-size:13px;padding:7px 10px;border-radius:9px;background:var(--stone-soft)}
+.pstat .pk{flex:none;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:99px;background:var(--card);color:var(--muted);margin-top:1px}
+.pstat .pt{min-width:0;overflow-wrap:anywhere}
+.pstat .pt b{margin-right:6px;font-size:12px;color:var(--muted)}
+.pstat a{color:var(--sea);font-weight:600;text-decoration:none;white-space:nowrap}
+.pstat.keep .pk{background:var(--sea);color:#fff}
+.pstat.change .pk{background:var(--gold);color:#fff}
+.pstat.drop{background:var(--lava-soft)}
+.pstat.drop .pk{background:var(--lava);color:#fff}
+.place.plan-drop h3{color:var(--muted)}
+.adv{display:grid;gap:6px;padding:9px 11px;border-radius:10px;background:var(--sea-soft)}
+.adv.has-risk{background:var(--card);border:1px solid var(--lava)}
+.adv-h{font-size:12px;color:var(--sea);letter-spacing:.04em}
+.adv.has-risk .adv-h{color:var(--lava)}
+.adv ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.adv li{font-size:13.5px;line-height:1.5;overflow-wrap:anywhere}
+.adv li b{margin-right:6px}
+.adv li .rtag{margin-right:6px}
+.adv li.r{background:var(--lava-soft);border-radius:7px;padding:5px 8px}
+.adv .linkbtn{justify-self:start}
 .sortnote{font-size:13px;color:var(--muted);margin:-6px 0 14px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
@@ -266,31 +286,31 @@ body.noname #copyBtn{background:var(--lava);color:#fff}
 <script src="config.js"></script>
 <script>
 const PLACES=[
- {n:1,i:'maui',name:'Haleakalā 山顶云海',d:'很好，必看',L:[["NPS 日出预约说明", "https://www.nps.gov/hale/planyourvisit/sunrise.htm"], ["Recreation.gov 预约", "https://www.recreation.gov/camping/poi/253731"]]},
- {n:2,i:'maui',name:'Haleakalā 观景台 + Sliding Sands 火山口徒步',free:true,L:[["NPS 火山口徒步", "https://www.nps.gov/thingstodo/moderate-hike-into-into-haleakala-crater.htm"]]},
- {n:3,i:'maui',name:'冲浪课 Maui Waveriders（Kalama Park）',d:'很好；半私人 $109.95/人、私人 $157.07/人，2 小时',L:[["课程介绍", "https://thehawaiivacationguide.com/activities/surf-lessons-with-maui-wave-riders-kihei/"]]},
- {n:4,i:'maui',name:'Sea Scooter 浮潜（Wailea，跟海龟同游）',d:'$149/人',L:[["行程页", "https://www.greetwell.com/us/f206/wailea-beach-sea-scooter-snorkeling-guided-tour"]]},
- {n:5,i:'maui',name:'Kam III 日出海龟',free:true,L:[["Kam III 介绍", "https://www.themauiexpert.com/kamaole-beach-park-iii-kihei-maui"]]},
- {n:6,i:'maui',name:'Hoʻokipa 岸上看海龟 + Baldwin Beach',L:[["Go Hawaii 介绍", "https://www.gohawaii.com/islands/maui/things-to-do/beaches/hookipa-beach-park-maui"]]},
- {n:7,i:'maui',name:'瀑布速降 Rappel Maui',d:'$240.84/人，3 小时',L:[["行程页", "https://www.to-hawaii.com/activities/maui/rappel-maui-waterfalls-and-rainforest-cliffs"]]},
- {n:8,i:'maui',name:'Waiʻānapanapa 黑沙滩',d:'$5/人 + $10 停车，需提前预约',L:[["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/maui/waianapanapa-state-park"], ["预约 FAQ", "https://gostateparks.hawaii.gov/waianapanapa/faq"]]},
- {n:9,i:'maui',name:'Road to Hana 自驾 + Hana 小镇',d:'很一般',L:[["沿途攻略", "https://thehawaiivacationguide.com/road-to-hana-guide/"]]},
- {n:10,i:'maui',name:'ʻĪao Valley',d:'需预约',L:[["官方预约", "https://gostateparks.hawaii.gov/iao-valley/about"]]},
- {n:11,i:'maui',name:'Kam III 日落',L:[["Kam III 介绍", "https://www.themauiexpert.com/kamaole-beach-park-iii-kihei-maui"]]},
- {n:12,i:'maui',name:'Old Lahaina Luau',d:'12/5–8 只能排 waitlist 或换别的',flag:'warn',flagT:'已售罄',L:[["体验介绍", "https://www.hawaiiactivities.com/travelguide/old-lahaina-luau-what-to-expect/"]]},
- {n:13,i:'maui',name:'Molokini 浮潜船',d:'约 $110–$180/人',L:[["示例：Kihei 2 小时船", "https://redlinerafting.com/tours/molokini-snorkeling-tours-two-hour-trip/"]]},
- {n:14,i:'maui',name:'Bike Maui 山顶骑行',d:'$238.59/人（备选 Sunriders $129–139，也没选）',flag:'del',flagT:'已删',L:[["行程页", "https://www.hawaiiactivities.com/en/hawaii/maui/a/156490"]]},
- {n:15,i:'maui',name:'观鲸',d:'12 月初非旺季，看到的概率一般',L:[["Pacific Whale Foundation", "https://pacificwhale.org/whale-watch-maui/"]]},
- {n:16,i:'big',name:'火山国家公园',d:'Crater Rim、Kīlauea Iki、Thurston 熔岩管、Chain of Craters，门票 $30/车',L:[["NPS 行前须知", "https://www.nps.gov/havo/planyourvisit/index.htm"]]},
- {n:17,i:'big',name:'Kula Kai 熔岩洞',d:'$95/人，电话订（备选 Kazumura Cave $60 现金 / $65 刷卡）',L:[["Hawaii Magazine 介绍", "https://www.hawaiimagazine.com/you-can-traverse-through-lava-tubes-on-this-guide-tour/"]]},
- {n:18,i:'big',name:'Akaka Falls',L:[["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/hawaii/akaka-falls-state-park/"]]},
- {n:19,i:'big',name:'Hawaii 热带植物园',L:[["植物园介绍", "https://www.hawaii-guide.com/big-island/sights/hawaii_tropical_botanical_garden"]]},
- {n:20,i:'big',name:'Hilo 小镇',L:[["Go Hawaii：Hilo 市区", "https://www.gohawaii.com/islands/hawaii-big-island/regions/hilo/downtown-hilo"]]},
- {n:21,i:'big',name:'Greenwell Farms 咖啡园',L:[["农场参观", "https://www.greenwellfarms.com/kona-farm-tours-a/259.htm"]]},
- {n:22,i:'big',name:'Puʻuhonua o Hōnaunau + Two Step 浮潜',L:[["NPS 介绍", "https://www.nps.gov/places/puuhonuaohonaunau.htm"]]},
- {n:23,i:'big',name:'Captain Cook 浮潜',d:'好，珊瑚棒；去法 trail / kayak / boat tour 待定',L:[["Go Hawaii：Kealakekua Bay", "https://www.gohawaii.com/islands/hawaii-big-island/regions/kona/kealakekua-bay"]]},
- {n:24,i:'big',name:'Mauna Kea 观星',d:'游客中心（无需四驱）或四驱观星团，注意高反',L:[["游客中心观星", "https://hilo.hawaii.edu/maunakea/visitor-information/stargazing"]]},
- {n:25,i:'big',name:'Iruka 魔鬼鱼夜潜',d:'约 $125/人',flag:'del',flagT:'已删',L:[["Iruka 行程评价", "https://hawaiiactivities.com/en/hawaii/big_island/a/167715/reviews"]]}
+ {n:1,plan:{"k": "keep", "t": "12/6 傍晚，Haleakalā 山顶看日落云海", "d": "d2"},i:'maui',name:'Haleakalā 山顶云海',d:'很好，必看',L:[["NPS 日出预约说明", "https://www.nps.gov/hale/planyourvisit/sunrise.htm"], ["Recreation.gov 预约", "https://www.recreation.gov/camping/poi/253731"]]},
+ {n:2,plan:{"k": "opt", "t": "12/6 下午，到山顶后可选走一段", "d": "d2"},i:'maui',name:'Haleakalā 观景台 + Sliding Sands 火山口徒步',free:true,L:[["NPS 火山口徒步", "https://www.nps.gov/thingstodo/moderate-hike-into-into-haleakala-crater.htm"]]},
+ {n:3,plan:{"k": "keep", "t": "12/7 上午，和速降二选一", "d": "d3"},i:'maui',name:'冲浪课 Maui Waveriders（Kalama Park）',d:'很好；半私人 $109.95/人、私人 $157.07/人，2 小时',L:[["课程介绍", "https://thehawaiivacationguide.com/activities/surf-lessons-with-maui-wave-riders-kihei/"]]},
+ {n:4,plan:{"k": "keep", "t": "12/8 上午，Wailea 跟海龟游泳", "d": "d4"},i:'maui',name:'Sea Scooter 浮潜（Wailea，跟海龟同游）',d:'$149/人',L:[["行程页", "https://www.greetwell.com/us/f206/wailea-beach-sea-scooter-snorkeling-guided-tour"]]},
+ {n:5,plan:{"k": "drop", "t": "同一个上午已经有 Sea Scooter 跟海龟游泳，再早起看海龟重复", "d": "d4"},i:'maui',name:'Kam III 日出海龟',free:true,L:[["Kam III 介绍", "https://www.themauiexpert.com/kamaole-beach-park-iii-kihei-maui"]]},
+ {n:6,plan:{"k": "keep", "t": "12/6 上午，上山前顺路", "d": "d2"},i:'maui',name:'Hoʻokipa 岸上看海龟 + Baldwin Beach',L:[["Go Hawaii 介绍", "https://www.gohawaii.com/islands/maui/things-to-do/beaches/hookipa-beach-park-maui"]]},
+ {n:7,plan:{"k": "keep", "t": "12/7 上午，给不冲浪的人", "d": "d3"},i:'maui',name:'瀑布速降 Rappel Maui',d:'$240.84/人，3 小时',L:[["行程页", "https://www.to-hawaii.com/activities/maui/rappel-maui-waterfalls-and-rainforest-cliffs"]]},
+ {n:8,plan:{"k": "drop", "t": "单程 2 小时多、要预约；黑沙滩和海龟改在大岛 Punaluʻu 看（12/11）", "d": "d7"},i:'maui',name:'Waiʻānapanapa 黑沙滩',d:'$5/人 + $10 停车，需提前预约',L:[["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/maui/waianapanapa-state-park"], ["预约 FAQ", "https://gostateparks.hawaii.gov/waianapanapa/faq"]]},
+ {n:9,plan:{"k": "drop", "t": "路远，评价一般", "d": "d3"},i:'maui',name:'Road to Hana 自驾 + Hana 小镇',d:'很一般',L:[["沿途攻略", "https://thehawaiivacationguide.com/road-to-hana-guide/"]]},
+ {n:10,plan:{"k": "keep", "t": "12/8 去机场途中", "d": "d4"},i:'maui',name:'ʻĪao Valley',d:'需预约',L:[["官方预约", "https://gostateparks.hawaii.gov/iao-valley/about"]]},
+ {n:11,plan:{"k": "keep", "t": "12/5 傍晚；12/7 傍晚想看可以再去", "d": "d1"},i:'maui',name:'Kam III 日落',L:[["Kam III 介绍", "https://www.themauiexpert.com/kamaole-beach-park-iii-kihei-maui"]]},
+ {n:12,plan:{"k": "none", "t": "12/5–12/8 售罄，没排进行程", "d": ""},i:'maui',name:'Old Lahaina Luau',d:'12/5–8 只能排 waitlist 或换别的',flag:'warn',flagT:'已售罄',L:[["体验介绍", "https://www.hawaiiactivities.com/travelguide/old-lahaina-luau-what-to-expect/"]]},
+ {n:13,plan:{"k": "none", "t": "已经有 Sea Scooter 浮潜，没排进行程", "d": ""},i:'maui',name:'Molokini 浮潜船',d:'约 $110–$180/人',L:[["示例：Kihei 2 小时船", "https://redlinerafting.com/tours/molokini-snorkeling-tours-two-hour-trip/"]]},
+ {n:14,plan:{"k": "drop", "t": "已删", "d": ""},i:'maui',name:'Bike Maui 山顶骑行',d:'$238.59/人（备选 Sunriders $129–139，也没选）',flag:'del',flagT:'已删',L:[["行程页", "https://www.hawaiiactivities.com/en/hawaii/maui/a/156490"]]},
+ {n:15,plan:{"k": "none", "t": "12 月初非旺季，没排进行程", "d": ""},i:'maui',name:'观鲸',d:'12 月初非旺季，看到的概率一般',L:[["Pacific Whale Foundation", "https://pacificwhale.org/whale-watch-maui/"]]},
+ {n:16,plan:{"k": "keep", "t": "12/9；如果喷发窗口落在行程里，可以和 12/10、12/12 对调", "d": "d5"},i:'big',name:'火山国家公园',d:'Crater Rim、Kīlauea Iki、Thurston 熔岩管、Chain of Craters，门票 $30/车',L:[["NPS 行前须知", "https://www.nps.gov/havo/planyourvisit/index.htm"]]},
+ {n:17,plan:{"k": "change", "t": "换成 Kazumura 熔岩洞（12/9），在回 Hilo 的路上，少开约 4 小时", "d": "d5"},i:'big',name:'Kula Kai 熔岩洞',d:'$95/人，电话订（备选 Kazumura Cave $60 现金 / $65 刷卡）',L:[["Hawaii Magazine 介绍", "https://www.hawaiimagazine.com/you-can-traverse-through-lava-tubes-on-this-guide-tour/"]]},
+ {n:18,plan:{"k": "keep", "t": "12/10 上午", "d": "d6"},i:'big',name:'Akaka Falls',L:[["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/hawaii/akaka-falls-state-park/"]]},
+ {n:19,plan:{"k": "keep", "t": "12/10 上午", "d": "d6"},i:'big',name:'Hawaii 热带植物园',L:[["植物园介绍", "https://www.hawaii-guide.com/big-island/sights/hawaii_tropical_botanical_garden"]]},
+ {n:20,plan:{"k": "keep", "t": "12/10 下午；12/12 休息日", "d": "d6"},i:'big',name:'Hilo 小镇',L:[["Go Hawaii：Hilo 市区", "https://www.gohawaii.com/islands/hawaii-big-island/regions/hilo/downtown-hilo"]]},
+ {n:21,plan:{"k": "keep", "t": "12/11 上午（免费导览最后一场约 2 点）", "d": "d7"},i:'big',name:'Greenwell Farms 咖啡园',L:[["农场参观", "https://www.greenwellfarms.com/kona-farm-tours-a/259.htm"]]},
+ {n:22,plan:{"k": "keep", "t": "12/11 中午", "d": "d7"},i:'big',name:'Puʻuhonua o Hōnaunau + Two Step 浮潜',L:[["NPS 介绍", "https://www.nps.gov/places/puuhonuaohonaunau.htm"]]},
+ {n:23,plan:{"k": "opt", "t": "12/11 可选，去法 trail / kayak / boat tour 待定", "d": "d7"},i:'big',name:'Captain Cook 浮潜',d:'好，珊瑚棒；去法 trail / kayak / boat tour 待定',L:[["Go Hawaii：Kealakekua Bay", "https://www.gohawaii.com/islands/hawaii-big-island/regions/kona/kealakekua-bay"]]},
+ {n:24,plan:{"k": "keep", "t": "12/12 傍晚，游客中心看日落和星空，不上山顶", "d": "d8"},i:'big',name:'Mauna Kea 观星',d:'游客中心（无需四驱）或四驱观星团，注意高反',L:[["游客中心观星", "https://hilo.hawaii.edu/maunakea/visitor-information/stargazing"]]},
+ {n:25,plan:{"k": "drop", "t": "已删", "d": ""},i:'big',name:'Iruka 魔鬼鱼夜潜',d:'约 $125/人',flag:'del',flagT:'已删',L:[["Iruka 行程评价", "https://hawaiiactivities.com/en/hawaii/big_island/a/167715/reviews"]]}
 ];
 const ISLANDS=[{k:'maui',t:'茂宜 Maui',d:'12/5 – 12/8'},{k:'big',t:'大岛 Hawaiʻi',d:'12/8 – 12/13'}];
 const LV={3:'必去',2:'想去',1:'随意',0:'不去'};
@@ -323,15 +343,22 @@ try{
 if(!Array.isArray(st.comments))st.comments=[];
 
 /* ---------- ballot ---------- */
+const PLK={keep:'保留',opt:'可选',drop:'已删',none:'没排',change:'有改动'};
+function planLine(p){
+  if(!p.plan)return '';
+  const k=p.plan.k;
+  return `<div class="pstat ${k}"><span class="pk">${PLK[k]||''}</span><span class="pt"><b>新版行程</b>${esc(p.plan.t)}${p.plan.d?` <a href="trip.html#${p.plan.d}">看路线 →</a>`:''}</span></div>`;
+}
 function rowHTML(p){
   const flags=(p.flag?`<span class="flag ${p.flag}">${p.flagT}</span>`:'')+(p.free?'<span class="flag free">免费</span>':'');
   const det=(flags||p.d)?`<p class="detail">${flags}${p.d?esc(p.d):''}</p>`:'';
   const links=(p.L||[]).map(([t,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a>`).join('');
   const seg=[3,2,1,0].map(w=>`<button type="button" data-w="${w}" aria-pressed="false">${LV[w]}</button>`).join('');
   const stars=[1,2,3,4,5].map(s=>`<button type="button" data-s="${s}" aria-label="${s} 星" aria-pressed="false">★</button>`).join('');
-  return `<article class="place${p.flag==='del'?' deleted':''}" data-n="${p.n}" id="p${p.n}">
+  return `<article class="place${p.flag==='del'?' deleted':''}${p.plan&&p.plan.k==='drop'?' plan-drop':''}" data-n="${p.n}" id="p${p.n}">
     <div class="num">${p.n}</div>
     <div class="body"><h3>${esc(p.name)}</h3>${det}${links?`<div class="links">${links}</div>`:''}
+      ${planLine(p)}
       <div id="rk${p.n}"></div>
       <div class="ctrl"><div class="seg" role="group" aria-label="想去程度">${seg}</div>
       <div class="stars" role="group" aria-label="感兴趣程度，满分 5 星">${stars}</div>
@@ -359,10 +386,12 @@ function commentsFor(n){
 }
 function paintThread(n){
   const cs=commentsFor(n),risks=cs.filter(c=>c.risk);
-  $('rk'+n).innerHTML=risks.length?`<div class="risk"><b>⚠ 安全提醒</b>${risks.slice(-2).map(c=>`<span>${esc(c.who)}：${esc(c.x)}</span>`).join('')}${risks.length>2?`<span class="more">还有 ${risks.length-2} 条，点「留言」看全部</span>`:''}</div>`:'';
+  const shown=risks.concat(cs.filter(c=>!c.risk));
+  const MAXV=4,rest=shown.length-MAXV;
+  $('rk'+n).innerHTML=shown.length?`<div class="adv${risks.length?' has-risk':''}"><b class="adv-h">大家的建议</b><ul>${shown.slice(0,MAXV).map(c=>`<li class="${c.risk?'r':''}"><b>${esc(c.who)}</b>${c.risk?'<span class="rtag">⚠ 安全提醒</span>':''}<span>${esc(c.x)}</span></li>`).join('')}</ul>${rest>0?`<button type="button" class="linkbtn" data-c="1">还有 ${rest} 条，展开全部</button>`:''}</div>`:'';
   $('cl'+n).innerHTML=cs.length?cs.map(c=>`<li class="${c.risk?'r':''}${c.mine?' mine':''}"><div class="cm-h"><b>${esc(c.who)}</b>${c.risk?'<span class="rtag">⚠ 安全提醒</span>':''}<span class="cm-t">${c.t?fmtT(c.t):''}</span>${c.mine?`<button type="button" class="linkbtn" data-del="${esc(c.id)}">删除</button>`:''}</div><p>${esc(c.x)}</p></li>`).join(''):'<li class="none">还没有留言。</li>';
   const th=$('th'+n),cb=$('cb'+n),open=!th.hidden;
-  cb.textContent=open?'收起留言':(cs.length?`留言 ${cs.length}`:'留言');
+  cb.textContent=open?'收起':(cs.length?`写留言 · 共 ${cs.length} 条`:'写留言');
   cb.classList.toggle('has',cs.length>0);cb.classList.toggle('warn',risks.length>0);cb.setAttribute('aria-expanded',String(open));
   const mine=all.find(x=>x.id===uid);
   const h=mine&&(mine.history||[]).filter(x=>x.n===n).slice(-1)[0];
