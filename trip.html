@@ -137,6 +137,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 /* tables + lists in other tabs */
 h3.sec{font-family:var(--display);font-weight:800;font-size:17px;margin:18px 0 8px}
 h3.sec:first-child{margin-top:0}
+.chg-box{border:1px solid var(--gold);background:var(--gold-soft);border-radius:10px;padding:8px 12px;margin-bottom:14px}
+.chg-box summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:14px}
+.chg-box summary span{font-size:12px;color:var(--muted)}
+.chg-box ul{margin:8px 0 2px;padding-left:18px;display:grid;gap:5px;font-size:13px}
+.chg-box li[data-day]{cursor:pointer}
+.chg-box .go{color:var(--gold);font-weight:700;white-space:nowrap}
+.bk p a{color:var(--maui);font-weight:600}
 .todo{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .todo li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:13.5px}
 .todo li.urgent{border-color:var(--big)}
@@ -452,6 +459,7 @@ function drawRoutes(dayId){
 
 /* ---------- state ---------- */
 let state={tab:'plan',day:todayDay||'all'};
+let changesOpen=true;
 function dayStops(d){const out=[];d.items.forEach(it=>{if(it.s&&!out.includes(it.s))out.push(it.s);});return out;}
 function numbering(d){
   const n={};let k=0;
@@ -541,6 +549,9 @@ function overviewHTML(){
   const up=T.todos.map(t=>({...t,n:dayDiff(localDate(t.date),today)})).filter(t=>t.n>=0).sort((a,b)=>a.n-b.n)[0];
   let html=`<div class="stats"><div class="stat"><b>9</b><span>天 · 8 晚</span></div><div class="stat"><b>2</b><span>个岛</span></div><div class="stat"><b>${nStops}</b><span>个景点</span></div></div>`;
   if(up)html+=`<div class="next" data-tab="book">下一件要办：<b>${up.n===0?'今天':up.n+' 天后'}</b>（${up.date.slice(5).replace('-','/')}）${esc(up.x)}</div>`;
+  if(T.changes&&T.changes.items&&T.changes.items.length){
+    html+=`<details class="chg-box"${changesOpen?' open':''}><summary><b>这一版改了什么</b><span>${esc(T.changes.version.slice(5).replace('-','/'))} · ${esc(T.changes.by)}</span></summary><ul>${T.changes.items.map(c=>`<li${c.day?` data-day="${c.day}"`:''}>${esc(c.x)}${c.day?` <span class="go">${DAY[c.day].date} →</span>`:''}</li>`).join('')}</ul></details>`;
+  }
   html+=`<ul class="ov">`+T.days.map(d=>{
     const segs=segsFor(d).filter(s=>!s.opt&&s.min!=null);const min=segs.reduce((a,s)=>a+s.min,0);
     const names=dayStops(d).filter(id=>S[id].type==='sight'||S[id].type==='town').map(shortName).slice(0,4).join(' · ');
@@ -548,6 +559,7 @@ function overviewHTML(){
   }).join('')+`</ul>`;
   return html;
 }
+$('plan').addEventListener('toggle',e=>{if(e.target.classList&&e.target.classList.contains('chg-box'))changesOpen=e.target.open;},true);
 $('plan').addEventListener('click',e=>{
   const n=e.target.closest('.next');if(n){showTab('book');return;}
   const li=e.target.closest('[data-day]');if(li){selectDay(li.dataset.day);return;}
@@ -774,9 +786,10 @@ function renderBudget(){
 function renderNotes(){
   $('pane-notes').innerHTML=`<h3 class="sec">注意事项</h3><div class="notes">`+T.notes.map(n=>`<div class="note${n.hot?' hot':''}"><b>${esc(n.title)}</b><p>${esc(n.x)}</p></div>`).join('')+`</div>
     <h3 class="sec">必须提前订的票</h3><div class="blist">
-      <div class="bk click" data-s="waian"><div class="bk-h"><b>Waiʻānapanapa 黑沙滩</b><span class="pill todo">约 11/5–8 开放</span></div><p>gostateparks.hawaii.gov，$5/人 + $10 停车；目标 12/7 12:30–3:00 PM 时段。想去的话窗口一开就订，不能等到前一天晚上。</p></div>
-      <div class="bk click" data-s="iao"><div class="bk-h"><b>ʻĪao Valley</b><span class="pill todo">约 11/8 开放</span></div><p>同一个系统，开放 12/8 的票。</p></div></div>
-    <h3 class="sec">餐厅</h3><ul class="rest">`+T.restaurants.map(r=>`<li class="${r.stop?'click':''}"${r.stop?` data-s="${r.stop}"`:''}>${esc(r.name)}</li>`).join('')+`</ul><p class="small">${esc(T.restaurantNote)} 已从行程删去：Bike Maui 山顶骑行、Iruka 夜潜魔鬼鱼。</p>`;
+      <div class="bk click" data-s="iao"><div class="bk-h"><b>ʻĪao Valley</b><span class="pill todo">约 11/8 开放</span></div><p>gostateparks.hawaii.gov 预约系统，约 11/8 开放 12/8 的票。</p></div></div>
+    <h3 class="sec">火山喷发</h3><div class="blist">
+      <div class="bk click" data-s="kvc"><div class="bk-h"><b>Kīlauea 喷发预报</b><span class="pill">12/1 前后看</span></div><p>现在是一段一段地喷：每次喷泉一般不到 12 小时，两次之间通常隔两周以上。出发前一周在 USGS 看下一次的预报窗口，落在 12/9–12/12 就把火山日挪进去。<a href="https://www.usgs.gov/volcanoes/kilauea/volcano-updates" target="_blank" rel="noopener">USGS Kīlauea 动态 ↗</a> · <a href="https://www.usgs.gov/volcanoes/kilauea/webcams" target="_blank" rel="noopener">实时摄像头 ↗</a></p></div></div>
+    <h3 class="sec">餐厅</h3><ul class="rest">`+T.restaurants.map(r=>`<li class="${r.stop?'click':''}"${r.stop?` data-s="${r.stop}"`:''}>${esc(r.name)}</li>`).join('')+`</ul><p class="small">${esc(T.restaurantNote)} 已从行程删去：Bike Maui 山顶骑行、Iruka 夜潜魔鬼鱼、Waiʻānapanapa 黑沙滩 + Hana、Kam III 日出海龟。</p>`;
 }
 ['pane-book','pane-notes'].forEach(p=>$(p).addEventListener('click',e=>{const r=e.target.closest('[data-s]');if(r)focusStop(r.dataset.s);}));
 

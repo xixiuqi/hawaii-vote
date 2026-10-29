@@ -1,5 +1,5 @@
 /**
- * Hawaii trip ballot — storage backend (v2).
+ * Hawaii trip ballot — storage backend (v3: migrates v1 rows).
  *
  * Standalone Apps Script project that stores votes in the Google Sheet below.
  * Deploy → Manage deployments → Edit → Version: New version → Deploy (URL stays the same).
@@ -41,8 +41,24 @@ function json_(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-function parse_(s) {
-  try { const d = JSON.parse(s || '{}'); return d && typeof d === 'object' ? d : {}; } catch (e) { return {}; }
+function parse_(s, updatedAt) {
+  let d = {};
+  try { d = JSON.parse(s || '{}'); if (!d || typeof d !== 'object') d = {}; } catch (e) { d = {}; }
+  // Migrate v1 rows: per-spot comment text lived in votes[n].c.
+  if (!Array.isArray(d.comments)) {
+    d.comments = [];
+    Object.keys(d.votes || {}).forEach(function (k) {
+      const c = d.votes[k] && d.votes[k].c;
+      if (typeof c === 'string' && c.trim()) d.comments.push({ id: 'legacy-' + k, n: Number(k), x: c.trim().slice(0, 300), risk: false, t: Number(updatedAt) || 0 });
+    });
+  }
+  Object.keys(d.votes || {}).forEach(function (k) {
+    const v = d.votes[k];
+    if (!v) return;
+    delete v.c;
+    if (v.w == null && !v.s) delete d.votes[k];
+  });
+  return d;
 }
 
 function doGet() {
@@ -50,7 +66,7 @@ function doGet() {
   const votes = rows
     .filter(function (r) { return r[0]; })
     .map(function (r) {
-      const d = parse_(r[3]);
+      const d = parse_(r[3], r[2]);
       return {
         id: String(r[0]),
         name: String(r[1] || ''),
@@ -90,7 +106,7 @@ function doPost(e) {
       return json_({ ok: true });
     }
 
-    const old = row > 1 ? parse_(sh.getRange(row, 4).getValue()) : {};
+    const old = row > 1 ? parse_(sh.getRange(row, 4).getValue(), sh.getRange(row, 3).getValue()) : {};
     const oldName = row > 1 ? String(sh.getRange(row, 2).getValue() || '') : '';
 
     if (body.action === 'reset') {

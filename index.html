@@ -195,6 +195,17 @@ textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
 .feed .linkbtn{justify-self:start}
 .editbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;margin-bottom:12px;border-radius:10px;background:var(--sea-soft);font-size:13.5px}
 .r-meta.chg{color:var(--gold)}
+.advice{display:grid;gap:8px;padding:12px 14px;margin-bottom:16px;border:1px solid var(--line);border-left:4px solid var(--sea);border-radius:10px;background:var(--card)}
+.advice h3{font-family:var(--display);font-weight:800;font-size:16px}
+.advice ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.advice li{font-size:13.5px;overflow-wrap:anywhere;white-space:pre-line}
+.advice li b{margin-right:8px}
+.advice li.r{background:var(--lava-soft);border-radius:8px;padding:6px 8px}
+.advice p{margin:0;font-size:12.5px;color:var(--muted)}
+body.noname #name{border-color:var(--lava);box-shadow:0 0 0 3px var(--lava-soft)}
+body.noname .who .lbl{color:var(--lava)}
+body.noname #status{color:var(--lava);font-weight:600}
+body.noname #copyBtn{background:var(--lava);color:#fff}
 .sortnote{font-size:13px;color:var(--muted);margin:-6px 0 14px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
@@ -218,7 +229,7 @@ textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
     <div class="claim" id="claim" hidden></div>
     <div class="mine" id="mine" hidden></div>
     <div class="who">
-      <label class="lbl" for="name">你的名字</label>
+      <label class="lbl" for="name">你的名字（填了才会保存）</label>
       <input type="text" id="name" placeholder="比如：小王" maxlength="20" autocomplete="nickname">
     </div>
     <div class="legend">
@@ -232,6 +243,7 @@ textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
       <p id="copymsg">已复制，直接粘贴到群里。</p>
       <textarea id="copytext" readonly aria-label="报号内容"></textarea>
     </div>
+    <div class="advice" id="advice" hidden></div>
     <div id="list"></div>
     <div class="notebox">
       <label class="lbl" for="note">还有什么想说的（可不填）</label>
@@ -369,7 +381,18 @@ function setVote(n,patch){
   const v=Object.assign({w:null,s:0},st.votes[n]||{},patch);
   if(v.w==null&&!v.s)delete st.votes[n];else st.votes[n]={w:v.w,s:v.s||0};
 }
-function paintAll(){PLACES.forEach(p=>paintRow(p.n));$('name').value=st.name||'';$('note').value=st.note||'';updateBar();renderMine();}
+function renderAdvice(){
+  const box=$('advice');if(!box)return;
+  const items=[];
+  all.forEach(v=>{if(v.id===uid)return;const who=nameOf(v);
+    (v.comments||[]).forEach(c=>{if(c.n===0)items.push({who,x:c.x,risk:!!c.risk,t:c.t});});
+    if((v.note||'').trim())items.push({who,x:v.note.trim(),t:v.updatedAt});});
+  if(!items.length){box.hidden=true;return;}
+  items.sort((a,b)=>(a.t||0)-(b.t||0));
+  box.hidden=false;
+  box.innerHTML=`<h3>大家的整体建议</h3><ul>${items.map(i=>`<li class="${i.risk?'r':''}"><b>${esc(i.who)}</b>${i.risk?'<span class="rtag">⚠ 安全提醒</span>':''}${esc(i.x)}</li>`).join('')}</ul><p>具体到每个地方的留言，在下面各个地方点「留言」看。</p>`;
+}
+function paintAll(){renderAdvice();PLACES.forEach(p=>paintRow(p.n));$('name').value=st.name||'';$('note').value=st.note||'';updateBar();renderMine();}
 
 function postComment(n){
   const ta=$('c'+n),x=ta.value.trim();
@@ -397,7 +420,13 @@ $('name').addEventListener('input',()=>{st.name=$('name').value;changed();});
 $('note').addEventListener('input',()=>{st.note=$('note').value;changed();});
 
 function picked(){return Object.values(st.votes).filter(v=>v.w!=null).length;}
-function updateBar(){$('progN').textContent=`已选 ${picked()} / ${PLACES.length}`;}
+function updateBar(){
+  $('progN').textContent=`已选 ${picked()} / ${PLACES.length}`;
+  const noName=!(st.name||'').trim()&&(picked()>0||st.comments.length>0);
+  document.body.classList.toggle('noname',noName);
+  $('copyBtn').textContent=noName&&API?'填名字保存':'复制报号';
+  if(noName&&API)setStatus('还没保存：先在最上面填名字');
+}
 
 /* ---------- my ballot: edit / reset / delete ---------- */
 let pendingAct=null;
@@ -465,7 +494,7 @@ function reportText(){
   return lines.join('\n');
 }
 $('copyBtn').addEventListener('click',async()=>{
-  if(!(st.name||'').trim()){$('name').focus();setStatus('先在上面填个名字');window.scrollTo({top:0,behavior:'smooth'});return;}
+  if(!(st.name||'').trim()){showTab('vote');window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$('name').focus(),350);setStatus('先在最上面填名字，填完自动保存');return;}
   const t=reportText();
   $('copytext').value=t;$('copyout').hidden=false;
   try{await navigator.clipboard.writeText(t);$('copymsg').textContent='已复制，直接粘贴到群里。';}
@@ -504,10 +533,12 @@ async function apiPost(body){
 function schedule(now){
   if(!API)return;
   if(!(st.name||'').trim()){setStatus('填上名字后自动保存');return;}
-  setStatus('有改动，马上保存…');clearTimeout(timer);timer=setTimeout(save,now?0:1200);
-  checkClaim();
+  clearTimeout(timer);
+  if(checkClaim()){setStatus('这个名字已经有一份投票：先点上面的「载入并合并」，或者换个名字');return;}
+  setStatus('有改动，马上保存…');timer=setTimeout(save,now?0:1200);
 }
 async function save(){
+  if(!all.find(v=>v.id===uid)&&checkClaim()){return;}
   if(saving){again=true;return;}
   saving=true;setStatus('保存中…');
   try{
@@ -556,18 +587,31 @@ function checkClaim(){
   const nm=(st.name||'').trim().toLowerCase();
   const mine=all.find(v=>v.id===uid);
   const other=nm&&!mine?all.find(v=>v.id!==uid&&(v.name||'').trim().toLowerCase()===nm):null;
-  if(!other){box.hidden=true;return;}
-  box.hidden=false;box.innerHTML='';
+  if(!other){box.hidden=true;return null;}
+  if(!box.hidden&&box.dataset.for===other.id)return other;
+  box.hidden=false;box.innerHTML='';box.dataset.for=other.id;
   const p=document.createElement('p');
-  p.textContent=`「${other.name}」之前投过（可能是在别的手机或电脑上）。是你的话，载入那份接着改，不会多出一个人。`;
-  const b=document.createElement('button');b.type='button';b.className='btn';b.textContent='载入我之前的投票';
+  p.textContent=`「${other.name}」已经有一份投票（可能是在别的手机或电脑上，或者别人帮你转贴的留言）。是你的话，点下面载入，这台设备上刚选的和写的会合并进去，不会多出一个人。`;
+  const b=document.createElement('button');b.type='button';b.className='btn';b.textContent='载入并合并';
   b.addEventListener('click',()=>{
     uid=other.id;try{localStorage.setItem(ID_KEY,uid);}catch(e){}
     const f=fromServer(other);
-    st.name=other.name||st.name;st.votes=f.votes;st.comments=f.comments;st.note=other.note||'';st.t=other.updatedAt||Date.now();
-    persistLocal();paintAll();box.hidden=true;setStatus('已载入，之后的改动会保存到这一份');
+    // Keep anything picked or written on this device before loading.
+    const votes=Object.assign({},f.votes,st.votes);
+    const seen=new Set(f.comments.map(c=>c.n+'|'+c.x.trim()));
+    const extra=st.comments.filter(c=>!seen.has(c.n+'|'+c.x.trim()));
+    const merged=Object.keys(st.votes).length+extra.length>0;
+    st.name=other.name||st.name;st.votes=votes;st.comments=f.comments.concat(extra);
+    st.note=[other.note||'',(st.note||'').trim()].filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i).join('\n');
+    st.t=Date.now();persistLocal();paintAll();box.hidden=true;
+    if(merged){changed(true);setStatus('已载入，并把这台设备上的选择和留言合并进去');}else setStatus('已载入，之后的改动会保存到这一份');
   });
-  box.append(p,b);
+  const b2=document.createElement('button');b2.type='button';b2.className='btn ghost';b2.textContent='不是我，换个名字';
+  b2.addEventListener('click',()=>{$('name').focus();$('name').select();});
+  const row=document.createElement('div');row.className='mine-act';row.append(b,b2);
+  box.append(p,row);
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+  return other;
 }
 
 function setMode(){
