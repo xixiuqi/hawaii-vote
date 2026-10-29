@@ -120,7 +120,7 @@ window.TRIP = {
       desc: "本次好评：珊瑚很棒。可选；去法三选一：步道、kayak 或 boat tour，待定。纪念碑这边开车到不了。",
       links: [["Go Hawaii：Kealakekua Bay", "https://www.gohawaii.com/islands/hawaii-big-island/regions/kona/kealakekua-bay"]], maps: "Kealakekua Bay" },
     mkvis: { name: "Mauna Kea 游客中心 · 日落和星空", en: "Maunakea Visitor Information Station", island: "big", type: "sight", ll: [19.76139, -155.45611], wiki: "Onizuka Center for International Astronomy",
-      desc: "全球知名天文台所在的山。不用上山顶，游客中心（约 2,800 米）就够：傍晚看日落，天黑后看星星、银河。普通租车能开到游客中心；往山顶要四驱、租车合同不允许，还有高反。晴天晚上约 6–10 点有免费公众观星，可能临时取消。",
+      desc: "全球知名天文台所在的山。不用上山顶，游客中心（约 2,800 米）就够：傍晚看日落，天黑后看星星、银河。普通租车走普通路就能开到游客中心。山顶不去：要四驱、必须是老司机，租车合同也不允许，还有高反。晴天晚上约 6–10 点有免费公众观星，可能临时取消。",
       links: [["游客中心观星", "https://hilo.hawaii.edu/maunakea/visitor-information/stargazing"]], maps: "Maunakea Visitor Information Station" }
   },
 
@@ -228,7 +228,7 @@ window.TRIP = {
         { t: "约 5:45 PM", s: "mkvis", x: "游客中心看日落，天黑后看星星、银河（浦妮推荐：不用上山顶，游客中心就挺好）" },
         { t: "约 9:00 PM", s: "hilo_stay", x: "回 Hilo（连着第二个晚归的晚上，白天一定补觉）" }
       ],
-      tips: ["游客中心海拔约 2,800 米（9,200 英尺），普通租车能开到；租车合同不允许开过游客中心往山顶走。到了先歇 30 分钟，头疼恶心就别再往上；多喝水。", "晴天晚上约 6–10 点有免费公众观星，天气不好会临时取消，当天早上和傍晚各看一次状态。天黑后只有 0–5 °C，带厚外套。", "和茂宜 Haleakalā 不重复：那边看日落云海，这边看星空。"],
+      tips: ["游客中心海拔约 2,800 米（9,200 英尺），普通租车能开到；租车合同不允许开过游客中心往山顶走。只到游客中心，不上山顶：山顶要四驱、必须是老司机。到了先歇 30 分钟，头疼恶心就早点下山；多喝水。", "晴天晚上约 6–10 点有免费公众观星，天气不好会临时取消，当天早上和傍晚各看一次状态。天黑后只有 0–5 °C，带厚外套。", "和茂宜 Haleakalā 不重复：那边看日落云海，这边看星空。"],
       route: [["hilo_stay", "mkvis", "hilo_stay"]] },
 
     { id: "d9", date: "12/13", dow: "周日", island: "big", title: "返程",
@@ -319,7 +319,7 @@ window.TRIP = {
     { title: "Hilo Airbnb 人数", x: "房源上写的是 1 位客人，6 人入住需要把人数改成 6，或者跟房东确认。" },
     { title: "退改截止", x: "Koa Resort 11/5 前免费退；Hilo Airbnb 12/7 4 PM 前免费退；Costco 茂宜套餐 12/1 前、大岛套餐 12/4 前全退；Iruka 魔鬼鱼（如果订）12/9 周三 3 PM 后取消付全款。" },
     { title: "行程约束", x: "一天最多两个景点（可稍紧）；约早上 7 点出发、晚上 8 点休息；晚餐人均 $50 以内。" },
-    { title: "租车", x: "6 人必须坐 7 座车；Mauna Kea 山顶、Waipio Valley 谷底租车禁行，且不在行程内。" },
+    { title: "租车", x: "6 人必须坐 7 座车；Mauna Kea 山顶（要四驱、必须老司机）、Waipio Valley 谷底租车禁行，不去。Mauna Kea 只到游客中心，普通路、普通车就行。" },
     { title: "价格时效", x: "价格为 2026/10/27 查询结果，到店 / 结账以实际为准。" }
   ],
 

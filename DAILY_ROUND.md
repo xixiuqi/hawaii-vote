@@ -10,6 +10,7 @@ The page itself never changes the itinerary when someone comments. This round is
 - SFO → Maui (OGG) Dec 5, 12:03 PM. Maui → Big Island (KOA) Dec 8, landing 4:23 PM. KOA → SFO Dec 13, 4:47 PM.
 - Maui stay: Koa Resort, Kihei. Big Island stay: Airbnb in Hilo (Dec 8–13).
 - The current day-by-day plan is `TRIP.days` in `trip-data.js` (shown on `trip.html`). `TRIP.notes` has the constraints: at most two sights a day, out around 7 AM, rest by 8 PM, dinner under $50/person; rental cars may not go above the Mauna Kea visitor center or down into Waipiʻo.
+- Mauna Kea summit is ruled out by the organizer: it needs 4WD and a very experienced driver. Spot 24 means the visitor center only (ordinary road, ordinary car). Do not propose the summit or a summit tour, whatever the comments say.
 - Spots 1–15 are Maui, 16–25 Big Island. Names, prices and links are in `PLACES` in `index.html`; each spot's `plan` field is the hand-made status from the 10/29 itinerary.
 
 ## Steps
