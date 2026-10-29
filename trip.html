@@ -54,7 +54,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* app layout */
 .app{display:grid;grid-template-columns:1fr}
-.mapwrap{position:relative;height:48vh;min-height:320px;border-bottom:1px solid var(--line)}
+.mapwrap{position:relative;height:54vh;min-height:340px;border-bottom:1px solid var(--line)}
 #map{position:absolute;inset:0;background:var(--wash)}
 .panel{min-width:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px calc(40px + env(safe-area-inset-bottom,0px))}
 @media (min-width:960px){
@@ -194,6 +194,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .leaflet-tooltip.pv::before{display:none}
 .leaflet-popup-content-wrapper{padding:0;border-radius:14px;background:var(--card);color:var(--ink);box-shadow:var(--shadow);overflow:hidden}
 .leaflet-popup-content{margin:0;width:280px!important;font:inherit;line-height:1.5}
+.leaflet-popup-scrolled{border:0!important;overflow-x:hidden}
 .leaflet-popup-tip{background:var(--card)}
 .leaflet-container a.leaflet-popup-close-button{color:#fff;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.45);font:18px/24px system-ui;text-align:center}
 .card{width:280px;background:var(--card);color:var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);font-family:var(--body);white-space:normal}
@@ -339,8 +340,8 @@ function gdir(id){const s=S[id];return 'https://www.google.com/maps/dir/?api=1&d
 function card(id,full){
   const s=S[id];loadImg(id);
   const v=(VISITS[id]||[]);
-  const seen=new Set();
-  const when=v.filter(x=>{const k=x.d.id+'|'+x.t;if(seen.has(k))return false;seen.add(k);return true;})
+  const seen=new Set(),timed=new Set(v.filter(x=>x.t).map(x=>x.d.id));
+  const when=v.filter(x=>{if(!x.t&&timed.has(x.d.id))return false;const k=x.d.id+'|'+x.t;if(seen.has(k))return false;seen.add(k);return true;})
     .map(x=>`<span class="${x.fx?'fx':''}">${x.d.date}${x.t?' · '+esc(x.t):''}${x.fx?' ★':''}</span>`).join('');
   const tags=(s.price?`<span class="pill">${esc(s.price)}</span>`:'')+(s.status?`<span class="pill ${/未订|需预约/.test(s.status)?'todo':'ok'}">${esc(s.status)}</span>`:'');
   const links=full?`<div class="lnk"><a class="go" href="${gdir(id)}" target="_blank" rel="noopener">导航</a><a href="${gmaps(id)}" target="_blank" rel="noopener">Google 地图</a>${(s.links||[]).map(([t,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a>`).join('')}</div>`
@@ -376,7 +377,7 @@ Object.keys(S).forEach(id=>{
   if(canHover)m.bindTooltip(()=>card(id,false),{className:'pv',direction:'top',offset:[0,-16],opacity:1});
   m.on('mouseover',()=>{setTipDir(m);highlightRow(id,true);});
   m.on('mouseout',()=>highlightRow(id,false));
-  m.on('popupopen',()=>{m.closeTooltip();});
+  m.on('popupopen',e=>{m.closeTooltip();const h=map.getSize().y-56;if(e.popup.options.maxHeight!==h){e.popup.options.maxHeight=h;e.popup.update();}});
   markers[id]=m;
 });
 function setTipDir(m){
