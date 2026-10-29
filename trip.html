@@ -188,7 +188,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .player{position:absolute;top:10px;left:10px;z-index:600;display:flex;align-items:center;gap:6px;max-width:calc(100% - 70px);padding:5px;border-radius:12px;background:var(--card);border:1px solid var(--line);box-shadow:0 4px 14px rgba(0,0,0,.14)}
 .pl-play{border:0;border-radius:8px;background:var(--ink);color:var(--paper);font-weight:700;font-size:13.5px;padding:7px 12px;cursor:pointer;white-space:nowrap}
 .pl-play[aria-pressed="true"]{background:var(--big);color:#fff}
-.pl-speed{border:1px solid var(--line);border-radius:8px;background:transparent;font-family:var(--display);font-weight:700;font-size:13px;padding:6px 9px;cursor:pointer;font-variant-numeric:tabular-nums}
+.pl-speed{border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-family:var(--display);font-weight:700;font-size:13px;padding:6px 6px;cursor:pointer;font-variant-numeric:tabular-nums}
 .pl-status{font-size:12.5px;color:var(--ink);padding:0 6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mover{position:relative;width:44px;height:44px;display:grid;place-items:center;pointer-events:none}
 .mover .rot{display:grid;place-items:center;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));transform-origin:50% 50%}
@@ -256,7 +256,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
     <div id="map" role="region" aria-label="行程地图"></div>
     <div class="player" role="group" aria-label="路线动画">
       <button type="button" id="plPlay" class="pl-play" aria-pressed="false">▶ 播放这一天</button>
-      <button type="button" id="plSpeed" class="pl-speed" title="播放速度">1×</button>
+      <select id="plSpeed" class="pl-speed" aria-label="播放速度"><option value="0.2">0.2×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select>
       <span class="pl-status" id="plStatus" aria-live="polite" hidden></span>
     </div>
     <div class="legend" aria-hidden="true">
@@ -584,7 +584,7 @@ function plTxt(t){$('plStatus').textContent=t||'';$('plStatus').hidden=!t;}
 function plButtons(){
   $('plPlay').textContent=player.on?'■ 停止':(state.day==='all'?'▶ 播放全程':'▶ 播放这一天');
   $('plPlay').setAttribute('aria-pressed',String(player.on));
-  $('plSpeed').textContent=player.speed+'×';
+  $('plSpeed').value=String(player.speed);
 }
 function wait(ms,tok){return new Promise((res,rej)=>setTimeout(()=>tok===player.run?res():rej('stop'),ms));}
 function frame(tok){return new Promise((res,rej)=>{const go=t=>tok===player.run?res(t):rej('stop');if(document.hidden)setTimeout(()=>go(performance.now()),60);else requestAnimationFrame(go);});}
@@ -639,9 +639,10 @@ const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 
 async function moveAlong(g,d0,d1,ms,tok,trailPts){
   if(reduceMotion||ms<=0){const [p,,lo]=at(g,d1);player.mover.setLatLng(p);if(trailPts&&player.trail)player.trail.setLatLngs(g.pts.slice(0,(lo==null?g.pts.length-1:lo)+1).concat([p]));return;}
-  const t0=await frame(tok);let t=t0;
+  let last=await frame(tok),t=last,prog=0;
   while(true){
-    const k=Math.min(1,(t-t0)/ms),d=d0+(d1-d0)*ease(k);
+    prog+=(t-last)*player.speed/ms;last=t;
+    const k=Math.min(1,prog),d=d0+(d1-d0)*ease(k);
     const [p,next,lo]=at(g,d);
     player.mover.setLatLng(p);orient(heading(p,next.equals(p)?at(g,Math.min(d+30,g.cum[g.cum.length-1]))[1]:next));
     if(trailPts&&player.trail){player.trail.setLatLngs(g.pts.slice(0,(lo==null?g.pts.length-1:lo)+1).concat([p]));}
@@ -673,7 +674,7 @@ async function fly(fromLL,toLL,label,tok,color){
   setMover('plane',g.pts[0],color);bubble('✈ '+label);plTxt(label);
   if(!map.getBounds().contains(fromLL)||!map.getBounds().contains(toLL))map.flyToBounds(L.latLngBounds([fromLL,toLL]).pad(.15),{duration:.8});
   await wait(500,tok);
-  await moveAlong(g,0,g.cum[g.cum.length-1],2800/player.speed,tok,null);
+  await moveAlong(g,0,g.cum[g.cum.length-1],2800,tok,null);
 }
 const SFO_DIR=[1.6,2.4]; // off-map point toward San Francisco (north-east)
 
@@ -708,7 +709,7 @@ async function playDay(d,tok){
     await wait(1100/player.speed,tok);
     for(let k=1;k<seg.stops.length;k++){
       const legMin=seg.legs&&seg.legs[k-1]?seg.legs[k-1].min:30;
-      const ms=Math.max(900,Math.min(9000,legMin*45))/player.speed;
+      const ms=Math.max(900,Math.min(9000,legMin*45));
       bubble(`${legMin} 分钟车程`);
       await moveAlong(g,g.cum[idx[k-1]],g.cum[idx[k]],ms,tok,trailPts);
       ii=itemFor(d,seg.stops[k],itemFrom);if(ii>=0)itemFrom=ii+1;
@@ -750,7 +751,7 @@ async function startPlayer(){
 }
 function stopPlayer(){player.run++;player.on=false;player.all=false;cleanupPlayer();plButtons();}
 $('plPlay').addEventListener('click',()=>{if(player.on)stopPlayer();else startPlayer();});
-$('plSpeed').addEventListener('click',()=>{player.speed=player.speed===1?2:player.speed===2?4:1;plButtons();});
+$('plSpeed').addEventListener('change',e=>{player.speed=parseFloat(e.target.value)||1;});
 
 /* ---------- other tabs ---------- */
 function renderBook(){
