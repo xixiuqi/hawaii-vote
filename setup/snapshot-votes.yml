@@ -1,0 +1,41 @@
+name: Snapshot votes
+
+# Every hour, copies the current votes from the Google Sheet into data/votes.json
+# and commits only when something changed, so the git history records each round of edits.
+
+on:
+  schedule:
+    - cron: "15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch votes
+        run: |
+          API=$(sed -n 's/.*apiUrl: *"\([^"]*\)".*/\1/p' docs/config.js)
+          if [ -z "$API" ]; then
+            echo "apiUrl is empty in docs/config.js — nothing to fetch."
+            exit 0
+          fi
+          curl -fsSL "$API" -o /tmp/raw.json
+          jq -e '.ok == true' /tmp/raw.json > /dev/null
+          jq '{votes: (.votes | sort_by(.id))}' /tmp/raw.json > data/votes.json
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add data/votes.json
+          if git diff --cached --quiet; then
+            echo "No new votes."
+          else
+            git commit -m "Votes snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi

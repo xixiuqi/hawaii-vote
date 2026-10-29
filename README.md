@@ -14,6 +14,7 @@ data/votes.json           # 每小时同步一次的投票快照（有变化才�
 plans/                    # 每轮取舍的存档
 DAILY_ROUND.md            # 每日取舍任务的说明
 .github/workflows/snapshot-votes.yml   # 每小时把投票拷进 data/votes.json
+setup/snapshot-votes.yml  # 同一个文件的备份，用于在网页上手动创建
 ```
 
 ## 上线步骤
@@ -35,9 +36,14 @@ DAILY_ROUND.md            # 每日取舍任务的说明
    - 选 **Public**（免费账号的 Pages 需要公开仓库）
    - 其他都不勾，点 **Create repository**。
 2. 在新仓库页面点 **uploading an existing file**。
-3. 打开电脑上的 `hawaii-vote` 文件夹，**全选里面的所有东西**（docs、apps-script、data、plans、.github、README.md 等），拖进网页的上传框。
-   - Windows 资源管理器默认可能不显示 `.github` 文件夹：在「查看 → 显示 → 隐藏的项目」打开即可。没传也不影响网页，只是投票不会同步进仓库。
+3. 打开电脑上的 `hawaii-vote` 文件夹，**全选里面的所有东西**（docs、apps-script、data、plans、setup、README.md 等），拖进网页的上传框。
 4. 页面最下面点 **Commit changes**。
+5. 加上每小时同步投票的自动任务（如果文件夹里已经有 `.github` 就一起拖进去了，跳过这步）：
+   - 仓库首页点 **Add file → Create new file**。
+   - 文件名一栏输入 `.github/workflows/snapshot-votes.yml`（打到 `/` 时会自动变成文件夹）。
+   - 用记事本打开电脑上的 `setup/snapshot-votes.yml`，全选复制，粘进网页的编辑框。
+   - 点 **Commit changes**。
+   - 再到仓库 **Settings → Actions → General**，最下面 **Workflow permissions** 选 **Read and write permissions**，保存。不然自动任务没法提交。
 
 ### 3. 打开 GitHub Pages（1 分钟）
 
