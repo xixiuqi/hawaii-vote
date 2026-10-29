@@ -185,6 +185,16 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .pin.hl{transform:scale(1.3)}
 .pin .st{position:absolute;top:-8px;right:-8px;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#fff;font-size:10px;display:grid;place-items:center;border:2px solid var(--card)}
 .flab{font-size:11.5px;font-weight:700;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:2px 8px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.player{position:absolute;top:10px;left:10px;z-index:600;display:flex;align-items:center;gap:6px;max-width:calc(100% - 70px);padding:5px;border-radius:12px;background:var(--card);border:1px solid var(--line);box-shadow:0 4px 14px rgba(0,0,0,.14)}
+.pl-play{border:0;border-radius:8px;background:var(--ink);color:var(--paper);font-weight:700;font-size:13.5px;padding:7px 12px;cursor:pointer;white-space:nowrap}
+.pl-play[aria-pressed="true"]{background:var(--big);color:#fff}
+.pl-speed{border:1px solid var(--line);border-radius:8px;background:transparent;font-family:var(--display);font-weight:700;font-size:13px;padding:6px 9px;cursor:pointer;font-variant-numeric:tabular-nums}
+.pl-status{font-size:12.5px;color:var(--ink);padding:0 6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mover{position:relative;width:44px;height:44px;display:grid;place-items:center;pointer-events:none}
+.mover .rot{display:grid;place-items:center;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));transform-origin:50% 50%}
+.mover .bub{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:700;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px 10px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.tl li.now{background:var(--gold-soft)}
+.tl li.now .t{color:var(--gold);font-weight:700}
 .legend{position:absolute;left:10px;bottom:22px;z-index:500;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:11.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px;max-width:calc(100% - 20px)}
 .legend span{display:inline-flex;align-items:center;gap:5px}
 .legend i{display:inline-block;width:16px;height:3px;border-radius:2px}
@@ -244,6 +254,11 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <main class="app">
   <div class="mapwrap" id="mapwrap">
     <div id="map" role="region" aria-label="行程地图"></div>
+    <div class="player" role="group" aria-label="路线动画">
+      <button type="button" id="plPlay" class="pl-play" aria-pressed="false">▶ 播放这一天</button>
+      <button type="button" id="plSpeed" class="pl-speed" title="播放速度">1×</button>
+      <span class="pl-status" id="plStatus" aria-live="polite" hidden></span>
+    </div>
     <div class="legend" aria-hidden="true">
       <span><i style="background:var(--maui)"></i>茂宜</span>
       <span><i style="background:var(--big)"></i>大岛</span>
@@ -466,10 +481,12 @@ function renderChips(){
 }
 $('days').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;selectDay(b.dataset.day);});
 
-function selectDay(id){
+function selectDay(id,fromPlayer){
+  if(!fromPlayer&&typeof stopPlayer==='function'&&player.on)stopPlayer();
   state.day=id;state.tab='plan';map.closePopup();
   renderTabs();renderChips();renderPlan();renderMap();
   setHash(id);
+  if(typeof plButtons==='function')plButtons();
 }
 
 /* ---------- panel: plan ---------- */
@@ -550,6 +567,185 @@ function focusStop(id){
   map.once('moveend',()=>m.openPopup());
 }
 
+/* ---------- trip player: a minivan drives each day's route ---------- */
+const VAN='<svg viewBox="0 0 44 24" width="38" height="21" aria-hidden="true"><path d="M3 9.5C3 6.5 5 5 8 5h19c2.2 0 3.6.8 4.8 2.3L36 12h2.5c1.9 0 3.5 1.6 3.5 3.5V18c0 .6-.4 1-1 1H4c-.6 0-1-.4-1-1z" fill="currentColor"/><path d="M7 7.5h5.5v4.5H7zM14.5 7.5H20v4.5h-5.5zM22 7.5h5.2c1 0 1.8.4 2.4 1.2l2.6 3.3H22z" fill="#fff" opacity=".88"/><circle cx="11" cy="19" r="3.6" fill="#15232A"/><circle cx="33" cy="19" r="3.6" fill="#15232A"/><circle cx="11" cy="19" r="1.4" fill="#cfd6d4"/><circle cx="33" cy="19" r="1.4" fill="#cfd6d4"/></svg>';
+const PLANE='<svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true"><path d="M37 20c0-1.4-1.2-2.2-2.6-2.2H24.5L15.8 4.5h-3.6l4.3 13.3H8.3L5.2 13.6H2.5L4.8 20l-2.3 6.4h2.7l3.1-4.2h8.2L12.2 35.5h3.6l8.7-13.3h9.9C35.8 22.2 37 21.4 37 20z" fill="currentColor"/></svg>';
+const CIRC='①②③④⑤⑥⑦⑧⑨⑩⑪⑫';
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const player={run:0,on:false,speed:1,all:false,mover:null,trail:null,lastPan:0};
+
+function plTxt(t){$('plStatus').textContent=t||'';$('plStatus').hidden=!t;}
+function plButtons(){
+  $('plPlay').textContent=player.on?'■ 停止':(state.day==='all'?'▶ 播放全程':'▶ 播放这一天');
+  $('plPlay').setAttribute('aria-pressed',String(player.on));
+  $('plSpeed').textContent=player.speed+'×';
+}
+function wait(ms,tok){return new Promise((res,rej)=>setTimeout(()=>tok===player.run?res():rej('stop'),ms));}
+function frame(tok){return new Promise((res,rej)=>requestAnimationFrame(t=>tok===player.run?res(t):rej('stop')));}
+
+function moverIcon(kind,color){
+  return L.divIcon({className:'',iconSize:[44,44],iconAnchor:[22,22],
+    html:`<div class="mover" style="color:${color}"><div class="rot">${kind==='plane'?PLANE:VAN}</div><div class="bub" hidden></div></div>`});
+}
+function setMover(kind,ll,color){
+  if(player.mover)map.removeLayer(player.mover);
+  player.mover=L.marker(ll,{icon:moverIcon(kind,color),interactive:false,zIndexOffset:2000,keyboard:false}).addTo(map);
+  player.kind=kind;
+}
+function heading(a,b){
+  const p=map.latLngToLayerPoint(a),q=map.latLngToLayerPoint(b);
+  return Math.atan2(q.y-p.y,q.x-p.x)*180/Math.PI;
+}
+function orient(deg){
+  const el=player.mover&&player.mover.getElement();if(!el)return;
+  const rot=el.querySelector('.rot');
+  if(player.kind==='plane'){rot.style.transform=`rotate(${deg}deg)`;return;}
+  const flip=Math.abs(deg)>90;
+  rot.style.transform=flip?`rotate(${deg+180}deg) scaleX(-1)`:`rotate(${deg}deg)`;
+}
+function bubble(text){
+  const el=player.mover&&player.mover.getElement();if(!el)return;
+  const b=el.querySelector('.bub');b.textContent=text||'';b.hidden=!text;
+}
+function follow(ll){
+  const now=performance.now();if(now-player.lastPan<700)return;
+  if(!map.getBounds().pad(-0.12).contains(ll)){player.lastPan=now;map.panTo(ll,{animate:true,duration:.6});}
+}
+function geo(coords){
+  const pts=coords.map(c=>L.latLng(c[0],c[1]));const cum=[0];
+  for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+pts[i-1].distanceTo(pts[i]));
+  return {pts,cum};
+}
+function at(g,d){
+  const {pts,cum}=g;if(d<=0)return [pts[0],pts[Math.min(1,pts.length-1)]];
+  let lo=0,hi=cum.length-1;
+  if(d>=cum[hi])return [pts[hi],pts[hi]];
+  while(hi-lo>1){const m=(lo+hi)>>1;if(cum[m]<=d)lo=m;else hi=m;}
+  const f=(d-cum[lo])/((cum[hi]-cum[lo])||1);
+  return [L.latLng(pts[lo].lat+(pts[hi].lat-pts[lo].lat)*f,pts[lo].lng+(pts[hi].lng-pts[lo].lng)*f),pts[hi]];
+}
+function stopIdx(g,ll,from){
+  const p=L.latLng(ll);let best=from,bd=Infinity;
+  for(let i=from;i<g.pts.length;i++){const d=g.pts[i].distanceTo(p);if(d<150)return i;if(d<bd){bd=d;best=i;}}
+  return best;
+}
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+async function moveAlong(g,d0,d1,ms,tok,trailPts){
+  if(reduceMotion||ms<=0){const [p]=at(g,d1);player.mover.setLatLng(p);return;}
+  const t0=await frame(tok);let t=t0;
+  while(true){
+    const k=Math.min(1,(t-t0)/ms),d=d0+(d1-d0)*ease(k);
+    const [p,next]=at(g,d);
+    player.mover.setLatLng(p);orient(heading(p,next.equals(p)?at(g,Math.min(d+30,g.cum[g.cum.length-1]))[1]:next));
+    if(trailPts){trailPts.push(p);player.trail.setLatLngs(trailPts);}
+    follow(p);
+    if(k>=1)break;
+    t=await frame(tok);
+  }
+}
+function itemFor(d,id,from){
+  for(let i=from;i<d.items.length;i++)if(d.items[i].s===id)return i;
+  return -1;
+}
+function arrive(d,id,itemIdx){
+  const s=S[id],num=numbering(d)[id];
+  const it=itemIdx>=0?d.items[itemIdx]:null;
+  bubble(`${num?CIRC[num-1]+' ':''}${shortName(id)}${it&&it.t?' · '+it.t:''}`);
+  plTxt(`${d.date} ${it&&it.t?it.t+' · ':''}${it?it.x:shortName(id)}`);
+  document.querySelectorAll('#plan .tl li').forEach(r=>r.classList.remove('now'));
+  const rows=[...document.querySelectorAll('#plan .tl li')];
+  const row=itemIdx>=0?rows[itemIdx]:null;
+  if(row){row.classList.add('now');if(isDesk())row.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});}
+  const pin=markers[id]&&markers[id].getElement()&&markers[id].getElement().firstElementChild;
+  if(pin){pin.classList.add('hl');setTimeout(()=>pin.classList.remove('hl'),1200/player.speed+400);}
+}
+
+async function fly(fromLL,toLL,label,tok,color){
+  const pts=curve([fromLL.lat,fromLL.lng],[toLL.lat,toLL.lng],.18);
+  const g=geo(pts);
+  setMover('plane',g.pts[0],color);bubble('✈ '+label);plTxt(label);
+  if(!map.getBounds().contains(fromLL)||!map.getBounds().contains(toLL))map.flyToBounds(L.latLngBounds([fromLL,toLL]).pad(.15),{duration:.8});
+  await wait(500,tok);
+  await moveAlong(g,0,g.cum[g.cum.length-1],2800/player.speed,tok,null);
+}
+const SFO_DIR=[1.6,2.4]; // off-map point toward San Francisco (north-east)
+
+async function playDay(d,tok){
+  const segs=segsFor(d).filter(s=>!s.opt);
+  const col=islandColor(d.island==='big'?'big':'maui');
+  if(!segs.length){
+    plTxt(`${d.date} ${d.title}：${d.choose?'自选活动，没有固定路线':'没有固定路线'}`);
+    await wait(2200/player.speed,tok);return;
+  }
+  player.trails=player.trails||L.layerGroup().addTo(map);
+  const fl=d.flight;
+  if(fl&&fl.from==='SFO'){
+    const to=L.latLng(S[fl.to].ll);
+    await fly(L.latLng(to.lat+SFO_DIR[0],to.lng+SFO_DIR[1]),to,fl.label,tok,cssVar('--muted'));
+    fitView();await wait(700,tok);
+  }
+  let itemFrom=0;
+  for(let si=0;si<segs.length;si++){
+    const seg=segs[si],g=geo(seg.coords),scol=islandColor(S[seg.stops[0]].island);
+    if(fl&&fl.from!=='SFO'&&fl.to!=='SFO'&&si>0&&segs[si-1].stops.slice(-1)[0]===fl.from){
+      await fly(L.latLng(S[fl.from].ll),L.latLng(S[fl.to].ll),fl.label,tok,cssVar('--muted'));
+      const b=L.latLngBounds(seg.coords);map.flyToBounds(b.pad(.08),{duration:.8});await wait(900,tok);
+    }
+    setMover('van',g.pts[0],scol);
+    player.trail=L.polyline([],{color:cssVar('--gold'),weight:6,opacity:.85,lineCap:'round',interactive:false}).addTo(player.trails);
+    const idx=[0];
+    for(let k=1;k<seg.stops.length;k++)idx.push(k===seg.stops.length-1?g.pts.length-1:stopIdx(g,S[seg.stops[k]].ll,idx[k-1]+1));
+    const trailPts=[g.pts[0]];
+    let ii=itemFor(d,seg.stops[0],itemFrom);if(ii>=0)itemFrom=ii+1;
+    arrive(d,seg.stops[0],ii);
+    await wait(1100/player.speed,tok);
+    for(let k=1;k<seg.stops.length;k++){
+      const legMin=seg.legs&&seg.legs[k-1]?seg.legs[k-1].min:30;
+      const ms=Math.max(900,Math.min(9000,legMin*45))/player.speed;
+      bubble(`${legMin} 分钟车程`);
+      await moveAlong(g,g.cum[idx[k-1]],g.cum[idx[k]],ms,tok,trailPts);
+      ii=itemFor(d,seg.stops[k],itemFrom);if(ii>=0)itemFrom=ii+1;
+      arrive(d,seg.stops[k],ii);
+      await wait(1300/player.speed,tok);
+    }
+  }
+  if(fl&&fl.to==='SFO'){
+    const from=L.latLng(S[fl.from].ll);
+    await fly(from,L.latLng(from.lat+SFO_DIR[0],from.lng+SFO_DIR[1]),fl.label+' · 回家',tok,cssVar('--muted'));
+  }
+  await wait(800/player.speed,tok);
+}
+function cleanupPlayer(){
+  if(player.mover){map.removeLayer(player.mover);player.mover=null;}
+  if(player.trails){player.trails.clearLayers();}player.trail=null;
+  document.querySelectorAll('#plan .tl li.now').forEach(r=>r.classList.remove('now'));
+  plTxt('');
+}
+async function startPlayer(){
+  const tok=++player.run;player.on=true;map.closePopup();plButtons();
+  if(!isDesk())$('mapwrap').scrollIntoView({behavior:'smooth',block:'start'});
+  try{
+    if(state.day==='all'){
+      player.all=true;
+      for(const d of T.days){
+        if(tok!==player.run)break;
+        cleanupPlayer();selectDay(d.id,true);await wait(900,tok);
+        await playDay(d,tok);
+      }
+      cleanupPlayer();player.all=false;selectDay('all',true);plTxt('全程播放完了，9 天 8 晚。');
+    }else{
+      cleanupPlayer();fitView();await wait(500,tok);
+      await playDay(DAY[state.day],tok);
+      plTxt(`${DAY[state.day].date} ${DAY[state.day].title} · 播放完了`);
+    }
+  }catch(e){if(e!=='stop')console.error(e);}
+  if(tok===player.run){player.on=false;player.all=false;plButtons();if(player.mover){map.removeLayer(player.mover);player.mover=null;}}
+}
+function stopPlayer(){player.run++;player.on=false;player.all=false;cleanupPlayer();plButtons();}
+$('plPlay').addEventListener('click',()=>{if(player.on)stopPlayer();else startPlayer();});
+$('plSpeed').addEventListener('click',()=>{player.speed=player.speed===1?2:player.speed===2?4:1;plButtons();});
+
 /* ---------- other tabs ---------- */
 function renderBook(){
   const todos=T.todos.map(t=>({...t,n:dayDiff(localDate(t.date),today)})).sort((a,b)=>a.date.localeCompare(b.date));
@@ -599,6 +795,7 @@ new MutationObserver(()=>{setTiles();drawRoutes(state.day);}).observe(document.d
 /* ---------- boot ---------- */
 fromHash();
 renderTabs();renderChips();renderPlan();renderBook();renderBudget();renderNotes();renderMap();
+plButtons();
 fetch('routes.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.days){ROUTES=j;renderPlan();renderMap(!userMoved);}}).catch(()=>{});
 window.addEventListener('resize',()=>map.invalidateSize());
 let userMoved=false;map.on('dragstart zoomstart',e=>{if(e&&e.originalEvent)userMoved=true;});map.getContainer().addEventListener('wheel',()=>{userMoved=true;},{passive:true});
