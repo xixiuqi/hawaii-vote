@@ -622,7 +622,7 @@ function at(g,d){
   if(d>=cum[hi])return [pts[hi],pts[hi]];
   while(hi-lo>1){const m=(lo+hi)>>1;if(cum[m]<=d)lo=m;else hi=m;}
   const f=(d-cum[lo])/((cum[hi]-cum[lo])||1);
-  return [L.latLng(pts[lo].lat+(pts[hi].lat-pts[lo].lat)*f,pts[lo].lng+(pts[hi].lng-pts[lo].lng)*f),pts[hi]];
+  return [L.latLng(pts[lo].lat+(pts[hi].lat-pts[lo].lat)*f,pts[lo].lng+(pts[hi].lng-pts[lo].lng)*f),pts[hi],lo];
 }
 function stopIdx(g,ll,from){
   const p=L.latLng(ll);let best=from,bd=Infinity;
@@ -632,13 +632,13 @@ function stopIdx(g,ll,from){
 const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 
 async function moveAlong(g,d0,d1,ms,tok,trailPts){
-  if(reduceMotion||ms<=0){const [p]=at(g,d1);player.mover.setLatLng(p);return;}
+  if(reduceMotion||ms<=0){const [p,,lo]=at(g,d1);player.mover.setLatLng(p);if(trailPts&&player.trail)player.trail.setLatLngs(g.pts.slice(0,(lo==null?g.pts.length-1:lo)+1).concat([p]));return;}
   const t0=await frame(tok);let t=t0;
   while(true){
     const k=Math.min(1,(t-t0)/ms),d=d0+(d1-d0)*ease(k);
-    const [p,next]=at(g,d);
+    const [p,next,lo]=at(g,d);
     player.mover.setLatLng(p);orient(heading(p,next.equals(p)?at(g,Math.min(d+30,g.cum[g.cum.length-1]))[1]:next));
-    if(trailPts){trailPts.push(p);player.trail.setLatLngs(trailPts);}
+    if(trailPts&&player.trail){player.trail.setLatLngs(g.pts.slice(0,(lo==null?g.pts.length-1:lo)+1).concat([p]));}
     follow(p);
     if(k>=1)break;
     t=await frame(tok);
