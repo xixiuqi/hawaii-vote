@@ -280,6 +280,7 @@ window.TRIP = {
     { name: "Rappel Maui 瀑布速降", price: "$240.84/人（含税）", when: "12/7 8:00 AM，3 小时", state: "未订", stop: "eden" },
     { name: "Sea Scooter（My Splash Snorkeling）", price: "$149/人", when: "12/8 上午，1.5 小时", state: "未订", stop: "wailea" },
     { name: "Kazumura 熔岩洞（替代 Kula Kai）", price: "$60 现金 / $65 刷卡", when: "12/9 下午，回 Hilo 路上", state: "未订", stop: "kazumura" },
+    { name: "Iruka 魔鬼鱼夜潜（可选，跟冲浪一样）", price: "约 $125/人下水；不下水的可以 ride-along 上船看", when: "12/11 傍晚 5:30 Honokōhau 港签到，2–2.5 小时", state: "未订", stop: "manta" },
     { name: "Sliding Sands 火山口徒步", price: "免费", when: "12/6", state: "可选，无需预约", stop: "summit" },
     { name: "Mauna Kea 游客中心日落 + 观星", price: "免费", when: "12/12 傍晚", state: "可选", stop: "mkvis" }
   ],
@@ -293,7 +294,8 @@ window.TRIP = {
     { date: "2026-12-04", x: "取消 Costco 大岛套餐（全额退 $1,839.16）" },
     { date: "2026-12-04", x: "Hilo Airbnb 把人数改成 6 人，或跟房东确认", stop: "hilo_stay" },
     { date: "2026-12-01", x: "看 USGS HVO 的 Kīlauea 喷发预报窗口，决定 12/9 和 12/10 要不要对调" },
-    { date: "2026-12-04", x: "订 Sea Scooter、Kazumura 熔岩洞；12/7 冲浪 / 速降按参加人数订" }
+    { date: "2026-12-04", x: "订 Sea Scooter、Kazumura 熔岩洞；12/7 冲浪 / 速降、12/11 魔鬼鱼夜潜按参加人数订" },
+    { date: "2026-12-09", x: "Iruka 魔鬼鱼（如果订）：12/9 周三 3 PM 后取消要付全款", stop: "manta" }
   ],
 
   budget: {
