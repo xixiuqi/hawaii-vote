@@ -124,6 +124,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px soli
 .stack .s0,.sw.s0{background:repeating-linear-gradient(45deg,var(--muted) 0 1.5px,transparent 1.5px 4px)}
 .sw{display:inline-block;width:18px;height:10px;border-radius:3px;flex:none}
 .sw.s3{background:var(--lava)} .sw.s2{background:var(--sea)} .sw.s1{background:var(--stone)} .sw.none{background:var(--stone-soft);box-shadow:inset 0 0 0 1px var(--line)}
+.chip.adv-chip{border-style:dashed}
+.chip small{font-size:11px;color:var(--gold);font-weight:700}
 .rlegend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin:2px 0 6px}
 .rlegend span{display:inline-flex;align-items:center;gap:6px}
 .r-meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -326,6 +328,9 @@ const newId=()=>rid().replace(/[^A-Za-z0-9-]/g,'').slice(0,20);
 const fmtT=t=>{if(!t)return '';const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};
 const wTxt=w=>w!=null&&LV[w]?LV[w]:'未选';
 const nameOf=v=>(v.name||'').trim()||'未署名';
+/* Not travelling with us: they vote and comment to recommend. */
+const ADVISORS=['浦妮','puni','夏威夷后花园同事'];
+const isAdv=v=>ADVISORS.includes(nameOf(v).toLowerCase());
 const pname=n=>PLACES[n-1]?PLACES[n-1].name:'';
 
 let st={name:'',votes:{},note:'',comments:[],t:0};
@@ -712,7 +717,8 @@ function renderResults(){
     return Object.assign({},p,{c,avg:sn?ss/sn:0,sn,cm});
   });
   const rank=(a,b)=>(b.c[3].length-a.c[3].length)||(b.c[2].length-a.c[2].length)||(b.avg-a.avg)||(a.c[0].length-b.c[0].length)||(a.n-b.n);
-  let html=planBox+editBtn+feed+`<div class="voters">${voters.map(v=>`<span class="chip">${esc(nameOf(v))} · 选了 ${Object.values(v.votes).filter(x=>x.w!=null).length}</span>`).join('')}</div>
+  let html=planBox+editBtn+feed+`<div class="voters">${voters.map(v=>`<span class="chip${isAdv(v)?' adv-chip':''}">${esc(nameOf(v))}${isAdv(v)?' <small>推荐人</small>':''} · 选了 ${Object.values(v.votes).filter(x=>x.w!=null).length}</span>`).join('')}</div>
+  ${voters.some(isAdv)?'<p class="sortnote">标「推荐人」的不跟我们去，投票是帮忙推荐的；票数里包含他们。</p>':''}
   <div class="rlegend" aria-label="条形图颜色"><span><i class="sw s3"></i>必去</span><span><i class="sw s2"></i>想去</span><span><i class="sw s1"></i>随意</span><span><i class="sw s0"></i>不去</span><span><i class="sw none"></i>没选</span></div>
   <p class="sortnote">排序：必去人数 → 想去人数 → 平均星数。</p>`;
   ISLANDS.forEach(is=>{
