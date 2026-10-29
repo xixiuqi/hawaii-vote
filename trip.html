@@ -44,7 +44,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:1000;background:var(--card);border-bottom:1px solid var(--line);
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .top-in{min-height:var(--barh);display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;padding-block:8px}
-.brand{display:grid;gap:0;min-width:0;flex:1}
+.brand{display:grid;gap:0;min-width:0;flex:1 1 220px}
+@media (max-width:520px){.top-in{gap:6px 10px;padding-block:6px}.brand h1{font-size:17px}.nav a{padding:5px 9px;font-size:13px}}
 .brand h1{font-family:var(--display);font-weight:800;font-size:19px;line-height:1.2;letter-spacing:-.01em}
 .brand small{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
 .count{font-family:var(--display);font-weight:700;font-size:13px;padding:4px 10px;border-radius:99px;background:var(--gold-soft);color:var(--gold);white-space:nowrap}
