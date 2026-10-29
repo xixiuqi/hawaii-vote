@@ -1,17 +1,17 @@
 /**
- * Hawaii trip ballot — storage backend (v3: migrates v1 rows).
+ * Hawaii trip ballot — storage backend (v4: migrates v1 rows; vote changes are not recorded).
  *
  * Standalone Apps Script project that stores votes in the Google Sheet below.
  * Deploy → Manage deployments → Edit → Version: New version → Deploy (URL stays the same).
  *
- * GET  <url> → {ok:true, votes:[{id, name, updatedAt, votes:{n:{w,s,at}}, note, comments:[...], history:[...], resetAt}]}
+ * GET  <url> → {ok:true, votes:[{id, name, updatedAt, votes:{n:{w,s}}, note, comments:[...], history:[], resetAt:0}]}
  * POST <url> (text/plain JSON):
  *   {action:"vote",   id, name, votes:{n:{w,s}}, note, comments?:[{id,n,x,risk}]}
- *   {action:"reset",  id}   clear this voter's choices and change history, keep comments
+ *   {action:"reset",  id}   clear this voter's choices, keep comments
  *   {action:"delete", id}   remove this voter entirely
  *
- * The server stamps all times. A change to a spot is recorded in `history` only when the
- * previous choice had settled for SETTLE_MS; quick re-clicks are merged into one entry.
+ * The server stamps all times. Changes to choices are not recorded: `history` is always empty
+ * and `resetAt` is always 0 (kept in the response for older pages).
  *
  * One row per voter in the "votes" sheet: id | name | updatedAt | json
  */
@@ -22,8 +22,6 @@ const MAX_PLACE = 25;
 const MAX_VOTERS = 60;
 const MAX_BODY = 80000;
 const MAX_COMMENTS = 150;
-const MAX_HISTORY = 300;
-const SETTLE_MS = 15 * 60 * 1000;
 
 function sheet_() {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
@@ -56,6 +54,7 @@ function parse_(s, updatedAt) {
     const v = d.votes[k];
     if (!v) return;
     delete v.c;
+    delete v.at;
     if (v.w == null && !v.s) delete d.votes[k];
   });
   return d;
@@ -74,8 +73,8 @@ function doGet() {
         votes: d.votes || {},
         note: d.note || '',
         comments: d.comments || [],
-        history: d.history || [],
-        resetAt: d.resetAt || 0
+        history: [],
+        resetAt: 0
       };
     });
   return json_({ ok: true, votes: votes });
@@ -111,7 +110,7 @@ function doPost(e) {
 
     if (body.action === 'reset') {
       if (row <= 1) return json_({ ok: true });
-      const d = { votes: {}, note: old.note || '', comments: old.comments || [], history: [], resetAt: now };
+      const d = { votes: {}, note: old.note || '', comments: old.comments || [] };
       sh.getRange(row, 1, 1, 4).setValues([[id, oldName, now, JSON.stringify(d)]]);
       return json_({ ok: true, updatedAt: now });
     }
@@ -120,13 +119,10 @@ function doPost(e) {
     const name = clean_(body.name, 20);
     if (!name) return json_({ ok: false, error: 'name_required' });
 
-    const oldVotes = old.votes || {};
-    const history = Array.isArray(old.history) ? old.history.slice() : [];
     const votes = {};
     const src = body.votes && typeof body.votes === 'object' ? body.votes : {};
     const keys = {};
     Object.keys(src).forEach(function (k) { keys[k] = 1; });
-    Object.keys(oldVotes).forEach(function (k) { keys[k] = 1; });
 
     Object.keys(keys).forEach(function (k) {
       const n = Number(k);
@@ -134,30 +130,7 @@ function doPost(e) {
       const v = src[k] || {};
       const w = (v.w === 0 || v.w === 1 || v.w === 2 || v.w === 3) ? v.w : null;
       const s = (Number(v.s) >= 1 && Number(v.s) <= 5) ? Math.round(Number(v.s)) : 0;
-      const o = oldVotes[k] || null;
-      const ow = o && (o.w === 0 || o.w === 1 || o.w === 2 || o.w === 3) ? o.w : null;
-      const os = o ? (Number(o.s) || 0) : 0;
-      const same = o && ow === w && os === s;
-      const at = same ? (Number(o.at) || now) : now;
-      if (w !== null || s) votes[String(n)] = { w: w, s: s, at: at };
-      if (same || !o) return;
-
-      const hadValue = ow !== null || os > 0;
-      const settled = now - (Number(o.at) || 0) >= SETTLE_MS;
-      if (hadValue && settled) {
-        history.push({ n: n, t: now, from: { w: ow, s: os }, to: { w: w, s: s } });
-      } else {
-        // Merge with the entry that produced the current value, if it is recent.
-        for (let i = history.length - 1; i >= 0; i--) {
-          if (history[i].n !== n) continue;
-          if (now - history[i].t < SETTLE_MS) {
-            history[i].to = { w: w, s: s };
-            history[i].t = now;
-            if (history[i].from.w === w && history[i].from.s === s) history.splice(i, 1);
-          }
-          break;
-        }
-      }
+      if (w !== null || s) votes[String(n)] = { w: w, s: s };
     });
 
     let comments = Array.isArray(old.comments) ? old.comments : [];
@@ -183,9 +156,7 @@ function doPost(e) {
     const d = {
       votes: votes,
       note: clean_(body.note, 500),
-      comments: comments,
-      history: history.slice(-MAX_HISTORY),
-      resetAt: old.resetAt || 0
+      comments: comments
     };
     const values = [[id, name, now, JSON.stringify(d)]];
     if (row > 1) {

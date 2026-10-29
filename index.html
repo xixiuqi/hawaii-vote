@@ -121,7 +121,11 @@ input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px soli
 .stack{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--stone-soft)}
 .stack i{display:block;height:100%}
 .stack .s3{background:var(--lava)} .stack .s2{background:var(--sea)} .stack .s1{background:var(--stone)}
-.stack .s0{background:repeating-linear-gradient(45deg,var(--line) 0 3px,transparent 3px 6px)}
+.stack .s0,.sw.s0{background:repeating-linear-gradient(45deg,var(--muted) 0 1.5px,transparent 1.5px 4px)}
+.sw{display:inline-block;width:18px;height:10px;border-radius:3px;flex:none}
+.sw.s3{background:var(--lava)} .sw.s2{background:var(--sea)} .sw.s1{background:var(--stone)} .sw.none{background:var(--stone-soft);box-shadow:inset 0 0 0 1px var(--line)}
+.rlegend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin:2px 0 6px}
+.rlegend span{display:inline-flex;align-items:center;gap:6px}
 .r-meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .r-meta .must{color:var(--lava);font-weight:600}
 .links{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px}
@@ -170,7 +174,6 @@ textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
 .risk b{color:var(--lava);font-size:12.5px}
 .risk .more{color:var(--muted);font-size:12px}
 .cbtn.warn{color:var(--lava);border-color:var(--lava)}
-.mychg{font-size:12.5px;color:var(--gold)}
 .thread{display:grid;gap:8px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
 .cmlist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .cmlist li{padding:7px 10px;border-radius:8px;background:var(--card);border:1px solid var(--line);font-size:13.5px;overflow-wrap:anywhere}
@@ -188,7 +191,8 @@ textarea.cmt{min-height:0;font-size:14.5px;padding:8px 10px}
 .rchk input{width:16px;height:16px;accent-color:var(--lava)}
 .feed{display:grid;gap:8px;padding:12px 14px;margin-bottom:18px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
 .feed h3{font-family:var(--display);font-weight:800;font-size:16px}
-.feed ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.feed ul{list-style:none;margin:0;padding:0 4px 0 0;display:grid;gap:6px;max-height:280px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.feed h3 small{font-family:var(--body,inherit);font-weight:500;font-size:12px;color:var(--muted);margin-left:6px}
 .feed li{display:grid;grid-template-columns:76px 1fr;gap:8px;font-size:13px;overflow-wrap:anywhere}
 .feed li.risk{background:var(--lava-soft);border-radius:8px;padding:4px 6px;margin:0 -6px}
 .feed .ft{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;padding-top:1px}
@@ -253,10 +257,10 @@ body.noname #copyBtn{background:var(--lava);color:#fff}
       <input type="text" id="name" placeholder="比如：小王" maxlength="20" autocomplete="nickname">
     </div>
     <div class="legend">
-      <span><i class="dot" style="background:var(--lava)"></i>必去</span>
-      <span><i class="dot" style="background:var(--sea)"></i>想去</span>
-      <span><i class="dot" style="background:var(--stone)"></i>随意</span>
-      <span><i class="dot" style="background:var(--line)"></i>不去</span>
+      <span><i class="sw s3"></i>必去</span>
+      <span><i class="sw s2"></i>想去</span>
+      <span><i class="sw s1"></i>随意</span>
+      <span><i class="sw s0"></i>不去</span>
       <span><span style="color:var(--gold)">★</span>感兴趣程度，满分 5 星</span><span>每个地方都能点「留言」，危险或新消息可以标成 ⚠ 安全提醒</span>
     </div>
     <div id="copyout" class="copyout" hidden>
@@ -321,12 +325,6 @@ const rid=()=>(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('v'+Date.n
 const newId=()=>rid().replace(/[^A-Za-z0-9-]/g,'').slice(0,20);
 const fmtT=t=>{if(!t)return '';const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};
 const wTxt=w=>w!=null&&LV[w]?LV[w]:'未选';
-function chgTxt(h){
-  const a=h.from||{},b=h.to||{},parts=[];
-  if(a.w!==b.w)parts.push(`从「${wTxt(a.w)}」改成「${wTxt(b.w)}」`);
-  if((a.s||0)!==(b.s||0))parts.push(`星数 ${a.s||0} → ${b.s||0}`);
-  return parts.join('，')||'改了选择';
-}
 const nameOf=v=>(v.name||'').trim()||'未署名';
 const pname=n=>PLACES[n-1]?PLACES[n-1].name:'';
 
@@ -344,11 +342,17 @@ if(!Array.isArray(st.comments))st.comments=[];
 
 /* ---------- ballot ---------- */
 const PLK={keep:'保留',opt:'可选',drop:'已删',none:'没排',change:'有改动'};
-function planLine(p){
+function planInner(p){
+  const d=plan?planDecisions()[p.n]:null;
+  const link=p.plan&&p.plan.d?` <a href="trip.html#${p.plan.d}">看路线 →</a>`:'';
+  if(d){const k={keep:'keep',maybe:'opt',drop:'drop'}[d.k];
+    return `<div class="pstat ${k}"><span class="pk">${d.t}</span><span class="pt"><b>第 ${esc(plan.round)} 轮取舍</b>${esc(d.why||'')}${d.k!=='drop'?link:''}</span></div>`;}
   if(!p.plan)return '';
   const k=p.plan.k;
-  return `<div class="pstat ${k}"><span class="pk">${PLK[k]||''}</span><span class="pt"><b>新版行程</b>${esc(p.plan.t)}${p.plan.d?` <a href="trip.html#${p.plan.d}">看路线 →</a>`:''}</span></div>`;
+  return `<div class="pstat ${k}"><span class="pk">${PLK[k]||''}</span><span class="pt"><b>新版行程</b>${esc(p.plan.t)}${link}</span></div>`;
 }
+const planLine=p=>`<div id="ps${p.n}">${planInner(p)}</div>`;
+function paintPlanLines(){PLACES.forEach(p=>{const el=$('ps'+p.n);if(el)el.innerHTML=planInner(p);const a=$('p'+p.n);if(a){const D=plan&&planDecisions()[p.n];a.classList.toggle('plan-drop',D?D.k==='drop':!!(p.plan&&p.plan.k==='drop'));}});}
 function rowHTML(p){
   const flags=(p.flag?`<span class="flag ${p.flag}">${p.flagT}</span>`:'')+(p.free?'<span class="flag free">免费</span>':'');
   const det=(flags||p.d)?`<p class="detail">${flags}${p.d?esc(p.d):''}</p>`:'';
@@ -363,7 +367,6 @@ function rowHTML(p){
       <div class="ctrl"><div class="seg" role="group" aria-label="想去程度">${seg}</div>
       <div class="stars" role="group" aria-label="感兴趣程度，满分 5 星">${stars}</div>
       <button type="button" class="cbtn" id="cb${p.n}" data-c="1" aria-expanded="false" aria-controls="th${p.n}">留言</button></div>
-      <div class="mychg" id="mc${p.n}" hidden></div>
       <div class="thread" id="th${p.n}" hidden>
         <ul class="cmlist" id="cl${p.n}"></ul>
         <div class="composer">
@@ -393,10 +396,6 @@ function paintThread(n){
   const th=$('th'+n),cb=$('cb'+n),open=!th.hidden;
   cb.textContent=open?'收起':(cs.length?`写留言 · 共 ${cs.length} 条`:'写留言');
   cb.classList.toggle('has',cs.length>0);cb.classList.toggle('warn',risks.length>0);cb.setAttribute('aria-expanded',String(open));
-  const mine=all.find(x=>x.id===uid);
-  const h=mine&&(mine.history||[]).filter(x=>x.n===n).slice(-1)[0];
-  const mc=$('mc'+n);
-  if(h){mc.hidden=false;mc.textContent=`你 ${fmtT(h.t)} ${chgTxt(h)}`;}else mc.hidden=true;
 }
 function paintRow(n){
   const el=$('p'+n),v=st.votes[n]||{};
@@ -464,13 +463,12 @@ function renderMine(){
   const mine=all.find(v=>v.id===uid);
   if(!API||(!mine&&!picked()&&!st.comments.length)){box.hidden=true;return;}
   box.hidden=false;
-  const nChg=mine?(mine.history||[]).length:0;
-  let html=`<div class="mine-h"><b>${mine?`你 ${fmtT(mine.updatedAt)} 保存过`:'还没保存到投票表'}</b><span>选了 ${picked()} 个 · 留言 ${st.comments.length} 条${nChg?` · 改过 ${nChg} 次`:''}</span></div>
-    <p>想改直接点下面的选项，改完自动保存，大家在「看结果」里能看到你改了什么。听说哪里危险或有新消息，就在那个地方点「留言」，勾上「⚠ 标成安全提醒」。</p>`;
+  let html=`<div class="mine-h"><b>${mine?`你 ${fmtT(mine.updatedAt)} 保存过`:'还没保存到投票表'}</b><span>选了 ${picked()} 个 · 留言 ${st.comments.length} 条</span></div>
+    <p>想改直接点下面的选项，改完自动保存，不会留下改动记录。听说哪里危险或有新消息，就在那个地方点「留言」，勾上「⚠ 标成安全提醒」。</p>`;
   if(pendingAct==='reset'){
-    html+=`<div class="confirm"><p>清空你在 25 个地方的选择和星数，留言保留。大家会看到「${esc((st.name||'').trim()||'你')} 清空了之前的选择，重新投」。</p><div class="mine-act"><button type="button" class="btn sm" data-confirm="reset">确定清空</button><button type="button" class="btn ghost sm" data-cancel="1">取消</button></div></div>`;
+    html+=`<div class="confirm"><p>清空你在 25 个地方的选择和星数，留言保留。</p><div class="mine-act"><button type="button" class="btn sm" data-confirm="reset">确定清空</button><button type="button" class="btn ghost sm" data-cancel="1">取消</button></div></div>`;
   }else if(pendingAct==='delete'){
-    html+=`<div class="confirm danger"><p>删除你的整份投票，包括选择、星数、留言和改动记录，删了找不回来。</p><div class="mine-act"><button type="button" class="btn sm danger" data-confirm="delete">确定删除</button><button type="button" class="btn ghost sm" data-cancel="1">取消</button></div></div>`;
+    html+=`<div class="confirm danger"><p>删除你的整份投票，包括选择、星数和留言，删了找不回来。</p><div class="mine-act"><button type="button" class="btn sm danger" data-confirm="delete">确定删除</button><button type="button" class="btn ghost sm" data-cancel="1">取消</button></div></div>`;
   }else{
     html+=`<div class="mine-act"><button type="button" class="btn ghost sm" data-act="reset">清空重投</button><button type="button" class="btn ghost sm danger" data-act="delete">删除我的投票</button></div>`;
   }
@@ -537,7 +535,7 @@ const ID_KEY='hawaii-vote-id';
 let uid=null;
 try{uid=localStorage.getItem(ID_KEY);}catch(e){}
 if(!uid){uid=rid();try{localStorage.setItem(ID_KEY,uid);}catch(e){}}
-let all=[],loaded=false,loadErr=false,restored=false,plan=null,feedAll=false;
+let all=[],loaded=false,loadErr=false,restored=false,plan=null;
 let timer=null,saving=false,again=false;
 
 function setStatus(s){$('status').textContent=s;}
@@ -607,7 +605,7 @@ async function loadPlan(){
     const r=await fetch('plan.json?t='+Date.now(),{cache:'no-store'});
     if(r.ok){const j=await r.json();plan=(j&&j.round)?j:null;}
   }catch(e){}
-  renderResults();
+  paintPlanLines();renderResults();
 }
 
 /* Same name already voted from another device: offer to continue that ballot. */
@@ -667,7 +665,7 @@ function planDecisions(){
   return o;
 }
 function planHTML(){
-  if(!plan)return `<div class="plan empty-plan"><div class="plan-h"><h2>每日取舍</h2></div><p>每天傍晚 6 点前后，Claude 会收集大家的选择、留言和改动，按可行性、花费、好玩程度和时间安排做取舍，并写明理由，显示在这里。</p></div>`;
+  if(!plan)return `<div class="plan empty-plan"><div class="plan-h"><h2>每日取舍</h2></div><p>每天傍晚 6 点前后，Claude 会收集大家的选择和留言，按可行性、花费、好玩程度和时间安排做取舍，并写明理由，显示在这里。</p></div>`;
   const when=plan.updatedAt?new Date(plan.updatedAt).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
   const D=planDecisions();
   const group=k=>Object.keys(D).filter(n=>D[n].k===k).sort((a,b)=>a-b);
@@ -685,14 +683,11 @@ function planHTML(){
 function feedHTML(){
   const ev=[];
   all.forEach(v=>{const who=esc(nameOf(v));
-    (v.history||[]).forEach(h=>ev.push({t:h.t,cls:'chg',html:`<b>${who}</b> 把 ${h.n} 号 ${esc(pname(h.n))} ${esc(chgTxt(h))}`}));
     (v.comments||[]).forEach(c=>ev.push({t:c.t,cls:c.risk?'risk':'',html:`<b>${who}</b> ${c.risk?'<span class="rtag">⚠ 安全提醒</span>':'留言'} ${c.n?`${c.n} 号 ${esc(pname(c.n))}`:''}：${esc(c.x)}`}));
-    if(v.resetAt)ev.push({t:v.resetAt,cls:'chg',html:`<b>${who}</b> 清空了之前的选择，重新投`});
   });
   if(!ev.length)return '';
   ev.sort((a,b)=>(b.t||0)-(a.t||0));
-  const shown=feedAll?ev:ev.slice(0,8);
-  return `<div class="feed"><h3>最新动态</h3><ul>${shown.map(e=>`<li class="${e.cls}"><span class="ft">${fmtT(e.t)}</span><span class="fx">${e.html}</span></li>`).join('')}</ul>${ev.length>8?`<button type="button" class="linkbtn" id="feedMore">${feedAll?'收起':`显示全部 ${ev.length} 条`}</button>`:''}</div>`;
+  return `<div class="feed"><h3>最新留言<small>共 ${ev.length} 条${ev.length>5?'，框里可以上下滑':''}</small></h3><ul>${ev.map(e=>`<li class="${e.cls}"><span class="ft">${fmtT(e.t)}</span><span class="fx">${e.html}</span></li>`).join('')}</ul></div>`;
 }
 function renderResults(){
   const box=$('resBody');
@@ -708,18 +703,18 @@ function renderResults(){
   if(!voters.length){box.innerHTML=planBox+editBtn+feed+'<div class="empty">还没有人保存。<br>有人在「我来投」里选完后，这里会按岛实时排出名次，留言也会列在每个地方下面。</div>';return;}
   const N=voters.length;
   const stats=PLACES.map(p=>{
-    const c={3:[],2:[],1:[],0:[]};let ss=0,sn=0;const cm=[],chg=[];
+    const c={3:[],2:[],1:[],0:[]};let ss=0,sn=0;const cm=[];
     voters.forEach(v=>{const x=v.votes[p.n];if(!x)return;if(x.w!=null&&c[x.w])c[x.w].push(nameOf(v));if(x.s){ss+=x.s;sn++;}});
     all.forEach(v=>{
       (v.comments||[]).forEach(cc=>{if(cc.n===p.n)cm.push({who:nameOf(v),x:cc.x,risk:!!cc.risk,t:cc.t});});
-      (v.history||[]).forEach(h=>{if(h.n===p.n)chg.push({who:nameOf(v),h});});
     });
-    cm.sort((a,b)=>(a.t||0)-(b.t||0));chg.sort((a,b)=>b.h.t-a.h.t);
-    return Object.assign({},p,{c,avg:sn?ss/sn:0,sn,cm,chg});
+    cm.sort((a,b)=>(a.t||0)-(b.t||0));
+    return Object.assign({},p,{c,avg:sn?ss/sn:0,sn,cm});
   });
   const rank=(a,b)=>(b.c[3].length-a.c[3].length)||(b.c[2].length-a.c[2].length)||(b.avg-a.avg)||(a.c[0].length-b.c[0].length)||(a.n-b.n);
-  let html=planBox+editBtn+feed+`<div class="voters">${voters.map(v=>{const k=(v.history||[]).length;return `<span class="chip">${esc(nameOf(v))} · 选了 ${Object.values(v.votes).filter(x=>x.w!=null).length}${k?` · 改过 ${k} 次`:''}</span>`;}).join('')}</div>
-  <p class="sortnote">排序：必去人数 → 想去人数 → 平均星数。条形图里红=必去，绿=想去，灰=随意，斜线=不去。</p>`;
+  let html=planBox+editBtn+feed+`<div class="voters">${voters.map(v=>`<span class="chip">${esc(nameOf(v))} · 选了 ${Object.values(v.votes).filter(x=>x.w!=null).length}</span>`).join('')}</div>
+  <div class="rlegend" aria-label="条形图颜色"><span><i class="sw s3"></i>必去</span><span><i class="sw s2"></i>想去</span><span><i class="sw s1"></i>随意</span><span><i class="sw s0"></i>不去</span><span><i class="sw none"></i>没选</span></div>
+  <p class="sortnote">排序：必去人数 → 想去人数 → 平均星数。</p>`;
   ISLANDS.forEach(is=>{
     const rows=stats.filter(s=>s.i===is.k).sort(rank);
     html+=`<section class="island"><div class="island-h"><h2>${is.t}</h2><span>${is.d}</span></div>`;
@@ -729,7 +724,6 @@ function renderResults(){
       const risks=s.cm.filter(x=>x.risk);
       const extra=(risks.length?`<div class="risk"><b>⚠ 安全提醒 ${risks.length} 条</b>${risks.map(x=>`<span>${esc(x.who)}：${esc(x.x)}</span>`).join('')}</div>`:'')
         +(s.c[3].length?`<div class="r-meta">必去：<span class="must">${s.c[3].map(esc).join('、')}</span></div>`:'')
-        +(s.chg.length?`<div class="r-meta chg">改动：${s.chg.slice(0,3).map(x=>`${esc(x.who)} ${esc(chgTxt(x.h))}（${fmtT(x.h.t)}）`).join('；')}${s.chg.length>3?` 等 ${s.chg.length} 次`:''}</div>`:'')
         +(D[s.n]?`<div class="dec ${D[s.n].k}"><b>${D[s.n].t}</b>${D[s.n].why?esc(D[s.n].why):''}</div>`:'')
         +(s.cm.filter(x=>!x.risk).length?`<ul class="cms">${s.cm.filter(x=>!x.risk).map(x=>`<li><b>${esc(x.who)}</b>${esc(x.x)}<span class="cm-t">${fmtT(x.t)}</span></li>`).join('')}</ul>`:'');
       const sc=s.sn?`<span class="r-score">★ ${s.avg.toFixed(1)} <small style="color:var(--muted);font-weight:500">(${s.sn})</small></span>`:'<span class="r-score none">未打分</span>';
@@ -742,7 +736,6 @@ function renderResults(){
   box.innerHTML=html;
 }
 $('resBody').addEventListener('click',e=>{
-  if(e.target.closest('#feedMore')){feedAll=!feedAll;renderResults();return;}
   if(e.target.closest('#editMine')){showTab('vote');$('mine').scrollIntoView({behavior:'smooth',block:'center'});}
 });
 
