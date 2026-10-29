@@ -52,7 +52,8 @@ DAILY_ROUND.md            # 每日取舍任务的说明
 ## 每日取舍
 
 - `snapshot-votes.yml` 每小时第 15 分钟把投票拷进 `data/votes.json`，有变化才提交，所以仓库历史里能看到每一轮改动。
-- 17:50 Claude 的定时任务按 `DAILY_ROUND.md` 读投票、做取舍，更新 `docs/plan.json` 并推送，网站自动刷新。想马上同步投票，可以在 Actions 里手动运行 `Snapshot votes`。这一步需要 Claude 能推送到你的仓库：在 claude.ai 的连接器设置里连上 GitHub，并把 `hawaii-vote` 仓库授权给它。
+- 17:50 Claude 的定时任务按 `DAILY_ROUND.md` 读投票、做取舍，更新 `docs/plan.json` 并推送，网站自动刷新。Claude 要能推送到你的仓库：在 claude.ai 的连接器设置里连上 GitHub，并把 `hawaii-vote` 仓库授权给它。
+- 想马上同步投票，在 Actions 里手动运行 `Snapshot votes`。
 
 ## 改内容
 
