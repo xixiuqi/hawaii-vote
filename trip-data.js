@@ -116,6 +116,9 @@ window.TRIP = {
       desc: "可选，跟冲浪一样：想下水的去浮潜，不想下水的可以买 ride-along 上船看，或者在 Kona 等。Honokōhau 港集合，10–1 月 5:30 PM 签到，全程 2–2.5 小时，3 岁以上可参加；没看到魔鬼鱼可以免费再约一次。",
       price: "约 $125/人", links: [["Iruka 行程评价", "https://hawaiiactivities.com/en/hawaii/big_island/a/167715/reviews"]],
       maps: "Honokohau Harbor Kailua-Kona" },
+    kahaluu: { name: "Kahaluʻu 海滩公园", en: "Kahaluʻu Beach Park", island: "big", type: "sight", ll: [19.57990, -155.96680], wiki: "Kahaluu Beach Park",
+      desc: "Kona 镇往南约 15 分钟的小海湾，绿海龟常在浅水和礁石上休息，岸上就能看到。保持距离（约 3 米以上），别碰、别喂。有洗手间和停车场。", price: "免费",
+      links: [["Go Hawaii：Kahaluʻu Beach Park", "https://www.gohawaii.com/islands/hawaii-big-island/regions/kona/kahaluu-beach-park"]], maps: "Kahaluu Beach Park Kailua-Kona" },
     kona: { name: "Kona 镇 · Aliʻi Drive", en: "Kailua-Kona", island: "big", type: "town", ll: [19.63950, -155.99690], wiki: "Kailua, Hawaii County, Hawaii",
       desc: "Kona 的海边老街，走路就能逛：餐厅、咖啡店、海边步道，傍晚看日落。12/12 陆地组在这里等下水组。", maps: "Alii Drive Kailua-Kona" },
     cook: { name: "Captain Cook 浮潜", en: "Kealakekua Bay", island: "big", type: "sight", ll: [19.48110, -155.93320], wiki: "Kealakekua Bay",
@@ -166,12 +169,12 @@ window.TRIP = {
         { s: "eden", x: "瀑布速降：8:00 AM，约 3 小时（只给不冲浪的人）" },
         { s: "kam3", x: "下午不排：Kihei / Wailea 海滩休息，傍晚想看可以再去 Kam III 看日落" }
       ],
-      tips: ["分头：冲浪组（袁新蕊、sierra、Shiyi、刘钰晔，4 人）7:00 上课，集合点离住处 5 分钟，送过去后车留给其他人；不冲浪的补觉，丹丹想去速降的话开车约 1 小时去 Garden of Eden（$240.84/人）。冲浪结束走回住处约 30 分钟，或去接。", "冲浪最早班（约 7:00–9:30）和速降（8:00–11:00）时间冲突，一个人早上只能二选一。", "已删：Waiʻānapanapa 黑沙滩 + Hana。从 Kihei 单程 2 小时多，还要提前预约；夏威夷后花园同事说 Road to Hana 很一般；黑沙滩和海龟改在大岛 12/9 顺路看 Punaluʻu。"],
+      tips: ["分头：冲浪组（袁新蕊、sierra、Shiyi、刘钰晔，4 人）7:00 上课，集合点离住处 5 分钟，送过去后车留给其他人；不冲浪的人在 Kihei 海边散步、吃早饭，丹丹想去速降的话开车约 1 小时去 Garden of Eden（$240.84/人）。冲浪结束走回住处约 30 分钟，或去接。", "冲浪最早班（约 7:00–9:30）和速降（8:00–11:00）时间冲突，一个人早上只能二选一。", "已删：Waiʻānapanapa 黑沙滩 + Hana。从 Kihei 单程 2 小时多，还要提前预约；夏威夷后花园同事说 Road to Hana 很一般；黑沙滩和海龟改在大岛 12/9 顺路看 Punaluʻu。"],
       optRoute: [["koa", "kalama"], ["koa", "eden"]] },
 
     { id: "d4", date: "12/8", dow: "周二", island: "both", title: "茂宜 → 大岛",
       items: [
-        { t: "6:50 AM", s: "kam3", x: "可选：Kam III 看日出（10 分钟车程），想看的去，其他人补觉", opt: true },
+        { t: "6:50 AM", s: "kam3", x: "可选：Kam III 看日出（10 分钟车程），想看的去，其他人吃早饭、收拾行李", opt: true },
         { t: "10:30 AM", s: "koa", x: "退房出发" },
         { t: "11:00 AM–12:30 PM", s: "iao", x: "ʻĪao Valley（去机场途中）" },
         { t: "2:00 PM", fixed: true, s: "ogg", x: "Kahului 还车" },
@@ -180,7 +183,7 @@ window.TRIP = {
         { t: "约 4:45 PM", s: "koaap", x: "走 Saddle Road 直接开去 Hilo，不绕 Waimea" },
         { t: "约 7:15 PM", s: "hilo_stay", x: "到 Hilo Airbnb 入住，晚饭在 Hilo 吃" }
       ],
-      tips: ["已删：Sea Scooter 浮潜。白天浮潜只玩一次，下水组选了 12/12 大岛 Two Step（免费、珊瑚好）；这个上午不排，可选看日出或补觉。"],
+      tips: ["已删：Sea Scooter 浮潜。白天浮潜只玩一次，下水组选了 12/12 大岛 Two Step（免费、珊瑚好）；这个上午只排可选的日出，其他人收拾行李。"],
       route: [["koa", "iao", "ogg"], ["koaap", "hilo_stay"]],
       optRoute: [["koa", "kam3", "koa"]],
       warn: ["早八晚八：落地后在 Kona 机场附近早点吃晚饭（约 5:00–5:45）再走，到 Hilo 大约 8 点多，进门就休息。", "Kona 机场到 Hilo 开车约 2.5 小时，后半程天黑。坐了飞机又开夜路，换人开、别赶。"],
@@ -214,45 +217,44 @@ window.TRIP = {
       tips: ["游客中心海拔约 2,800 米（9,200 英尺），普通租车走普通路就能开到；租车合同不允许开过游客中心往山顶走。只到游客中心，不上山顶：山顶要四驱、必须是老司机。到了先歇 30 分钟，头疼恶心就早点下山；多喝水。", "晴天晚上约 6–10 点有免费公众观星，天气不好会临时取消，当天早上和傍晚各看一次状态。天黑后只有 0–5 °C，带厚外套。", "和茂宜 Haleakalā 不重复：那边看日落云海，这边看星空。", "火山喷发的话，优先用 12/11 自由日去看。"],
       route: [["hilo_stay", "akaka", "htbg", "suisan", "hilotown", "hilo_stay"], ["hilo_stay", "mkvis", "hilo_stay"]] },
 
-    { id: "d7", date: "12/11", dow: "周五", island: "big", title: "自由日", sub: "不出远门，补觉；火山有动静就这天去",
+    { id: "d7", date: "12/11", dow: "周五", island: "big", title: "Kona 南边：Two Step 浮潜 + Puʻuhonua + 咖啡园", sub: "全体一起去，下水组浮潜、陆地组逛公园，下午咖啡园，晚饭前回 Hilo",
       items: [
-        { t: "上午", s: "hilo_stay", x: "补觉，慢慢吃早饭" },
-        { t: "下午", s: "hilotown", x: "Hilo 小镇、海边随便逛" },
-        { t: "", s: "holei", x: "可选：Chain of Craters 公路下到海边（Hilo 到火山公园 45 分钟，往返加约 2 小时）", opt: true }
+        { t: "8:00 AM", s: "hilo_stay", x: "出发，走 Saddle Road 去 Kona 南边（约 2 小时 15 分），陆地组开车" },
+        { t: "10:30 AM–12:30 PM", s: "puho", x: "下水组：Two Step 浮潜（上午水平、停车好找，免费、不用预约）。陆地组：隔壁 Puʻuhonua o Hōnaunau 国家历史公园走一圈（门票按车收）" },
+        { t: "12:45 PM", s: "puho", x: "附近吃午饭" },
+        { t: "约 2:00 PM", s: "greenwell", x: "Greenwell Farms 咖啡园，免费导览" },
+        { t: "约 3:00 PM", s: "greenwell", x: "走 Saddle Road 回 Hilo" },
+        { t: "约 5:15 PM", s: "hilo_stay", x: "回到 Hilo，晚饭后早点休息" }
       ],
-      tips: ["火山喷发：如果喷发窗口落在这几天，这天直接去火山公园看，不用和别的天对调。", "前后两天都要开远路（12/10 晚上上 Mauna Kea，12/12 去 Kona），这天专门留出来歇。"],
-      route: [["hilo_stay", "hilotown", "hilo_stay"]],
-      optRoute: [["hilo_stay", "kvc", "holei"]] },
+      tips: ["Two Step 没有救生员，进出水注意脚下的熔岩台阶；自带或在 Kona 租面镜脚蹼。Puʻuhonua 有洗手间，没有淋浴，带毛巾和干衣服。", "火山喷发：如果 HVO 的喷发窗口落在 12/11，这天和 12/10 对调，或者改去火山公园，Kona 南边挪到 12/13（顺路去机场）。"],
+      route: [["hilo_stay", "puho", "greenwell", "hilo_stay"]] },
 
-    { id: "d8", date: "12/12", dow: "周六", island: "big", title: "全体去 Kona：下水组浮潜 + 魔鬼鱼", sub: "两个方案到时候选：方案 1 早出发、陆地组开车接送（下面这版）；方案 2 多睡一会儿，陆地组在 Kona 镇等",
+    { id: "d8", date: "12/12", dow: "周六", island: "big", title: "Hilo 农夫市集 + Kona + 魔鬼鱼夜潜", sub: "早上逛 Hilo 周六大集，中午到 Kona，傍晚下水组看魔鬼鱼，陆地组接送",
       items: [
-        { t: "8:00 AM", s: "hilo_stay", x: "全体出发，走 Saddle Road 去 Kona（约 2 小时 15 分），陆地组开车" },
-        { t: "约 10:15 AM", s: "puho", x: "陆地组把下水组送到 Two Step" },
-        { t: "10:30 AM–12:30 PM", s: "puho", x: "下水组：Two Step 浮潜（上午水更平、更清楚，停车位也好找）。陆地组开车自由活动：隔壁 Puʻuhonua 公园走走，或去 Kona 镇、咖啡园" },
-        { t: "12:30 PM", s: "puho", x: "陆地组回来接人，一起吃午饭" },
-        { t: "下午", s: "kona", x: "全体在 Kona 镇（Aliʻi Drive）：逛街、喝咖啡，下水组找地方歇一下" },
+        { t: "8:00 AM", s: "hilotown", x: "Hilo 农夫市集（周六是大集）：水果、早饭、小吃" },
+        { t: "约 10:00 AM", s: "hilo_stay", x: "全体出发去 Kona（约 2 小时），陆地组开车" },
+        { t: "约 12:00 PM", s: "kona", x: "Kona 镇吃午饭" },
+        { t: "下午", s: "kona", x: "Kona 镇（Aliʻi Drive）逛街、喝咖啡，下水组找地方歇一下" },
         { t: "约 4:00 PM", s: "kona", x: "一起早点吃晚饭（下水前别吃太撑）" },
         { t: "5:15 PM", s: "manta", x: "陆地组把下水组送到 Honokōhau 港，5:30 签到看魔鬼鱼（浦妮：很好，不要删）" },
-        { t: "5:45 PM", s: "kona", x: "陆地组：回 Kona 镇海边看日落，随便逛逛" },
+        { t: "5:45 PM", s: "kona", x: "陆地组：回 Kona 镇海边看日落" },
         { t: "约 8:00 PM", s: "manta", x: "陆地组回港口接下水组" },
         { t: "约 10:15 PM", s: "hilo_stay", x: "走 Saddle Road 回 Hilo，陆地组开车" }
       ],
-      tips: ["早八晚八：这天魔鬼鱼 8 点才结束，开回 Hilo 要到 10 点多。可以考虑 12/12 退房、在 Kona 住一晚（Hilo Airbnb 已付，不退钱；Kona 要另订住 6 人的房间，人均大约多 $60–100，以实际报价为准）：魔鬼鱼结束 10 分钟到住处，12/13 也不用一早开 2 小时去 Kona。", "两个方案到时候再选。上面是方案 1（早出发，陆地组开车接送）。方案 2（多睡一会儿）：10:30 从 Hilo 出发，12:30 左右陆地组在 Kona 镇 Aliʻi Drive 下车，走路逛街、吃午饭、5:45 看日落、吃晚饭；下水组自己开车，1:30–3:30 去 Two Step 浮潜，5:30 到港口看魔鬼鱼，8:15 左右回镇上接人，10:30 左右回到 Hilo。方案 2 能多睡，但陆地组下午没车，要在镇上待 7–8 小时，下午浮潜的水也没上午平。", "方案 1 只有一辆车，一整天都由陆地组（丹丹、Jie bao、刘钰晔）开：送下水组去浮潜和港口，再回来接，中间车可以自己用。", "Two Step 免费、不用预约，自带或在 Kona 租面镜脚蹼；没有救生员，进出水注意脚下的熔岩台阶。", "魔鬼鱼要提前订，订的时候说清楚几个人下水。开船前两个工作日下午 3 点后取消要付全款：12/12 周六的团，截止是 12/10 周四 3 PM。"],
+      tips: ["下水组：袁新蕊、sierra、Shiyi；陆地组：丹丹、Jie bao、刘钰晔，负责开车送和接。", "魔鬼鱼要提前订，订的时候说清楚几个人下水。开船前两个工作日下午 3 点后取消要付全款：12/12 周六的团，截止是 12/10 周四 3 PM。"],
       warn: ["晚上从 Kona 开回 Hilo 约 2 小时，Saddle Road 全程天黑、山上有雾。下水的人会累，让陆地组的人开车。"],
-      route: [["hilo_stay", "puho", "kona", "manta", "kona", "manta", "hilo_stay"]] },
+      route: [["hilo_stay", "kona", "manta", "kona", "manta", "hilo_stay"]] },
 
-    { id: "d9", date: "12/13", dow: "周日", island: "big", title: "咖啡园 + Puʻuhonua，返程", sub: "反正要开去 Kona 机场，顺路看 Kona 这两个地方",
+    { id: "d9", date: "12/13", dow: "周日", island: "big", title: "Kahaluʻu 海龟 + 返程", sub: "8 点退房去 Kona，Kahaluʻu 看海龟，镇上午饭、逛逛，再去机场",
       items: [
-        { t: "7:45 AM", s: "hilo_stay", x: "退房出发，走 Saddle Road 去 Kona" },
-        { t: "约 10:00 AM", s: "greenwell", x: "Greenwell Farms 咖啡园，免费导览" },
-        { t: "11:00 AM–12:30 PM", s: "puho", x: "Puʻuhonua o Hōnaunau 国家历史公园，走一圈（返程日不下水）" },
-        { t: "约 1:00 PM", s: "puho", x: "附近或 Kona 吃午饭" },
+        { t: "8:00 AM", s: "hilo_stay", x: "退房出发，走 Saddle Road 去 Kona（约 2 小时）" },
+        { t: "约 10:15–11:30 AM", s: "kahaluu", x: "Kahaluʻu 海滩看海龟（岸上看，返程日不下水）" },
+        { t: "约 12:00 PM", s: "kona", x: "Kona 镇：吃午饭、海边步道、买伴手礼" },
         { t: "3:15–3:30 PM", fixed: true, s: "koaap", x: "到机场还车（不要卡 4:30 的预约时间）" },
         { t: "4:47 PM", fixed: true, s: "koaap", x: "AS404 起飞，11:59 PM 到 SFO" }
       ],
-      tips: ["行李整天在车里：放后备箱、盖好，别把包放在座位上，停车时车里别留贵重东西。", "时间紧了就先砍 Puʻuhonua，咖啡园离机场约 40 分钟。"],
-      route: [["hilo_stay", "greenwell", "puho", "koaap"]],
-      warn: ["Puʻuhonua 到 Kona 机场约 1 小时，最晚 2:15 从 Puʻuhonua 出发。"],
+      tips: ["行李整天在车里：放后备箱、盖好，停车时车里别留贵重东西。", "咖啡园和 Puʻuhonua 已经挪到 12/11，这天只开车去机场。"],
+      route: [["hilo_stay", "kahaluu", "kona", "koaap"]],
       flight: { from: "koaap", to: "SFO", label: "AS404 · 4:47–11:59 PM" } }
   ],
 
@@ -261,9 +263,11 @@ window.TRIP = {
     by: "第 1 轮取舍（6 位同行者全部投完）",
     items: [
       { x: "全程按早八晚八：12/6、12/9 都 8:00 出发；12/10 Mauna Kea 看完日落和第一批星星 7 点下山，8 点回到 Hilo。12/6 Hoʻokipa 改成短停。", day: "d6" },
-      { x: "12/7 分头：冲浪组 4 人去冲浪，不冲浪的人补觉或可选速降，下午一起去海滩。", day: "d3" },
+      { x: "12/7 分头：冲浪组 4 人去冲浪，不冲浪的人海边散步或可选速降，下午一起去海滩。", day: "d3" },
       { x: "12/8 删掉 Sea Scooter：白天浮潜只玩一次，下水组选了 12/12 的 Two Step；加回可选 Kam III 日出（1 人必去）。", day: "d4" },
-      { x: "12/12 写了两个方案到时候选：方案 1 8:00 出发，陆地组开车送下水组上午浮潜、傍晚看魔鬼鱼再去接；方案 2 10:30 出发，陆地组在 Kona 镇下车逛街等，下水组自己开车。", day: "d8" }
+      { x: "12/11 不再空着：全体去 Kona 南边，下水组 Two Step 浮潜，陆地组逛 Puʻuhonua，下午咖啡园，5 点多回 Hilo。", day: "d7" },
+      { x: "12/12 早上逛 Hilo 周六农夫市集，10 点出发去 Kona，傍晚魔鬼鱼；不再排浮潜，开车从约 6 小时降到约 4 小时 40 分。", day: "d8" },
+      { x: "12/13 咖啡园和 Puʻuhonua 挪到 12/11，返程日 8 点退房，先去 Kahaluʻu 海滩看海龟，再到 Kona 镇吃午饭、逛逛，然后去机场。", day: "d9" }
     ]
   },
 
@@ -287,7 +291,7 @@ window.TRIP = {
   activities: [
     { name: "Maui Waveriders 冲浪课", price: "半私人 $109.95/人；私人 $157.07/人（2 小时）", when: "12/7 早上，约 3 人", state: "未订", stop: "kalama" },
     { name: "Rappel Maui 瀑布速降", price: "$240.84/人（含税）", when: "12/7 8:00 AM，3 小时", state: "未订", stop: "eden" },
-    { name: "Two Step 浮潜（下水组）", price: "免费（自带或租面镜脚蹼）", when: "12/12 上午 10:30–12:30（方案 2 是下午 1:30–3:30）", state: "不用预约", stop: "puho" },
+    { name: "Two Step 浮潜（下水组）", price: "免费（自带或租面镜脚蹼）", when: "12/11 上午 10:30–12:30", state: "不用预约", stop: "puho" },
     { name: "Kazumura 熔岩洞（替代 Kula Kai）", price: "$60 现金 / $65 刷卡", when: "12/9 下午，回 Hilo 路上", state: "未订", stop: "kazumura" },
     { name: "Iruka 魔鬼鱼夜潜（可选，跟冲浪一样）", price: "约 $125/人下水；不下水的可以 ride-along 上船看", when: "12/12 傍晚 5:30 Honokōhau 港签到，2–2.5 小时", state: "未订", stop: "manta" },
     { name: "Sliding Sands 火山口徒步", price: "免费", when: "12/6", state: "可选，无需预约", stop: "summit" },
