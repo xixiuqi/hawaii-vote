@@ -67,11 +67,6 @@ window.TRIP = {
       price: "门票 + 停车（以官网为准）", status: "需预约",
       links: [["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/maui/waianapanapa-state-park"], ["预约 FAQ", "https://gostateparks.hawaii.gov/waianapanapa/faq"]],
       maps: "Waianapanapa State Park" },
-    eden: { name: "瀑布速降 Rappel Maui", en: "Garden of Eden", island: "maui", type: "sight", ll: [20.86899, -156.18001],
-      desc: "8:00 AM 开始，约 3 小时，在 Garden of Eden。周日不营业；体重 70–250 磅，10 岁以上。和冲浪最早的班时间冲突，一个人早上只能二选一。",
-      price: "$240.84/人（含税）", status: "未订",
-      links: [["rappelmaui.com", "https://www.rappelmaui.com"], ["行程介绍", "https://www.to-hawaii.com/activities/maui/rappel-maui-waterfalls-and-rainforest-cliffs"]],
-      maps: "Garden of Eden Arboretum Maui" },
     wailea: { name: "Sea Scooter 浮潜（Wailea）", en: "Wailea Beach", island: "maui", type: "sight", ll: [20.68256, -156.44311], wiki: "Wailea, Hawaii",
       desc: "My Splash Snorkeling，1.5 小时，和海龟同游。茂宜浮潜和海龟是本次好评项目。",
       price: "$149/人", status: "未订",
@@ -181,10 +176,9 @@ window.TRIP = {
       route: [["koa", "kaupo", "kipahulu", "hana", "hookipa", "koa"]],
       optRoute: [["hana", "waian"]] },
 
-    { id: "d3", date: "12/7", dow: "周一", island: "maui", title: "上午冲浪 / 速降，下午 Haleakalā 日落云海", sub: "早上分头，午饭后全体上山",
+    { id: "d3", date: "12/7", dow: "周一", island: "maui", title: "上午冲浪，下午 Haleakalā 日落云海", sub: "早上冲浪组上课，其他人海边散步；午饭后全体上山",
       items: [
         { t: "7:00–9:30 AM", s: "kalama", x: "冲浪组：冲浪课（夏威夷后花园同事：茂宜冲浪很好）", opt: true },
-        { t: "8:00–11:00 AM", s: "eden", x: "可选：瀑布速降（只给不冲浪的人；周日不营业，所以放周一）", opt: true },
         { t: "上午", s: "kam3", x: "其他人 Kihei 海边散步、吃早饭" },
         { t: "12:00 PM", s: "koa", x: "回住处午饭，带上干粮、水和厚衣服" },
         { t: "1:30 PM", s: "koa", x: "出发上山（公园建议日落前 3 小时到门口，满了会被劝返）" },
@@ -196,10 +190,10 @@ window.TRIP = {
         { t: "5:45 PM", fixed: true, s: "summit", x: "山顶日落 + 云海，然后跟着车队慢慢下山" },
         { t: "约 8:00 PM", s: "koa", x: "回住处" }
       ],
-      tips: ["分头：冲浪组（袁新蕊、sierra、Shiyi、刘钰晔，4 人）7:00 上课，集合点离住处 5 分钟，送过去后车留给其他人。冲浪（7:00–9:30）和速降（8:00–11:00）时间冲突，一个人只能二选一。", "山路弯很多，不适合新手司机，开慢点、开小心（浦妮）。看日落比看日出好开：上山时天还亮，下山有很多车跟着走。", "门票用 12/6 在 Kīpahulu 买的那张（3 天有效）。山顶天黑后很冷，带保暖衣服。"],
+      tips: ["分头：冲浪组（袁新蕊、sierra、Shiyi、刘钰晔，4 人）7:00 上课，集合点离住处 5 分钟，送过去后车留给其他人，9:30 再去接。", "山路弯很多，不适合新手司机，开慢点、开小心（浦妮）。看日落比看日出好开：上山时天还亮，下山有很多车跟着走。", "门票用 12/6 在 Kīpahulu 买的那张（3 天有效）。山顶天黑后很冷，带保暖衣服。"],
       warn: ["12/6 早出、12/7 晚归，两个长天连着。12/8 上午不排事，慢慢收拾。"],
       route: [["koa", "hosmer", "leleiwi", "kalahaku", "summit", "koa"]],
-      optRoute: [["koa", "kalama"], ["koa", "eden"]] },
+      optRoute: [["koa", "kalama"]] },
 
     { id: "d4", date: "12/8", dow: "周二", island: "both", title: "茂宜 → 大岛",
       items: [
@@ -292,10 +286,10 @@ window.TRIP = {
     by: "组织者改茂宜行程；下面也保留第 1 轮取舍的改动",
     items: [
       { x: "加回 Road to Hana，改成环线：12/6 早上从南边走，先到 Kīpahulu 走 Pīpīwai Trail（大榕树、竹林、Waimoku Falls），下午 Hāna 小镇，傍晚走北边 Hāna Highway 回，路过 Hoʻokipa 看海龟。", day: "d2" },
-      { x: "Haleakalā 日落云海从 12/6 挪到 12/7 下午：上午照样冲浪 / 速降（速降周日不营业），午饭后全体上山。门票 12/6 在 Kīpahulu 买，3 天有效。", day: "d3" },
+      { x: "Haleakalā 日落云海从 12/6 挪到 12/7 下午：上午照样冲浪，午饭后全体上山。门票 12/6 在 Kīpahulu 买，3 天有效。", day: "d3" },
       { x: "Waiʻānapanapa 黑沙滩加回来做可选：就在 Hāna 旁边，回程顺路，要提前预约。", day: "d2" },
       { x: "全程按早八晚八：12/6、12/9 都 8:00 出发；12/10 Mauna Kea 看完日落和第一批星星 7 点下山，8 点回到 Hilo。12/6 Hoʻokipa 改成短停。", day: "d6" },
-      { x: "12/7 分头：冲浪组 4 人去冲浪，不冲浪的人海边散步或可选速降，下午一起去海滩。", day: "d3" },
+      { x: "12/7 分头：冲浪组 4 人去冲浪，不冲浪的人海边散步，下午一起去海滩。", day: "d3" },
       { x: "12/8 删掉 Sea Scooter：白天浮潜只玩一次，下水组选了 12/12 的 Two Step；加回可选 Kam III 日出（1 人必去）。", day: "d4" },
       { x: "12/11 不再空着：全体去 Kona 南边，下水组 Two Step 浮潜，陆地组逛 Puʻuhonua，下午咖啡园，5 点多回 Hilo。", day: "d7" },
       { x: "12/12 早上逛 Hilo 周六农夫市集，10 点出发去 Kona，傍晚魔鬼鱼；不再排浮潜，开车从约 6 小时降到约 4 小时 40 分。", day: "d8" },
@@ -322,7 +316,6 @@ window.TRIP = {
 
   activities: [
     { name: "Maui Waveriders 冲浪课", price: "半私人 $109.95/人；私人 $157.07/人（2 小时）", when: "12/7 早上，约 3 人", state: "未订", stop: "kalama" },
-    { name: "Rappel Maui 瀑布速降", price: "$240.84/人（含税）", when: "12/7 8:00 AM，3 小时", state: "未订", stop: "eden" },
     { name: "Two Step 浮潜（下水组）", price: "免费（自带或租面镜脚蹼）", when: "12/11 上午 10:30–12:30", state: "不用预约", stop: "puho" },
     { name: "Kazumura 熔岩洞（替代 Kula Kai）", price: "$60 现金 / $65 刷卡", when: "12/9 下午，回 Hilo 路上", state: "未订", stop: "kazumura" },
     { name: "Iruka 魔鬼鱼夜潜（可选，跟冲浪一样）", price: "约 $125/人下水；不下水的可以 ride-along 上船看", when: "12/12 傍晚 5:30 Honokōhau 港签到，2–2.5 小时", state: "未订", stop: "manta" },
@@ -343,7 +336,7 @@ window.TRIP = {
     { date: "2026-12-04", x: "取消 Costco 大岛套餐（全额退 $1,839.16）" },
     { date: "2026-12-04", x: "Hilo Airbnb 把人数改成 6 人，或跟房东确认", stop: "hilo_stay" },
     { date: "2026-12-01", x: "看 USGS HVO 的 Kīlauea 喷发预报窗口，决定 12/9 和 12/10 要不要对调" },
-    { date: "2026-12-04", x: "订 Kazumura 熔岩洞；12/7 冲浪 / 速降、12/12 魔鬼鱼夜潜按参加人数订" },
+    { date: "2026-12-04", x: "订 Kazumura 熔岩洞；12/7 冲浪、12/12 魔鬼鱼夜潜按参加人数订" },
     { date: "2026-12-10", x: "Iruka 魔鬼鱼（如果订）：12/10 周四 3 PM 后取消要付全款", stop: "manta" }
   ],
 
@@ -351,7 +344,7 @@ window.TRIP = {
     rows: [
       ["住宿 + 租车（Koa $946.12 + Airbnb $870.16 + Alamo $197 + Budget $267）", "$2,280.28", "$380.05"],
       ["固定付费活动（Kazumura 熔岩洞约 $65，6 人）", "$390.00", "$65.00"],
-      ["12/7 按人另算：冲浪半私人 $109.95 / 私人 $157.07（约 3 人）；速降 $240.84（仅非冲浪者）", "—", "按参加人数"],
+      ["12/7 按人另算：冲浪半私人 $109.95 / 私人 $157.07（4 人）", "—", "按参加人数"],
       ["12/12 按人另算：Iruka 魔鬼鱼夜潜约 $125/人（下水），ride-along 更便宜", "—", "按参加人数"],
       ["公园门票（Haleakalā + Volcanoes 等）", "$310.00", "$51.67"],
       ["餐饮（估算）", "—", "约 $640"],
@@ -361,7 +354,7 @@ window.TRIP = {
       ["人均（不含机票、不含 12/7 和 12/12 自选）", "$1,376.72"],
       ["人均（含机票 $522.15，不含 12/7 和 12/12 自选）", "$2,077.87"]
     ],
-    note: "活动、餐饮、杂费为估算；租车为先订后付报价，到店以实际为准。12/7 自选另算：例如参加冲浪半私人，人均 +$109.95；参加速降，人均 +$240.84。12/12 魔鬼鱼下水约 +$125。取消两个 Costco 套餐共退回 $2,991.36（茂宜 12/1 前、大岛 12/4 前全退），和新方案住宿 + 车 $2,280.28 相比省 $711.08。"
+    note: "活动、餐饮、杂费为估算；租车为先订后付报价，到店以实际为准。12/7 自选另算：例如参加冲浪半私人，人均 +$109.95。12/12 魔鬼鱼下水约 +$125。取消两个 Costco 套餐共退回 $2,991.36（茂宜 12/1 前、大岛 12/4 前全退），和新方案住宿 + 车 $2,280.28 相比省 $711.08。"
   },
 
   notes: [
