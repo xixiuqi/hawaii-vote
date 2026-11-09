@@ -292,15 +292,15 @@ body.noname #copyBtn{background:var(--lava);color:#fff}
 <script src="config.js"></script>
 <script>
 const PLACES=[
- {n:1,plan:{"k": "keep", "t": "12/6 傍晚，Haleakalā 山顶看日落云海", "d": "d2"},i:'maui',name:'Haleakalā 山顶云海',d:'很好，必看',L:[["NPS 日出预约说明", "https://www.nps.gov/hale/planyourvisit/sunrise.htm"], ["Recreation.gov 预约", "https://www.recreation.gov/camping/poi/253731"]]},
- {n:2,plan:{"k": "opt", "t": "12/6 下午，到山顶后可选走一段", "d": "d2"},i:'maui',name:'Haleakalā 观景台 + Sliding Sands 火山口徒步',free:true,L:[["NPS 火山口徒步", "https://www.nps.gov/thingstodo/moderate-hike-into-into-haleakala-crater.htm"]]},
+ {n:1,plan:{"k": "keep", "t": "12/7 傍晚，Haleakalā 山顶看日落云海", "d": "d3"},i:'maui',name:'Haleakalā 山顶云海',d:'很好，必看',L:[["NPS 日出预约说明", "https://www.nps.gov/hale/planyourvisit/sunrise.htm"], ["Recreation.gov 预约", "https://www.recreation.gov/camping/poi/253731"]]},
+ {n:2,plan:{"k": "opt", "t": "12/7 下午，到山顶后可选走一段", "d": "d3"},i:'maui',name:'Haleakalā 观景台 + Sliding Sands 火山口徒步',free:true,L:[["NPS 火山口徒步", "https://www.nps.gov/thingstodo/moderate-hike-into-into-haleakala-crater.htm"]]},
  {n:3,plan:{"k": "keep", "t": "12/7 上午，和速降二选一", "d": "d3"},i:'maui',name:'冲浪课 Maui Waveriders（Kalama Park）',d:'很好；半私人 $109.95/人、私人 $157.07/人，2 小时',L:[["课程介绍", "https://thehawaiivacationguide.com/activities/surf-lessons-with-maui-wave-riders-kihei/"]]},
  {n:4,plan:{"k": "keep", "t": "12/8 上午，Wailea 跟海龟游泳", "d": "d4"},i:'maui',name:'Sea Scooter 浮潜（Wailea，跟海龟同游）',d:'$149/人',L:[["行程页", "https://www.greetwell.com/us/f206/wailea-beach-sea-scooter-snorkeling-guided-tour"]]},
  {n:5,plan:{"k": "drop", "t": "同一个上午已经有 Sea Scooter 跟海龟游泳，再早起看海龟重复", "d": "d4"},i:'maui',name:'Kam III 日出海龟',free:true,L:[["Kam III 介绍", "https://www.themauiexpert.com/kamaole-beach-park-iii-kihei-maui"]]},
- {n:6,plan:{"k": "keep", "t": "12/6 上午，上山前顺路", "d": "d2"},i:'maui',name:'Hoʻokipa 岸上看海龟 + Baldwin Beach',L:[["Go Hawaii 介绍", "https://www.gohawaii.com/islands/maui/things-to-do/beaches/hookipa-beach-park-maui"]]},
+ {n:6,plan:{"k": "keep", "t": "12/6 傍晚，从 Hāna 回来路上", "d": "d2"},i:'maui',name:'Hoʻokipa 岸上看海龟 + Baldwin Beach',L:[["Go Hawaii 介绍", "https://www.gohawaii.com/islands/maui/things-to-do/beaches/hookipa-beach-park-maui"]]},
  {n:7,plan:{"k": "keep", "t": "12/7 上午，给不冲浪的人", "d": "d3"},i:'maui',name:'瀑布速降 Rappel Maui',d:'$240.84/人，3 小时',L:[["行程页", "https://www.to-hawaii.com/activities/maui/rappel-maui-waterfalls-and-rainforest-cliffs"]]},
- {n:8,plan:{"k": "drop", "t": "单程 2 小时多、要预约；黑沙滩和海龟改在大岛 Punaluʻu 看（12/9）", "d": "d5"},i:'maui',name:'Waiʻānapanapa 黑沙滩',d:'$5/人 + $10 停车，需提前预约',L:[["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/maui/waianapanapa-state-park"], ["预约 FAQ", "https://gostateparks.hawaii.gov/waianapanapa/faq"]]},
- {n:9,plan:{"k": "drop", "t": "路远，评价一般", "d": "d3"},i:'maui',name:'Road to Hana 自驾 + Hana 小镇',d:'很一般',L:[["沿途攻略", "https://thehawaiivacationguide.com/road-to-hana-guide/"]]},
+ {n:8,plan:{"k": "opt", "t": "12/6 可选，Hāna 旁边、回程顺路，要提前预约", "d": "d2"},i:'maui',name:'Waiʻānapanapa 黑沙滩',d:'$5/人 + $10 停车，需提前预约',L:[["州立公园官网", "https://dlnr.hawaii.gov/dsp/parks/maui/waianapanapa-state-park"], ["预约 FAQ", "https://gostateparks.hawaii.gov/waianapanapa/faq"]]},
+ {n:9,plan:{"k": "keep", "t": "12/6 环线：南边去，先走 Pīpīwai Trail，下午 Hāna，北边回", "d": "d2"},i:'maui',name:'Road to Hana 自驾 + Hana 小镇',d:'很一般',L:[["沿途攻略", "https://thehawaiivacationguide.com/road-to-hana-guide/"]]},
  {n:10,plan:{"k": "keep", "t": "12/8 去机场途中", "d": "d4"},i:'maui',name:'ʻĪao Valley',d:'需预约',L:[["官方预约", "https://gostateparks.hawaii.gov/iao-valley/about"]]},
  {n:11,plan:{"k": "keep", "t": "12/5 傍晚；12/7 傍晚想看可以再去", "d": "d1"},i:'maui',name:'Kam III 日落',L:[["Kam III 介绍", "https://www.themauiexpert.com/kamaole-beach-park-iii-kihei-maui"]]},
  {n:12,plan:{"k": "none", "t": "12/5–12/8 售罄，没排进行程", "d": ""},i:'maui',name:'Old Lahaina Luau',d:'12/5–8 只能排 waitlist 或换别的',flag:'warn',flagT:'已售罄',L:[["体验介绍", "https://www.hawaiiactivities.com/travelguide/old-lahaina-luau-what-to-expect/"]]},
