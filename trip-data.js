@@ -166,10 +166,10 @@ window.TRIP = {
     { id: "d2", date: "12/6", dow: "周日", island: "maui", title: "Hāna 环线：南边去，北边回", sub: "早上走南边先到 Kīpahulu 走 Pīpīwai Trail，下午 Hāna 小镇，傍晚走 Road to Hana 回",
       items: [
         { t: "6:15 AM", s: "koa", x: "出发（倒时差，早起不难）。早饭前一天在 Costco 买好，车上吃；Kihei 加满油" },
-        { t: "约 7:30 AM", s: "kaupo", x: "过 Ulupalakua 牧场，沿南边海岸开到 Kaupō：路窄弯多，有一小段碎石路，慢开" },
-        { t: "约 8:30 AM", s: "kipahulu", x: "Kīpahulu 游客中心，买 Haleakalā 门票 $30/车（3 天有效，12/7 上山顶还用这张）" },
-        { t: "8:45–11:45 AM", s: "pipiwai", x: "Pīpīwai Trail：大榕树 → 竹林 → Waimoku Falls，来回约 4 英里、3 小时" },
-        { t: "约 12:00 PM", s: "kipahulu", x: "ʻOheʻo 七池走一小圈（不能下水）" },
+        { t: "约 8:15 AM", s: "kaupo", x: "过 Ulupalakua 牧场，沿南边海岸开到 Kaupō：路窄弯多，有一小段碎石路，慢开" },
+        { t: "约 8:45 AM", s: "kipahulu", x: "Kīpahulu 游客中心，买 Haleakalā 门票 $30/车（3 天有效，12/7 上山顶还用这张）" },
+        { t: "9:00 AM–12:00 PM", s: "pipiwai", x: "Pīpīwai Trail：大榕树 → 竹林 → Waimoku Falls，来回约 4 英里、3 小时" },
+        { t: "约 12:00 PM", s: "kipahulu", x: "ʻOheʻo 七池走一小圈（不能下水），20 分钟" },
         { t: "约 12:45 PM", s: "hana", x: "Hāna 小镇：午饭、Hāna Bay" },
         { t: "约 2:00 PM", s: "waian", x: "可选：Waiʻānapanapa 黑沙滩（要提前预约时段）", opt: true },
         { t: "约 2:30 PM", s: "hana", x: "走北边 Hāna Highway 回，也就是常说的 Road to Hana 反着开；下午这边车少" },
@@ -177,7 +177,7 @@ window.TRIP = {
         { t: "约 6:30 PM", s: "koa", x: "回 Kihei 吃晚饭" }
       ],
       tips: ["为什么这样走：早上南边几乎没车，先到 Kīpahulu 好停车、步道人少；Road to Hana 的车流都是上午进 Hāna，我们下午反方向出来正好错开。", "租车：茂宜是 Alamo，合同允许开铺装公路和「合适的平整道路」；南边这条现在几乎全铺装，只有很短一段碎石路。前一晚看天气，下大雨碎石段会有泥坑，就改成北边进出。", "步道又泥又滑：穿防滑鞋，带雨衣、驱蚊、水和零食；瀑布下面不要下水。", "Hāna 和南边路上基本没有加油站，出发前加满。"],
-      warn: ["全天开车约 5–6 小时，两边都是窄路、盲弯和单车道桥。浦妮说过不适合新手司机：让老司机开，中途换人。"],
+      warn: ["全天开车约 5.5 小时（Kihei 到 Kīpahulu 约 2.5 小时，Hāna 回 Kihei 约 2.5–3 小时），两边都是窄路、盲弯和单车道桥。浦妮说过不适合新手司机：让老司机开，中途换人。"],
       route: [["koa", "kaupo", "kipahulu", "hana", "hookipa", "koa"]],
       optRoute: [["hana", "waian"]] },
 
